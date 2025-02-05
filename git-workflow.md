@@ -74,3 +74,4 @@ Provide a clear explanation of the changes made, and any additional information 
 
 ## **Add reviewer**
 The reviewer will review your pull request and merge it into the `develop` branch if no issues are found.
+At least 2 people should be choosen as reviewer
