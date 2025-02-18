@@ -1,0 +1,28 @@
+{
+  "name": "shelft",
+  "version": "1.0.0",
+  "description": "Shelft is a social platform for sharing yout taste in book",
+  "main": "index.js",
+  "scripts": {
+    "start" : "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyenvanan2730/shelft.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguyenvanan2730/shelft/issues"
+  },
+  "homepage": "https://github.com/nguyenvanan2730/shelft#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "morgan": "^1.10.0",
+    "pug": "^3.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
