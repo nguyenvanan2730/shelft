@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const db = require('../services/db');
+const { getDbTestResults } = require('../services/dbTest');
 
 router.get('/', (req, res, next) => {
     res.render('page/index');
@@ -15,11 +16,8 @@ router.get('/login', (req, res, next) => {
 });
 
 router.get('/db_test', async (req, res, next) => {
-    // Assumes a table called test_table exists in your database
-    const sql = 'select * from test_table';
     try {
-        const results = await db.query(sql);
-        console.log(results);
+        const results = await getDbTestResults();
         res.render('page/db_test', { results: results });
     } catch (err) {
         console.error(err);
