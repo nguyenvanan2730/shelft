@@ -1,0 +1,15 @@
+//- db_test.pug
+doctype html
+html
+  head
+    title DB Test Results
+  body
+    h1 DB Test Results
+    table
+      tr
+        each key in Object.keys(results[0])
+          th= key
+      each row in results
+        tr
+          each key in Object.keys(row)
+            td= row[key]
