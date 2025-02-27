@@ -1,4 +1,20 @@
 extends ../layout/layout
 
 block content 
-    H1 Login
+
+    main 
+        div(class="form-container")
+            h1 Log In
+            form(id="login-form")
+                div(class="form-group")
+                    label(class="sr-only" for="email") Email
+                    input(type="email" id="email" name="email" placeholder="E-mail")
+                div(class="form-group")
+                    label(class="sr-only" for="password") Password
+                    input(type="password" id="password" name="password" placeholder="Password")
+                button(type="submit") Log In
+                p(class="error hidden-msg") Error Loging In
+            form
+                p Don't have an account? - 
+                    a(href="/register") Register
+    script(defer src="js/login.js")
