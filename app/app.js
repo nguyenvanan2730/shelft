@@ -1,5 +1,6 @@
 // Import express.js
 const express = require("express");
+const cookieParser = require('cookie-parser');
 
 // Import morgan for logging
 const morgan = require('morgan');
@@ -14,6 +15,9 @@ const statics = __dirname.replace('app', 'public');
 app.set("port", process.env.PORT || 3000);
 app.set("views", "./public/view");
 app.set("view engine", "pug");
+app.use(express.json());
+app.use(cookieParser());
+
 
 // Get the functions in the db.js file to use
 const db = require('./services/db');
