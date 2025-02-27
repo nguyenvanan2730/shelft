@@ -5,14 +5,21 @@ import {users} from '../controllers/authentication.controller.js';
 dotenv.config();
 
 function onlyPublic(req, res, next){
+    console.log("Dentro de only public");
     const logged = checkCookie(req);
     if(!logged) return next();
     return res.redirect('/');
 }
 
 function onlyRegistered(req, res, next){
+    console.log("Dentro de only registered");
     const logged = checkCookie(req);
-    if(logged) return next();
+    console.log(logged)
+    if(logged){
+        console.log("Dentro de logged");
+        return next();
+    } 
+    console.log("Dentro de no logged");
     return res.redirect('/');
 }
 

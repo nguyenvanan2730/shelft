@@ -1,5 +1,6 @@
 // Import express.js
 const express = require("express");
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 // Import morgan for logging
@@ -8,6 +9,7 @@ const router = require('./router/router');
 
 // Create express app
 var app = express();
+app.use(cors());
 
 // Set static files directory
 const statics = __dirname.replace('app', 'public');

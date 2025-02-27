@@ -37,5 +37,6 @@ router.get('/db_test', async (req, res, next) => {
 
 router.post('/api/register', authentication.register);
 router.post('/api/login', authentication.login);
+router.get('/verify/:token', authentication.verifyAccount);
 
 module.exports = router;
