@@ -58,3 +58,39 @@ button{
     color: rgb(204, 16, 16);
     font-size: small;
 }
+
+/* HEADER */
+header{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #26345E;
+    padding: 5px 45px;
+}
+
+/* NAVIGATION CENTERED */
+.navbar{
+    display:flex;
+    justify-content: center;
+}
+
+/* NAVIGATION LINKS */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 45px;
+    padding: 0;
+}
+.nav-links li {
+    display: inline;
+}
+.nav-links a{
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+}
+.library-link a {
+    color: white;
+    text-decoration: none;;
+    font-size: 15px;
+}
