@@ -4,6 +4,7 @@ body{
     min-height: 100svh;
     font-size: larger;
     background-color: #ebeadc;
+    overflow-x: hidden; /* Prevent horizontal scroll */
 }
 main{
     display: flex;
@@ -97,3 +98,31 @@ header{
     text-decoration: none;;
     font-size: 15px;
 }
+
+/* SEARCH DROPDOWN */
+#search-dropdown{
+    position: relative; 
+    top: 19%;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 100%; 
+    background-color: #354a87;
+    color: white;
+}
+#search-dropdown .search-container input{
+    width: 100%;
+    color: white;
+    background-color: #354a87;
+    font-size: 18px;
+    border: none;
+    height: 120px;
+    padding-top: 0;
+}
+/* PLACEHOLDER TEXT COLOR*/
+#search-dropdown .search-container input::placeholder {
+    color: white;
+    padding: 0 20px;
+}
+
+/* BLURRY BACKGROUND */
+

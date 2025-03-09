@@ -6,11 +6,19 @@ header
             li
                 a(href="/login") Sign In
             li
-                a(href="/search") Search 
+                a#search-toggle(href="javascript:void(0);") Search 
                 //-a(href="/register") Register
             li
                 a(href="/contact") Contact
     .library-link 
          a(href="/library") My Library
+
+//- background overlay (initially hidden)
+#overlay.hidden 
+
+//- search dropdown (initially hidden)
+#search-dropdown.hidden 
+    .search-container 
+        input(type="text" placeholder="I'm searching for...")
              
             
