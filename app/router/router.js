@@ -3,11 +3,17 @@ const authorization = require('../middlewares/authorization.js').methods;
 const router = require("express").Router();
 const db = require('../services/db');
 const { getDbTestResults } = require('../services/dbTest');
+const { getBooks } = require('../services/homepage');
 
-router.get('/', (req, res, next) => {
-    res.render('page/index');
-    next();
+router.get('/', async (req, res, next) => {
+    try {
+        const results = await getBooks();
+        res.render('page/index', { data: results });
+    } catch (err) {
+        next(err);
+    }
 });
+
 router.get('/contact', (req, res, next) => {
     res.render('page/contact');
     next();
