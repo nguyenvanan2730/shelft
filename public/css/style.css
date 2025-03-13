@@ -177,7 +177,7 @@ header{
 /* GUEST HOME PAGE */
 .feature-title {
     font-family: "Outfit", sans-serif;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 500;
     margin: 0;
     padding-left: 45px;
@@ -193,7 +193,9 @@ header{
     background-color:#F5CCB9;
     padding: 20px;
     border-radius: 14px;
-    width: 340px
+    width: 340px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    
 }
 .feature-box h3{
     font-family: "Outfit", sans-serif;
@@ -217,7 +219,8 @@ header{
     background-color:#AEB8D7;
     padding: 20px;
     border-radius: 14px;
-    width: 340px
+    width: 340px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
 .feature-box-blue h3{
     font-family: "Outfit", sans-serif;
