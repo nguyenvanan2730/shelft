@@ -1,13 +1,27 @@
-header 
-    nav 
-        ul 
-            li 
-                a(href="/") Home
+header
+    a(href="/")
+        img(src="/images/logo.svg", alt="Site Logo" width="35", height="auto")
+    nav.navbar 
+        ul.nav-links 
             li
-                a(href="/login") Log In
+                if isLoggedIn
+                    a(href="/user") #{user.username}
+                else
+                    a(href="/login") Sign In
             li
-                a(href="/register") Register
+                a#search-toggle(href="javascript:void(0);") Search 
+                //-a(href="/register") Register
             li
                 a(href="/contact") Contact
+    .library-link 
+         a(href="/user") My Library
+
+//- background overlay (initially hidden)
+#overlay.hidden 
+
+//- search dropdown (initially hidden)
+#search-dropdown.hidden 
+    .search-container 
+        input(type="text" placeholder="I'm searching for...")
              
             
