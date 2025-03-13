@@ -12,10 +12,10 @@ var app = express();
 app.use(cors());
 
 // Set static files directory
-const statics = __dirname.replace('app', 'public');
+const statics = __dirname.replace('app', 'app/public');
 
 app.set("port", process.env.PORT || 3000);
-app.set("views", "./public/view");
+app.set("views", __dirname + "/view");
 app.set("view engine", "pug");
 app.use(express.json());
 app.use(cookieParser());

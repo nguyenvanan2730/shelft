@@ -5,29 +5,29 @@ const db = require('../services/db');
 const { getDbTestResults } = require('../services/dbTest');
 
 router.get('/', (req, res, next) => {
-    res.render('page/index');
+    res.render('index');
     next();
 });
 router.get('/contact', (req, res, next) => {
-    res.render('page/contact');
+    res.render('contact');
     next();
 });
 router.get('/login', authorization.onlyPublic, (req, res, next) => {
-    res.render('page/login');
+    res.render('login');
     next();
 });
 router.get('/register', authorization.onlyPublic, (req, res, next) => {
-    res.render('page/register');
+    res.render('register');
     next();
 });
 router.get('/user', authorization.onlyRegistered, (req, res, next) => {
-    res.render('page/user');
+    res.render('user');
     next();
 });
 router.get('/db_test', async (req, res, next) => {
     try {
         const results = await getDbTestResults();
-        res.render('page/db_test', { results: results });
+        res.render('db_test', { results: results });
     } catch (err) {
         console.error(err);
         res.status(500).send('Database query failed');
