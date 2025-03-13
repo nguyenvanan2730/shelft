@@ -8,6 +8,7 @@ document.getElementById('register-form').addEventListener('submit', async(e)=> {
         headers: {
             'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify
         ({
             username: e.target.elements.username.value,
