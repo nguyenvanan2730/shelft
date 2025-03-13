@@ -4,7 +4,10 @@ header
     nav.navbar 
         ul.nav-links 
             li
-                a(href="/login") Sign In
+                if isLoggedIn
+                    a(href="/user") #{user.username}
+                else
+                    a(href="/login") Sign In
             li
                 a#search-toggle(href="javascript:void(0);") Search 
                 //-a(href="/register") Register
