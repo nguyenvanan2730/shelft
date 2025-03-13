@@ -2,3 +2,7 @@ extends ../layout/layout
 
 block content 
     H1 INDEX
+    if isLoggedIn
+        h1 Welcome, #{user.username}!
+    else
+        h1 Hello Guest!

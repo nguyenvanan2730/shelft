@@ -4,10 +4,14 @@ const router = require("express").Router();
 const db = require('../services/db');
 const { getDbTestResults } = require('../services/dbTest');
 
-router.get('/', (req, res, next) => {
-    res.render('page/index');
-    next();
+router.get('/', (req, res) => {
+    const user = authorization.checkCookie(req);
+    
+    const isLoggedIn = !!user;
+    
+    res.render('page/index', { isLoggedIn, user });
 });
+
 router.get('/contact', (req, res, next) => {
     res.render('page/contact');
     next();

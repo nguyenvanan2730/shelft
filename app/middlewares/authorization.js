@@ -6,38 +6,56 @@ dotenv.config();
 
 function onlyPublic(req, res, next){
     console.log("Dentro de only public");
-    const logged = checkCookie(req);
-    if(!logged) return next();
+    const user = checkCookie(req);
+    if(!user) return next();
     return res.redirect('/');
 }
 
 function onlyRegistered(req, res, next){
     console.log("Dentro de only registered");
-    const logged = checkCookie(req);
-    console.log(logged)
-    if(logged){
+    const user = checkCookie(req);
+    console.log(user)
+    if(user){
         console.log("Dentro de logged");
         return next();
     } 
     console.log("Dentro de no logged");
     return res.redirect('/');
+
+    
 }
 
-function checkCookie(req){
-    try{
-        const cookieJWT = req.headers.cookie.split(';').find(cookie => cookie.startsWith('jwt=')).slice(4);
-        const decodedCookie = jsonwebtoken.verify(cookieJWT, process.env.JWT_SECRET);
-        const userToCheck = users.find(user => user.email === decodedCookie.email);
-        if(!userToCheck) return false;
-        return true;
+function checkCookie(req) {
+    console.log("Cookie header:", req.headers.cookie); // <--- LOG
+  
+    try {
+      const rawCookie = req.headers.cookie
+        ?.split(';')
+        .find(c => c.trim().startsWith('jwt='));
+      console.log("Raw cookie part:", rawCookie); // <--- LOG
+  
+      if (!rawCookie) return null;
+  
+      const cookieJWT = rawCookie.slice(4);
+      console.log("cookieJWT value:", cookieJWT); // <--- LOG
+  
+      const decodedCookie = jsonwebtoken.verify(cookieJWT, process.env.JWT_SECRET);
+      console.log("decodedCookie:", decodedCookie); // <--- LOG
+  
+      const userToCheck = users.find(u => u.email === decodedCookie.email);
+      console.log("userToCheck:", userToCheck); // <--- LOG
+  
+      return userToCheck || null;
+    } catch (error) {
+      console.error("Error en checkCookie:", error);
+      return null;
     }
-    catch{
-        return false;
-    }
-}
+  }
+  
 
 
 export const methods = {
     onlyRegistered,
-    onlyPublic
+    onlyPublic,
+    checkCookie
 }

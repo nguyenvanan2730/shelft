@@ -86,42 +86,27 @@ async function register(req, res){
     console.log("newUser created");
 }
 
-function verifyAccount(req, res){
+function verifyAccount(req, res) {
     try{
         if (!req.params.token) {
-            return res.redirect("/");
+          return res.redirect("/");
         }
         const decodedCookie = jsonwebtoken.verify(req.params.token, process.env.JWT_SECRET);
         if(!decodedCookie || !decodedCookie.email){
-            return res.redirect("/").send({status: 'error', message: 'Invalid token'});
+          return res.redirect("/").send({status: 'error', message: 'Invalid token'});
         }
-        const token = jsonwebtoken.sign(
-            {email: decodedCookie.email}, 
-            process.env.JWT_SECRET, 
-            {expiresIn:process.env.JWT_EXPIRES_IN}
-        );
-    
-        const cookieOptions = {
-            expires: new Date(
-                Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
-            ),
-            path: '/'
-        }
-
+        
+        // Marcamos el usuario como verificado
         const indexUserToUpdate = users.findIndex(user => user.email === decodedCookie.email);
         users[indexUserToUpdate].verified = true;
-        console.log("User verified");
-        console.log(decodedCookie);
-        console.log(users[indexUser]);
-        res.cookie('jwt', token, cookieOptions);
-        res.redirect('/');
+        res.redirect('/login');
     }
     catch (err){
-        res.status(500)
+        res.status(500);
         res.redirect("/");
     }
 }
-
+  
 export const methods = {
     login,
     register,
