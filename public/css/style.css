@@ -94,6 +94,11 @@ header{
     font-size: 16px;
     font-family:"Outfit", sans-serif;
     font-weight: 300;
+    position: relative;
+}
+.nav-links a:hover{
+    padding-bottom: 2px;
+    border-bottom: 1px solid white;
 }
 .library-link a {
     color: white;
@@ -101,6 +106,10 @@ header{
     font-size: 16px;
     font-family:"Outfit", sans-serif;
     font-weight: 300;
+}
+.library-link a:hover{
+    padding-bottom: 2px;
+    border-bottom: 1px solid white;
 }
 
 /* SEARCH DROPDOWN */
