@@ -7,15 +7,6 @@ import { sendVerificationEmail } from "../services/mail.service.js";
 
 dotenv.config();
 
-/*
-export const users = [{
-    username: 'peremb',
-    email: 'perette93@gmail.com',
-    password: '$2b$05$XpQcALerFlQdbTMJopoJu..DVYX04lKunGRHVzi72iWnMLCBTCSye',
-    verified: true
-}]
-*/
-
 async function register(req, res) {
     const { username, email, password } = req.body;
     if (!username || !email || !password) {
@@ -62,15 +53,15 @@ async function register(req, res) {
   }
   
   async function login(req, res) {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { identifier, password } = req.body;
+    if (!identifier || !password) {
       return res.status(400).send({ status: 'error', message: 'Invalid body' });
     }
     try {
       // Find the user in the DB
       const usersFound = await db.query(
-        "SELECT * FROM Users WHERE email = ? AND verified = ?",
-        [email, true]
+        "SELECT * FROM Users WHERE (email = ? OR username = ?) AND verified = ?",
+        [identifier, identifier, true]
       );
       if (usersFound.length === 0) {
         return res.status(400).send({ status: 'error', message: 'Error Logging In (User not found or not verified)' });
