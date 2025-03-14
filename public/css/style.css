@@ -110,6 +110,7 @@ header{
     display: flex;
     gap: 45px;
     padding: 0;
+    transform: translateX(20px);
 }
 .nav-links li {
     display: inline;
@@ -194,6 +195,7 @@ header{
     display: flex;
     align-items: center;
     flex-direction: column;
+    transform: translateX(-100px);
 }
 
 .login-left-section{
