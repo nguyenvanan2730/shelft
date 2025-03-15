@@ -76,7 +76,7 @@ function createVerificationEmail(token){
         <div class="container">
             <h1>Verify Your Email Address</h1>
             <p>Thank you for signing up in Shelft.! To complete your registration, please verify your email address by clicking the button below.</p>
-            <a href="http://localhost:3000/verify/${token}" class="button">Verify Email</a>
+            <a href="http://127.0.0.1:3000/verify/${token}" class="button">Verify Email</a>
             <p>If you did not sign up for this account, please ignore this email.</p>
             <p class="footer">This is an automated email, please do not reply.</p>
         </div>

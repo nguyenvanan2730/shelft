@@ -302,7 +302,15 @@ header{
     height: 40px; 
 }
 
-.step-circle {
+.breadcrumb-2{
+    position: absolute;
+    left: 41%;
+    top: 15%;
+    width: 270px;  
+    height: 40px; 
+}
+
+.step-circle, .step-circle-2, .step-circle-3 {
     position: absolute;
     z-index: 1;
     top: 50%;              
@@ -319,7 +327,15 @@ header{
     transform: translateY(-50%); 
 }
   
-.step-line {
+.step-circle-2 {
+    left: 45%;              
+}
+
+.step-circle-3 {
+    left: 91%; 
+    background-color: #F58E5F;             
+}
+.step-line, .step-line-2, .step-line-3 {
     position: absolute;
     top: 50%;            
     width: 100%;
@@ -327,6 +343,14 @@ header{
     background-color: #d4d4d4;
     border-radius: 5px;
     transform: translateY(-50%); 
+}
+
+.step-line-2{
+    background: linear-gradient(to right, #1e3c72 50%, #d4d4d4 50%);
+}
+
+.step-line-3{
+    background-color: #F58E5F;
 }
 
 /* ALERT ERROR */
@@ -352,4 +376,13 @@ header{
     font-size: 1em;
     cursor: pointer;
     color: inherit;
+}
+
+.div-verify-email{
+    display: flex;
+    align-items: start !important;
+}
+
+.div-verify-email h2{
+    line-height: 120%;
 }

@@ -45,7 +45,7 @@ async function register(req, res) {
             [username, email, hash, first_name, last_name, false]
       );
   
-      return res.status(201).send({ status: 'ok', message: `User ${username} created`, redirect: '/' });
+      return res.status(201).send({ status: 'ok', message: `User ${username} created`, redirect: '/verification-email' });
     } catch (error) {
       console.error("Error in register:", error);
       return res.status(500).send({ status: 'error', message: 'Error creating user' });
@@ -109,15 +109,57 @@ async function register(req, res) {
         "UPDATE Users SET verified = ? WHERE email = ?",
         [true, decoded.email]
       );
-      return res.redirect('/login');
+
+      const newToken = jsonwebtoken.sign(
+        { email: decoded.email, verified: true },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    res.cookie('jwt', newToken, {
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000),
+        path: '/',
+        httpOnly: true,
+        sameSite: 'Strict'
+    });
+
+      return res.redirect('/new-user-form');
     } catch (error) {
       console.error("Error in verifyAccount:", error);
       return res.status(500).redirect("/");
     }
   }
-  
-  export const methods = {
+
+async function checkVerificationStatus(req, res) {
+  try {
+      const token = req.cookies.jwt;
+      if (!token) {
+          return res.json({ verified: false });
+      }
+
+      const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+      if (!decoded || !decoded.email) {
+          return res.json({ verified: false });
+      }
+
+      const users = await db.query("SELECT SQL_NO_CACHE verified FROM Users WHERE email = ?", [decoded.email]);
+      if (users.length === 0) {
+          return res.json({ verified: false });
+      }
+
+      console.log(`Verified status: ${users[0].verified}`);
+
+      return res.json({ verified: users[0].verified });
+
+  } catch (error) {
+      console.error("Error checking verification status:", error);
+      return res.json({ verified: false });
+  }
+}
+
+export const methods = {
     login,
     register,
-    verifyAccount
-}
+    verifyAccount,
+    checkVerificationStatus
+};
