@@ -67,4 +67,15 @@ router.post('/api/register', authentication.register);
 router.post('/api/login', authentication.login);
 router.get('/verify/:token', authentication.verifyAccount);
 
+router.get('/logout', (req, res) => {
+    res.cookie('jwt', '', {
+        expires: new Date(0),
+        path: '/',
+        httpOnly: true,
+        sameSite: 'Strict'
+    });
+
+    console.log("✅ JWT cookie cleared, user logged out.");
+    return res.redirect('/');
+});
 module.exports = router;
