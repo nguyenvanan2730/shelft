@@ -80,6 +80,7 @@ document.getElementById('register-form').addEventListener('submit', async(e)=> {
     }
     
     errorMsg.classList.add('hidden-msg');
+    
    const resJson = await res.json();
     if(resJson.redirect) {
         window.location.href = resJson.redirect;

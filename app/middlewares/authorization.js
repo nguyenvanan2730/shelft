@@ -12,7 +12,10 @@ async function onlyPublic(req, res, next) {
 
 async function onlyRegistered(req, res, next) {
   const user = await checkCookie(req);
-  if (user) return next();
+  if (user){
+    res.locals.user = user;
+    return next();
+  }
   return res.redirect('/login');
 }
 

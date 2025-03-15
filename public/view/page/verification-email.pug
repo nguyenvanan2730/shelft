@@ -1,0 +1,21 @@
+extends ../layout/layout
+
+block content 
+    .breadcrumb-2
+        .step-line-2
+        .step-circle-2 2
+    main(class="login-page")
+        
+        section(class="login-left-section div-verify-email")
+            h2 Thanks for registering an account<br> with us, can't wait for you to join<br> our Shelft family!!
+
+        section(class="linea")
+
+        section(class="login-right-section div-verify-email")
+            h2 You are Almost There... 
+
+            p.text-500 We're going to verify your account. <br> Check your inbox for a email from us.  
+
+            P.text-400(style="margin-top:50px") Didn't receive a verification email from us? <br> Check your spam folder.
+
+    script(defer src="js/verification-email.js")

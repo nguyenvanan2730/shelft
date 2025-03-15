@@ -22,6 +22,18 @@ router.get('/contact', async (req, res, next) => {
     res.render('page/contact', { isLoggedIn, user });
 });
 
+router.get('/verification-email', async (req, res, next) => {
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    res.render('page/verification-email', { isLoggedIn, user });
+});
+
+router.get('/new-user-form', async (req, res, next) => {
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    res.render('page/new-user-form', { isLoggedIn, user });
+});
+
 router.get('/login', authorization.onlyPublic, (req, res, next) => {
     res.render('page/login');
     next();
@@ -31,6 +43,7 @@ router.get('/register', authorization.onlyPublic, (req, res, next) => {
     res.render('page/register');
     next();
 });
+
 router.get('/user', authorization.onlyRegistered, async (req, res, next) => {
     const user = await authorization.checkCookie(req);
     const isLoggedIn = !!user;
@@ -49,8 +62,21 @@ router.get('/db_test', async (req, res, next) => {
     next();
 });
 
+router.get('/api/check-verification', authentication.checkVerificationStatus);
 router.post('/api/register', authentication.register);
 router.post('/api/login', authentication.login);
 router.get('/verify/:token', authentication.verifyAccount);
+router.post('/api/save-preferences', authorization.onlyRegistered, authentication.savePreferences);
 
+router.get('/logout', (req, res) => {
+    res.cookie('jwt', '', {
+        expires: new Date(0),
+        path: '/',
+        httpOnly: true,
+        sameSite: 'Strict'
+    });
+
+    console.log("✅ JWT cookie cleared, user logged out.");
+    return res.redirect('/');
+});
 module.exports = router;
