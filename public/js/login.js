@@ -1,4 +1,9 @@
 const errorMsg = document.getElementsByClassName('error')[0];
+const closeAlert = document.getElementsByClassName('close-alert')[0];
+
+closeAlert.addEventListener('click', () => {
+    errorMsg.classList.add('hidden-msg');
+});
 
 document.getElementById('login-form').addEventListener('submit', async(e)=> {
     e.preventDefault();
@@ -15,7 +20,23 @@ document.getElementById('login-form').addEventListener('submit', async(e)=> {
             password: e.target.elements.password.value
         })
     });
-    if(!res.ok) return errorMsg.classList.toggle('hidden-msg', false);
+
+    if(e.target.elements.identifier.value === "" || e.target.elements.password.value === "") {
+        errorMsg.querySelector('span').textContent = "Please, fill in all the fields.";
+
+        errorMsg.classList.remove('hidden-msg');
+        return;
+    }
+
+    if (!res.ok) {
+        errorMsg.querySelector('span').textContent = "The username or password entered is incorrect.";
+
+        errorMsg.classList.remove('hidden-msg');
+        return;
+      }
+    
+      errorMsg.classList.add('hidden-msg');
+
     const resJson = await res.json();
     if(resJson.redirect) {
         window.location.href = resJson.redirect;

@@ -8,8 +8,8 @@ import { sendVerificationEmail } from "../services/mail.service.js";
 dotenv.config();
 
 async function register(req, res) {
-    const { username, email, password } = req.body;
-    if (!username || !email || !password) {
+    const { username, email, password, first_name, last_name } = req.body;
+    if (!username || !email || !password || !first_name || !last_name) {
       return res.status(400).send({ status: 'error', message: 'Invalid body' });
     }
     try {
@@ -40,9 +40,9 @@ async function register(req, res) {
   
       // Insert the user in the DB
       await db.query(
-        `INSERT INTO Users (username, email, password_hash, verified)
-         VALUES (?, ?, ?, ?)`,
-        [username, email, hash, false]
+        `INSERT INTO Users (username, email, password_hash, first_name, last_name, verified)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [username, email, hash, first_name, last_name, false]
       );
   
       return res.status(201).send({ status: 'ok', message: `User ${username} created`, redirect: '/' });

@@ -1,22 +1,39 @@
 extends ../layout/layout
 
 block content 
-    main 
+    div(class="error hidden-msg")
+        span Error Signing In
+        button(type="button" class="close-alert") &times;
+    main(class="register-page")
         div(class="form-container")
-            h1 Create Account
+        
+            .breadcrumb
+                .step-circle 1
+                .step-line
+
+            h1 Create a New Account
             form(id="register-form")
+                div(class="form-group-name")
+                    div(class="form-group")
+                        label(class="sr-only" for="name") First Name
+                        input(type="text" id="first_name" name="first_name" placeholder="First Name" class="form-group-input input-name")
+                    div(class="form-group")
+                        label(class="sr-only" for="surname") Last Name
+                        input(type="text" id="last_name" name="last_name" placeholder="Last Name" class="form-group-input input-name")
+
+
+                p(class="text-400") This will be your Sign In details
                 div(class="form-group")
                     label(class="sr-only" for="username") Username
-                    input(type="text" id="username" name="username" placeholder="Username" required)
+                    input(type="text" id="username" name="username" placeholder="Username" class="form-group-input")
                 div(class="form-group")
                     label(class="sr-only" for="email") Email
-                    input(type="email" id="email" name="email" placeholder="E-mail" required)
+                    input(type="email" id="email" name="email" placeholder="E-mail" class="form-group-input")
                 div(class="form-group")
                     label(class="sr-only" for="password") Password
-                    input(type="password" id="password" name="password" placeholder="Password")
-                button(type="submit") Create Account
-                p(class="error hidden-msg") Error Signing In
-            form
-                p Do you have an account? - 
-                    a(href="/login") Log In
+                    input(type="password" id="password" name="password" placeholder="Password" class="form-group-input")
+                div(class="form-group")
+                    label(class="sr-only" for="password") Confirm Password
+                    input(type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" class="form-group-input")
+                button(type="submit" class="login-button-primary text-400") Continue
     script(defer src="js/register.js")
