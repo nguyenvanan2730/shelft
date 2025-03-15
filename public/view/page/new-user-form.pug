@@ -1,21 +1,51 @@
 extends ../layout/layout
 
 block content 
+    div(class="alert")
+        span You have registered successfully. Welcome to the Shelft family!
+        button(type="button" class="close-alert") &times;
     .breadcrumb-2
         .step-line-3
         .step-circle-3 3
-    main(class="login-page")
-        
-        section(class="login-left-section div-verify-email")
-            h2 Thanks for registering an account<br> with us, can't wait for you to join<br> our Shelft family!!
+    main 
+        section.new-user-form-container
+            h2 Congratulations! You've just opened the first chapter of your reading journey...
+            p.text-500 Shelft is a space where book lovers like you can track, discover and save what you <br> read. To provide you that personalized experience, we first need to know a bit more <br> about your interests.
 
-        section(class="linea")
-
-        section(class="login-right-section div-verify-email")
-            h2 You are Almost There... 
-
-            p.text-500 We're going to verify your account. <br> Check your inbox for a email from us.  
-
-            P.text-400(style="margin-top:50px") Didn't receive a verification email from us? <br> Check your spam folder.
-
+            div.new-user-form-div-genres
+                h3 Tell us what genres you enjoy:
+                p.text-400 [ Pick Up to 4 ]
+                .genres-container
+                    .genre-card.card(data-genre="1")
+                        p.text-400 Anime
+                    .genre-card.card(data-genre="2")
+                        p.text-400 Biography
+                    .genre-card.card(data-genre="3")
+                        p.text-400 Comedy
+                    .genre-card.card(data-genre="4")
+                        p.text-400 Fantasy
+                    .genre-card.card(data-genre="5")
+                        p.text-400 Horror
+                    .genre-card.card(data-genre="6")
+                        p.text-400 Mystery
+                    .genre-card.card(data-genre="7")
+                        p.text-400 Romance
+                    .genre-card.card(data-genre="8")
+                        p.text-400 Sci-Fi
+                    .genre-card.card(data-genre="9")
+                        p.text-400 Health/Wellness
+            
+            div.new-user-form-div-frequency
+                h3 Tell us how frequently you would like to discover new reads:
+                .frequency-container
+                    .frequency-card.card(data-freq="1")
+                        p.text-400 Regularly
+                    .frequency-card.card(data-freq="2")
+                        p.text-400 Occasionally
+                    .frequency-card.card(data-freq="3")
+                        p.text-400 Rarely
+            
+            div.new-user-form-div-save
+                .text-400 You can always update your answers later in on your profile page.
+                button.button-primary.text-400#save-preferences Save and head to your homepage
     script(defer src="js/new-user-form.js")

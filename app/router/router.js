@@ -66,6 +66,7 @@ router.get('/api/check-verification', authentication.checkVerificationStatus);
 router.post('/api/register', authentication.register);
 router.post('/api/login', authentication.login);
 router.get('/verify/:token', authentication.verifyAccount);
+router.post('/api/save-preferences', authorization.onlyRegistered, authentication.savePreferences);
 
 router.get('/logout', (req, res) => {
     res.cookie('jwt', '', {
