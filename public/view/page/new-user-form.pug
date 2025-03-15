@@ -1,9 +1,12 @@
 extends ../layout/layout
 
 block content 
-    div(class="alert")
+    div(class="success-alert")
         span You have registered successfully. Welcome to the Shelft family!
-        button(type="button" class="close-alert") &times;
+        button(type="button" class="close-success-alert") &times;
+    div(class="error-alert hidden-msg")
+        span Error Saving Preferences
+        button(type="button" class="close-error-alert") &times;
     .breadcrumb-2
         .step-line-3
         .step-circle-3 3

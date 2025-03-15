@@ -1,3 +1,17 @@
+const errorMsg = document.getElementsByClassName('error-alert')[0];
+const closeErrorAlert = document.getElementsByClassName('close-error-alert')[0];
+
+const alert = document.getElementsByClassName('success-alert')[0];
+const closeAlert = document.getElementsByClassName('close-success-alert')[0];
+
+closeErrorAlert.addEventListener('click', () => {
+  errorMsg.classList.add('hidden-msg');
+});
+
+closeAlert.addEventListener('click', () => {
+  alert.classList.add('hidden-msg');
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     // =======================
     // Genre selection
@@ -47,6 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const genreId = card.getAttribute('data-genre');
         selectedGenreIds.push(Number(genreId));
       });
+
+      if (selectedGenreIds.length === 0) {
+        errorMsg.querySelector('span').textContent = "Please select at least one genre.";
+
+        errorMsg.classList.remove('hidden-msg');
+        return;
+      }
   
       // 2. Obtain frequency value
       let frequencyValue = 0;
@@ -71,6 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = "/";
       } else {
         localStorage.setItem("preferencesError", "true");
+        errorMsg.querySelector('span').textContent = "Something went wrong saving your preferences.";
+
+        errorMsg.classList.remove('hidden-msg');
       }
     });
   });
