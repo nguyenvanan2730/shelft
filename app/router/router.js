@@ -6,32 +6,38 @@ const { getDbTestResults } = require('../services/dbTest');
 const { getBooks } = require('../services/homepage');
 
 router.get('/', async (req, res, next) => {
-    const user = authorization.checkCookie(req);
+    const user = await authorization.checkCookie(req);
     const isLoggedIn = !!user;
     try {
         const results = await getBooks();
-        res.render('page/index', { data: results });
+        res.render('page/index', { isLoggedIn, user, data: results });
     } catch (err) {
         next(err);
     }
 });
 
-router.get('/contact', (req, res, next) => {
-    res.render('page/contact');
-    next();
+router.get('/contact', async (req, res, next) => {
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    res.render('page/contact', { isLoggedIn, user });
 });
+
 router.get('/login', authorization.onlyPublic, (req, res, next) => {
     res.render('page/login');
     next();
 });
+
 router.get('/register', authorization.onlyPublic, (req, res, next) => {
     res.render('page/register');
     next();
 });
-router.get('/user', authorization.onlyRegistered, (req, res, next) => {
-    res.render('page/user');
+router.get('/user', authorization.onlyRegistered, async (req, res, next) => {
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    res.render('page/user', { isLoggedIn, user });
     next();
 });
+
 router.get('/db_test', async (req, res, next) => {
     try {
         const results = await getDbTestResults();

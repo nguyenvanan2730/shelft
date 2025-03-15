@@ -9,8 +9,20 @@ const router = require('./router/router');
 
 // Create express app
 var app = express();
-app.use(cors());
+const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000'];
 
+app.use(cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (origin.indexOf('localhost') !== -1 || origin.indexOf('127.0.0.1') !== -1) {
+        console.log('Allowed origin:', origin);
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'), false);
+    },
+    credentials: true
+  }));
+  
 // Set static files directory
 const statics = __dirname.replace('app', 'public');
 
@@ -19,7 +31,6 @@ app.set("views", "./public/view");
 app.set("view engine", "pug");
 app.use(express.json());
 app.use(cookieParser());
-
 
 // Get the functions in the db.js file to use
 const db = require('./services/db');

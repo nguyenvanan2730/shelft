@@ -2,112 +2,121 @@ import bcryptjs from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
 import e from "express";
+import db from "../services/db.js";
 import { sendVerificationEmail } from "../services/mail.service.js";
 
 dotenv.config();
 
-export const users = [{
-    username: 'peremb',
-    email: 'perette93@gmail.com',
-    password: '$2b$05$yBEg4g0h5d4xNDYA0T5Fs.mBzwjqNoiTZq7zc5NWWeg/I4x81HwS2',
-    verified: false
-}]
-
-async function login(req, res){
-    console.log(req.body);
-    const password = req.body.password;
-    const email = req.body.email;
-    if (!password || !email) {
-        res.status(400).send({status: 'error', message: 'Invalid body'});
-        return;
+async function register(req, res) {
+    const { username, email, password, first_name, last_name } = req.body;
+    if (!username || !email || !password || !first_name || !last_name) {
+      return res.status(400).send({ status: 'error', message: 'Invalid body' });
     }
-    const userToCheck = users.find(user => user.email === email && user.verified);
-    if (!userToCheck) {
-        res.status(400).send({status: 'error', message: 'Errror Loging In'});
-        return;
+    try {
+      // Verify if the user already exists
+      const existingUsers = await db.query(
+        "SELECT * FROM Users WHERE email = ? OR username = ?",
+        [email, username]
+      );
+      if (existingUsers.length > 0) {
+        return res.status(400).send({ status: 'error', message: 'User already exists' });
+      }
+  
+      const salt = await bcryptjs.genSalt(10);
+      const hash = await bcryptjs.hash(password, salt);
+  
+      // Generate the JWT
+      const tokenVerify = jsonwebtoken.sign(
+        { email },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN }
+      );
+  
+      const mail = await sendVerificationEmail(email, tokenVerify);
+      console.log("Mail sent");
+      if (!mail.accepted || mail.accepted.length === 0) {
+        return res.status(500).send({ status: 'error', message: 'Error sending email' });
+      }
+  
+      // Insert the user in the DB
+      await db.query(
+        `INSERT INTO Users (username, email, password_hash, first_name, last_name, verified)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [username, email, hash, first_name, last_name, false]
+      );
+  
+      return res.status(201).send({ status: 'ok', message: `User ${username} created`, redirect: '/' });
+    } catch (error) {
+      console.error("Error in register:", error);
+      return res.status(500).send({ status: 'error', message: 'Error creating user' });
     }
-    const loginCorrect = await bcryptjs.compare(password, userToCheck.password);
-    if (!loginCorrect) {
-        res.status(400).send({status: 'error', message: 'Errror Loging In'});
-        return;
+  }
+  
+  async function login(req, res) {
+    const { identifier, password } = req.body;
+    if (!identifier || !password) {
+      return res.status(400).send({ status: 'error', message: 'Invalid body' });
     }
-    const token = jsonwebtoken.sign(
-        {email: userToCheck.email}, 
-        process.env.JWT_SECRET, 
-        {expiresIn:process.env.JWT_EXPIRES_IN});
-
-    const cookieOptions = {
+    try {
+      // Find the user in the DB
+      const usersFound = await db.query(
+        "SELECT * FROM Users WHERE (email = ? OR username = ?) AND verified = ?",
+        [identifier, identifier, true]
+      );
+      if (usersFound.length === 0) {
+        return res.status(400).send({ status: 'error', message: 'Error Logging In (User not found or not verified)' });
+      }
+      const userToCheck = usersFound[0];
+  
+      const loginCorrect = await bcryptjs.compare(password, userToCheck.password_hash);
+      if (!loginCorrect) {
+        return res.status(400).send({ status: 'error', message: 'Error Logging In (Wrong password)' });
+      }
+  
+      // Generate the JWT
+      const token = jsonwebtoken.sign(
+        { email: userToCheck.email },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRES_IN }
+      );
+  
+      const cookieOptions = {
         expires: new Date(
-            Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
+          Date.now() + process.env.JWT_COOKIE_EXPIRES * 24 * 60 * 60 * 1000
         ),
         path: '/'
-    }
-    res.cookie('jwt', token, cookieOptions);
-    res.status(200).send({status: 'ok', message: 'Logged in', redirect: '/user'});
-
-}
-
-async function register(req, res){
-    const username = req.body.username;
-    const password = req.body.password;
-    const email = req.body.email;
-    if (!username || !password || !email) {
-        res.status(400).send({status: 'error', message: 'Invalid body'});
-        return;
-    }
-    const userToCheck = users.find(user => user.username === username);
-    if (userToCheck) {
-        res.status(400).send({status: 'error', message: 'User already exists'});
-        return;
-    }
-    const sal = await bcryptjs.genSalt(5);
-    const hash = await bcryptjs.hash(password, sal);
-
-    //Verify Email
-    const tokenVerify = jsonwebtoken.sign(
-        {email: email}, 
-        process.env.JWT_SECRET, 
-        {expiresIn:process.env.JWT_EXPIRES_IN});
-    const mail = await sendVerificationEmail(email, tokenVerify);
-    console.log("Mail sended")
-    if(mail.accepted === 0){
-        return res.status(500).send({status: 'error', message: 'Error sending email'});
-    }
-
-    const newUser = {
-        username: username,
-        email: email,
-        password: hash,
-        verified: false
-    }
-    console.log(newUser);
-    users.push(newUser);
-    res.status(201).send({status: 'ok', message: `User ${newUser.username} created`, redirect:'/'});
-    console.log("newUser created");
-}
-
-function verifyAccount(req, res) {
-    try{
-        if (!req.params.token) {
-          return res.redirect("/");
-        }
-        const decodedCookie = jsonwebtoken.verify(req.params.token, process.env.JWT_SECRET);
-        if(!decodedCookie || !decodedCookie.email){
-          return res.redirect("/").send({status: 'error', message: 'Invalid token'});
-        }
-        
-        // Marcamos el usuario como verificado
-        const indexUserToUpdate = users.findIndex(user => user.email === decodedCookie.email);
-        users[indexUserToUpdate].verified = true;
-        res.redirect('/login');
-    }
-    catch (err){
-        res.status(500);
-        res.redirect("/");
-    }
-}
+      };
   
-export const methods = {
+      res.cookie('jwt', token, cookieOptions);
+      return res.status(200).send({ status: 'ok', message: 'Logged in', redirect: '/user' });
+    } catch (error) {
+      console.error("Error in login:", error);
+      return res.status(500).send({ status: 'error', message: 'Error logging in' });
+    }
+  }
+  
+  async function verifyAccount(req, res) {
+    try {
+      if (!req.params.token) {
+        return res.redirect("/");
+      }
+      const decoded = jsonwebtoken.verify(req.params.token, process.env.JWT_SECRET);
+      if (!decoded || !decoded.email) {
+        return res.redirect("/").send({ status: 'error', message: 'Invalid token' });
+      }
+      // Update the user in the DB
+      await db.query(
+        "UPDATE Users SET verified = ? WHERE email = ?",
+        [true, decoded.email]
+      );
+      return res.redirect('/login');
+    } catch (error) {
+      console.error("Error in verifyAccount:", error);
+      return res.status(500).redirect("/");
+    }
+  }
+  
+  export const methods = {
     login,
     register,
     verifyAccount

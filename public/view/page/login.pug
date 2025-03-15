@@ -1,20 +1,43 @@
 extends ../layout/layout
 
 block content 
+    div(class="error hidden-msg")
+        span Error Signing In
+        button(type="button" class="close-alert") &times;
+    main(class="login-page")
+        section(class="login-left-section")
+            h2 Sign up and enjoy free access to...
 
-    main 
-        div(class="form-container")
-            h1 Log In
+            div
+                p(class="text-500") Your Library 
+                p(class="text-400") Save and track every book you review, rate or want to read.
+
+            div
+                p(class="text-500") Personalized Recommendations
+                p(class="text-400") Find books you'll love.
+
+            div
+                p(class="text-500") Your Reviews
+                p(class="text-400") Share your thoughts and see what others are saying. 
+
+        section(class="linea")
+
+        section(class="login-right-section")
+            h2 Sign In
             form(id="login-form")
                 div(class="form-group")
                     label(class="sr-only" for="email") Email
-                    input(type="email" id="email" name="email" placeholder="E-mail")
+                    input(id="identifier" name="identifier" placeholder="Email / Username" class="form-group-input")
                 div(class="form-group")
                     label(class="sr-only" for="password") Password
-                    input(type="password" id="password" name="password" placeholder="Password")
-                button(type="submit") Log In
-                p(class="error hidden-msg") Error Loging In
-            form
-                p Don't have an account? - 
-                    a(href="/register") Register
+                    input(type="password" id="password" name="password" placeholder="Password" class="form-group-input")
+                button(type="submit" class="login-button-primary text-400") Log In
+                p(class="login-form-p") or
+                button( class="login-button-secondary text-400") Sign In with Google
+
+                div(class="login-form-other-options")
+                    div(class="login-form-div")
+                        a(href="#" class="text-400 login-forgotten-password") Forgotten your password? ↗
+                    a(href="/register" class="login-button-primary text-400") Create a new account
+
     script(defer src="js/login.js")
