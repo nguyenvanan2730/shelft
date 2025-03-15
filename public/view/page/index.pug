@@ -1,8 +1,32 @@
 extends ../layout/layout
 
 block content 
-    H1 INDEX
     if isLoggedIn
-        h1 Welcome, #{user.username}!
+        .intro-container 
+            .intro-content 
+                h1 Welcome, #{user.username}! 
+                h2 Pick up where you left off...
+                a.btn(href="/user") My Library 
     else
-        h1 Hello Guest!
+        .intro-container 
+            .intro-content 
+                 h1 Discover, Track and Shelft what you read.
+                 h2 A space for book lovers just like you! 
+                 a.btn(href="/register") Create your free Shelft today! 
+
+        h3.feature-title Shelft Lets You
+        .features-container
+            .feature-box 
+                img(src="/images/bookmark.svg", alt="Feature 1" width="35", height="auto")
+                h3 Save to your library
+                p Build your own collection of favorite books and future reads.
+            .feature-box-blue
+                img(src="/images/feather-pen.svg", alt="Feature 2" width="45", height="auto")
+                h3 Write a review 
+                p Share your thoughts and read what others are saying.
+            .feature-box 
+                img(src="/images/rate-star.svg", alt="Feature 3" width="45", height="auto")
+                h3 Rate your reads 
+                p Rate each book out of five-stars to record your interest.
+        
+        h3.feature-title Discover What's Trending Today

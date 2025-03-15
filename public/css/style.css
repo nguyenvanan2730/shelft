@@ -109,12 +109,21 @@ header{
     text-decoration: none;
     font-size: 16px;
     font-weight: 300;
+    position: relative;
+}
+.nav-links a:hover{
+    padding-bottom: 2px;
+    border-bottom: 1px solid white;
 }
 .library-link a {
     color: white;
     text-decoration: none;;
     font-size: 16px;
     font-weight: 300;
+}
+.library-link a:hover{
+    padding-bottom: 2px;
+    border-bottom: 1px solid white;
 }
 
 /* SEARCH DROPDOWN */
@@ -160,6 +169,98 @@ header{
     display:none;
 }
 
+/* LANDING PAGE */
+.intro-container {
+    background-color: #AEB8D7;
+    padding: 110px 45px;
+    text-align: center;
+    font-family: "Outfit", sans-serif;
+}
+.intro-content h1, h2{
+    font-weight: 600;
+    font-size: 32px;
+    margin: 5px 0;
+}
+.btn{
+    display:inline-block;
+    background-color: #F58E5F;
+    color: white;
+    font-size: 20px;
+    padding: 10px 30px;
+    margin-top: 25px;
+    border-radius: 14px;
+    text-decoration: none;
+}
+.btn:hover{
+    text-decoration: underline;
+}
+
+/* GUEST HOME PAGE */
+.feature-title {
+    font-family: "Outfit", sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0;
+    padding-left: 45px;
+    padding-top: 45px;
+}
+.features-container {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    padding: 45px;
+}
+.feature-box {
+    background-color:#F5CCB9;
+    padding: 20px;
+    border-radius: 14px;
+    width: 340px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    
+}
+.feature-box h3{
+    font-family: "Outfit", sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0;
+    padding-left: 80px
+}
+.feature-box p{
+    font-family: "Outfit", sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    margin: 8px 0;
+    padding-left: 80px
+}
+.feature-box img{
+    padding-left: 15px;
+}
+/* BLUE BACKGROUND */
+.feature-box-blue {
+    background-color:#AEB8D7;
+    padding: 20px;
+    border-radius: 14px;
+    width: 340px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+.feature-box-blue h3{
+    font-family: "Outfit", sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0;
+    padding-left: 80px
+}
+.feature-box-blue p{
+    font-family: "Outfit", sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    margin: 8px 0;
+    padding-left: 80px
+}
+.feature-box-blue img{
+    padding-left: 15px;
+}
+=======
 /* Log In */
 .login-page, .register-page{
     display: flex;
@@ -466,3 +567,4 @@ header{
 .new-user-form-div-save button{
     margin-top: 20px;
 }
+
