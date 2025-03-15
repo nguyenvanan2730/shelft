@@ -6,7 +6,7 @@ const { getDbTestResults } = require('../services/dbTest');
 const { getBooks } = require('../services/homepage');
 
 router.get('/', async (req, res, next) => {
-    const user = authorization.checkCookie(req);
+    const user = await authorization.checkCookie(req);
     const isLoggedIn = !!user;
     try {
         const results = await getBooks();
