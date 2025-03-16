@@ -88,10 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
       if (res.ok) {
         // Save success
-        localStorage.setItem("preferencesSaved", "true");
-        window.location.href = "/";
+        window.location.href = "/?preferencesSaved=true";
       } else {
-        localStorage.setItem("preferencesError", "true");
         errorMsg.querySelector('span').textContent = "Something went wrong saving your preferences.";
 
         errorMsg.classList.remove('hidden-msg');

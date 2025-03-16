@@ -156,6 +156,7 @@ header{
 /* BLURRY BACKGROUND */
 #overlay{
     position: fixed;
+    z-index: 10;
     top: 206px;
     left: 0;
     width: 100%;
@@ -260,7 +261,6 @@ header{
 .feature-box-blue img{
     padding-left: 15px;
 }
-=======
 /* Log In */
 .login-page, .register-page{
     display: flex;
@@ -299,7 +299,7 @@ header{
     margin-right: 10px;
 }
 
-.linea {
+.divisor-line {
     width: 2px;
     background-color: #26345E;
     height: 100%;
@@ -398,12 +398,14 @@ header{
 
 /* Bear crumb */ 
 .breadcrumb {
+    z-index: 1;
     position: relative;
     width: 270px;  
     height: 40px; 
 }
 
 .breadcrumb-2{
+    z-index: 1;
     position: absolute;
     left: 41%;
     top: 15%;
@@ -469,7 +471,7 @@ header{
     display: none;
 }
   
-.close-alert, .close-success-alert, .close-error-alert {
+.close-alert, .close-success-alert, .close-error-alert, .close-preferences-success-alert {
     position: absolute;
     top: 0;
     right: 10px;
@@ -480,7 +482,7 @@ header{
     color: inherit;
 }
 
-.alert, .success-alert {
+.alert, .success-alert, .preferences-success-alert {
     font-size: small;
     background-color: #e5f8d7;
     color: #1c721d;            

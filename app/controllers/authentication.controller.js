@@ -159,36 +159,26 @@ async function checkVerificationStatus(req, res) {
 
 async function savePreferences(req, res) {
   try {
-    console.log("🔍 Iniciando savePreferences...");
-
-    // Ver si tu "onlyRegistered" está guardando el user en res.locals.user
-    console.log("res.locals.user:", res.locals.user);
 
     const user = res.locals.user; // O llama a tu checkCookieDirect
     if (!user) {
-      console.log("❌ No user found in res.locals.user");
       return res.status(401).json({ status: 'error', message: 'Not authorized' });
     }
 
     const { frequency, genres } = req.body;
-    console.log("📥 Received frequency:", frequency);
-    console.log("📥 Received genres:", genres);
 
-    // 1. Actualizar la frecuencia
     const updateFreqResult = await db.query(
       "UPDATE Users SET discovery_frequency = ? WHERE user_id = ?",
       [frequency, user.user_id]
     );
     console.log("✅ updateFreqResult:", updateFreqResult);
 
-    // 2. Borrar géneros antiguos
     const deleteResult = await db.query(
       "DELETE FROM User_Genres WHERE user_id = ?",
       [user.user_id]
     );
     console.log("✅ deleteResult:", deleteResult);
 
-    // 3. Insertar los géneros seleccionados
     for (const genreId of genres) {
       const insertResult = await db.query(
         "INSERT INTO User_Genres (user_id, genre_id) VALUES (?, ?)",

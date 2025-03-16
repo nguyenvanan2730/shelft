@@ -1,6 +1,9 @@
 extends ../layout/layout
 
 block content 
+    div(class="preferences-success-alert hidden-msg")
+                span Preferences saved!
+                button(type="button" class="close-preferences-success-alert") &times;
     if isLoggedIn
         .intro-container 
             .intro-content 
@@ -30,3 +33,4 @@ block content
                 p Rate each book out of five-stars to record your interest.
         
         h3.feature-title Discover What's Trending Today
+    script(defer src="js/index.js")
