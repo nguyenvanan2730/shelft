@@ -33,22 +33,26 @@ block content
                 p Rate each book out of five-stars to record your interest.
         //-carousel 1 
         h3.feature-title Discover What's Trending Today
-        .carousel-container(data-category="trending")
-            button.scroll-btn.left(onclick="scrollLeft('trending')") ←
-            .carousel.trending
-            button.scroll-btn.right(onclick="scrollRight('trending')") →
+        .carousel-container
+            button.prev  ←
+            .carousel-items 
+                each book in data.sort(()=> 0.5 - Math.random()).slice(0,8)
+                    .book-card 
+                        img.book-cover(src=`/images/${book.cover_image}` width="140", height="auto", alt=`${book.title}`)
+                        .book-info 
+                            span.rating 
+                                img(src="/images/rate-star.svg",alt="Rating" width="15", height="auto")
+                                span #{book.rating}
+                            span.reviews 
+                                img(src="/images/feather-pen.svg", alt="Reviews" width="15", height="auto")
+                                span #{book.review_num}
+            button.next →
 
         //-carousel 2
         h3.feature-title New Releases - Be the first to rate and review them! 
-        .carousel-container(data-category="new")
-            button.scroll-btn.left(onclick="scrollLeft('new')") ←
-            .carousel.new
-            button.scroll-btn.right(onclick="scrollRight('new')") →
+        
 
         //-carousel 3
         h3.feature-title Classics - Always a crowd favorite. 
-        .carousel-container(data-category="reviews")
-            button.scroll-btn.left(onclick="scrollLeft('reviews')") ←
-            .carousel.most-reviews 
-            button.scroll-btn.right(onclick="scrollRight('reviews')") →
+       
     script(defer src="js/index.js") 
