@@ -186,7 +186,7 @@ header{
     display:inline-block;
     background-color: #F58E5F;
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     padding: 10px 30px;
     margin-top: 25px;
     border-radius: 14px;
@@ -306,6 +306,27 @@ header{
     color: #AEB8D7;
 }
 
+.signup{
+    background-color: transparent;
+    color: #26345E;
+    border: 2px solid #26345E;
+    font-size: 18px;
+    padding: 10px 30px;
+    margin-top: 25px;
+    border-radius: 14px;
+    text-decoration: none;
+}
+.signup:hover{
+    text-decoration: underline;
+}
+.intro-content p {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #26345E;
+}
+.signup-box{
+    padding: 10px;
+}
 
 /* Log In */
 .login-page, .register-page{

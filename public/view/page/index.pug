@@ -68,5 +68,14 @@ block content
                         img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
             btn.prev ←
             btn.next →
-       
+        
+        //- bottom of the page 
+        .intro-container 
+            .intro-content 
+                 h3 Interested to start your own Library and track your reads?
+                 a.btn(href="/register") Sign Up - It's Free! 
+                 .signup-box
+                 p Already have a Shelft account?
+                 a.signup(href="/login") Sign In
+
     script(defer src="js/index.js") 
