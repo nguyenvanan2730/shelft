@@ -34,11 +34,10 @@ block content
         //-carousel 1 
         h3.feature-title Discover What's Trending Today
         .carousel-container
-            button.prev  ←
             .carousel-items 
                 each book in data.sort(()=> 0.5 - Math.random()).slice(0,8)
                     .book-card 
-                        img.book-cover(src=`/images/${book.cover_image}` width="140", height="auto", alt=`${book.title}`)
+                        img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
                         .book-info 
                             span.rating 
                                 img(src="/images/rate-star.svg",alt="Rating" width="15", height="auto")
@@ -46,13 +45,28 @@ block content
                             span.reviews 
                                 img(src="/images/feather-pen.svg", alt="Reviews" width="15", height="auto")
                                 span #{book.review_num}
-            button.next →
+            btn.prev ←
+            btn.next →
 
         //-carousel 2
         h3.feature-title New Releases - Be the first to rate and review them! 
+         .carousel-container
+            .carousel-items 
+                each book in data.sort(()=> 0.5 - Math.random()).slice(0,8)
+                    .book-card 
+                        img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+            btn.prev ←
+            btn.next →
         
 
         //-carousel 3
         h3.feature-title Classics - Always a crowd favorite. 
+         .carousel-container
+            .carousel-items 
+                each book in data.sort(()=> 0.5 - Math.random()).slice(0,8)
+                    .book-card 
+                        img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+            btn.prev ←
+            btn.next →
        
     script(defer src="js/index.js") 

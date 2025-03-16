@@ -15,3 +15,5 @@ document.addEventListener('DOMContentLoaded', () => {
         history.replaceState({}, document.title, window.location.pathname);
     }
 });
+
+//books carousel mouse hover and manual scrolling

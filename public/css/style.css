@@ -261,6 +261,52 @@ header{
 .feature-box-blue img{
     padding-left: 15px;
 }
+/* Book Carousels Container */
+.carousel-container{
+    width: 100%;
+    overflow: hidden;
+    padding: 40px 80px;
+}
+.carousel-items{
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    gap: 30px;
+}
+.book-card{
+    max-width: 200;
+    min-width: 180;
+    height:auto;
+    overflow:hidden;
+    scroll-snap-align: start;
+    position: relative;
+    transition: border 0.3s;
+}
+.book-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    background: #949FC2;
+    color: white;
+    font-size: 12px;
+}
+.prev, .next{
+    font-size: 25px;
+    cursor: pointer;
+    color: #26345E;
+    transition: color 0.3s;
+    padding: 10px;
+    justify-content: center;
+}
+.prev:hover, .next:hover {
+    color: #AEB8D7;
+}
+
+
 /* Log In */
 .login-page, .register-page{
     display: flex;
