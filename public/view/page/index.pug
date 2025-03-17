@@ -31,6 +31,55 @@ block content
                 img(src="/images/rate-star.svg", alt="Feature 3" width="45", height="auto")
                 h3 Rate your reads 
                 p Rate each book out of five-stars to record your interest.
-        
+        //-carousel 1 
         h3.feature-title Discover What's Trending Today
-    script(defer src="js/index.js")
+        .carousel-container
+            .carousel-items 
+                each book in data.sort(()=> 0.5 - Math.random()).slice(0,8)
+                    .book-card 
+                        img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+                        .book-info 
+                            span.rating 
+                                img(src="/images/rate-star.svg",alt="Rating" width="15", height="auto")
+                                span #{book.rating}
+                            span.reviews 
+                                img(src="/images/feather-pen.svg", alt="Reviews" width="15", height="auto")
+                                span #{book.review_num}
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+
+        //-carousel 2
+        h3.feature-title New Releases - Be the first to rate and review them! 
+         .carousel-container
+            .carousel-items 
+                each book in data.sort(()=> 0.5 - Math.random()).slice(0,8)
+                    .book-card 
+                        img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+        
+
+        //-carousel 3
+        h3.feature-title Classics - Always a crowd favorite. 
+         .carousel-container
+            .carousel-items 
+                each book in data.sort(()=> 0.5 - Math.random()).slice(0,8)
+                    .book-card 
+                        img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+        
+        //- bottom of the page 
+        .intro-container 
+            .intro-content 
+                 h3 Interested to start your own Library and track your reads?
+                 .buttons-container 
+                    a.btn(href="/register") Sign Up - It's Free!
+                    .account-prompt 
+                        p Already have a Shelft account?
+                        a.signup(href="/login") Sign In
+
+//-    script(defer src="js/index.js") 
