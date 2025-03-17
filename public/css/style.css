@@ -308,13 +308,16 @@ header{
 }
 .book-info {
     display: flex;
-    justify-content: space-between;
+    justify-content:space-between;
     align-items: center;
     text-align: center;
     padding: 10px;
     background: #949FC2;
     color: white;
     font-size: 12px;
+}
+.book-info img {
+    padding-right: 5px;
 }
 .carousel-nav {
     display: flex;
@@ -364,6 +367,26 @@ header{
     text-decoration: underline;
 }
 
+/*User landing page*/
+.search-bar {
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px
+}
+.search-bar input{
+    width: 300px;
+    padding: 10px 50px 10px 15px;
+    border: 2px solid #26345E;
+    border-radius: 14px;
+    font-size: 16px;
+    outline: none;
+    background-color: white;
+    background-image: url('/images/search.svg');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    transition: border-color 0.3s ease;
+}
 
 
 /* Log In */
