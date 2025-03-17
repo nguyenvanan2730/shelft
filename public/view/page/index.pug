@@ -35,15 +35,15 @@ block content
         h3.feature-title Discover What's Trending Today
         .carousel-container
             .carousel-items 
-                each book in data.sort(()=> 0.5 - Math.random()).slice(0,8)
-                    .book-card 
-                        img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
-                        .book-info 
+                each book in data.sort((a, b) => b.rating - a.rating).slice(0, 18)
+                    .book-card
+                        img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+                        .book-info
                             span.rating 
-                                img(src="/images/rate-star.svg",alt="Rating" width="15", height="auto")
+                                img(src="/images/rate-star.svg", alt="Rating", width="15", height="auto")
                                 span #{book.rating}
                             span.reviews 
-                                img(src="/images/feather-pen.svg", alt="Reviews" width="15", height="auto")
+                                img(src="/images/feather-pen.svg", alt="Reviews", width="15", height="auto")
                                 span #{book.review_num}
             .carousel-nav 
                 btn.prev ←
@@ -53,7 +53,7 @@ block content
         h3.feature-title New Releases - Be the first to rate and review them! 
          .carousel-container
             .carousel-items 
-                each book in data.sort(()=> 0.5 - Math.random()).slice(0,8)
+                each book in data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0,18)
                     .book-card 
                         img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
             .carousel-nav 
@@ -65,7 +65,7 @@ block content
         h3.feature-title Classics - Always a crowd favorite. 
          .carousel-container
             .carousel-items 
-                each book in data.sort(()=> 0.5 - Math.random()).slice(0,8)
+                each book in data.sort((a, b) => b.review_num - a.review_num).slice(0,18)
                     .book-card 
                         img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
             .carousel-nav 
@@ -81,5 +81,3 @@ block content
                     .account-prompt 
                         p Already have a Shelft account?
                         a.signup(href="/login") Sign In
-
-//-    script(defer src="js/index.js") 

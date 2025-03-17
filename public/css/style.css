@@ -265,12 +265,14 @@ header{
 /* Book Carousels Container */
 .carousel-container{
     position: relative;
-    width: 100%;
+    width: 84%; /* Adjusted width to account for margins */
     overflow: hidden;
     padding: 40px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-left: 8%;
+    margin-right: 8%;
 }
 .carousel-items{
     display: flex;
@@ -284,7 +286,6 @@ header{
     scroll-behavior: smooth;
     -ms-overflow-style: none;
     white-space: nowrap;
-
 }
 .carousel-items::-webkit-scrollbar{
     display: none;
@@ -294,15 +295,15 @@ header{
     width: 140px;
     min-width: 140px;
     display: inline-block;
-    height:auto;
-    overflow:hidden;
+    height: 270px;
+    overflow: hidden;
     scroll-snap-align: start;
     position: relative;
     transition: border 0.3s;
 }
 .book-cover{
     width: 140px;
-    height: auto;
+    height: 220px;
     object-fit: cover;
 }
 .book-info {
