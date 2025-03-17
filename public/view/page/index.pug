@@ -10,6 +10,52 @@ block content
                 h1 Welcome, #{user.username}! 
                 h2 Pick up where you left off...
                 a.btn(href="/user") My Library 
+        //- carousel 1
+        h3.feature-title Books we think you'll love...
+        .carousel-container 
+            .carousel-items 
+                //- user genre filter here
+                .book-card
+                    img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+                
+        //-carousel 2
+        h3.feature-title Discover What's Trending Today
+        .carousel-container
+            .carousel-items 
+                each book in data.sort((a, b) => b.rating - a.rating).slice(0, 18)
+                    .book-card
+                        img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+                        .book-info
+                            span.rating 
+                                img(src="/images/rate-star.svg", alt="Rating", width="18", height="auto")
+                                span #{book.rating}
+                            span.reviews 
+                                img(src="/images/feather-pen.svg", alt="Reviews", width="18", height="auto")
+                                span #{book.review_num}
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+        
+        //-carousel 3
+        h3.feature-title New Releases - Be the first to rate and review them! 
+         .carousel-container
+            .carousel-items 
+                each book in data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0,18)
+                    .book-card 
+                        img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+        //- bottom of the page search bar
+        .intro-container 
+            .intro-content 
+                 h3 Looking for a particular book?
+                 .search-bar 
+                    input(type="text" placeholder="Search")
+
     else
         .intro-container 
             .intro-content 
