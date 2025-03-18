@@ -1,4 +1,54 @@
+footer.footer-container
+  .footer-row
+    .footer-left
+      p.text-500 Need help?
+        a.link-contact(href="/contact") Contact ↗
+    .footer-right
+      .footer-socials
+        i.fa.fa-instagram
+        i.fa-brands.fa-tiktok
+ 
+  .footer-row.row-down
+    .footer-left
+      p.text-400 © Shelft. All rights reserved 2025
+    .footer-right
+      .footer-other-links
+        p.text-400 Privacy policy
+        p.text-400 |
+        p.text-400 Terms of Use
+ 
 extends ../layout/layout
-
-block content 
-    H1 Contact
+ 
+block content
+    section.contact-gray
+    section.contact-hero
+      .contact-hero-content
+        .hero-image
+            img(src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1596579536i/53000876.jpg" alt="Contact Image")
+        .hero-text
+            div.contact-hero-div-up
+                h2 Need to get in touch?
+                p.text-500 We'd love to hear from you regarding any aspect of Shelft.
+            div.contact-hero-div-down
+                p.text-500 Get in touch via the email below, and we will<br> try to get back to you as soon as we can!
+                p.info-email.text-500 info@shelft.com
+ 
+    section.contact-white
+    section.quick-guide-section-contact
+        h2 Here's a quick guide before you head to your homepage...
+        p.text-500 Find this section any time via the Contact link in the navbar and footer of each page.
+ 
+        .guide-cards-container
+            .guide-card
+                h3 Save to your library
+                p Click on this [] next to any book to save it in your library.
+                p Find your collection via My Library link on navbar.
+ 
+            .guide-card
+                h3 Write a review
+                p You'll find space to leave your review and see what others are saying on each book's individual page. No matter how tempting, please be kind.
+ 
+            .guide-card
+                h3 Your profile and settings
+                p Click your name (at the top of each page) for your profile page, where you can view and edit your details and preferences.
+ 
