@@ -4,13 +4,18 @@ const router = require("express").Router();
 const db = require('../services/db');
 const { getDbTestResults } = require('../services/dbTest');
 const { getBooks } = require('../services/homepage');
+const { getBookGenres } = require('../services/homepage');
 
 router.get('/', async (req, res, next) => {
     const user = await authorization.checkCookie(req);
     const isLoggedIn = !!user;
     try {
         const results = await getBooks();
-        res.render('page/index', { isLoggedIn, user, data: results });
+        let userBookGenresList = []
+        if (isLoggedIn === true){
+            userBookGenresList = await getBookGenres(user);
+        }
+        res.render('page/index', { isLoggedIn, user, data: results, userGenresBook: userBookGenresList });
     } catch (err) {
         next(err);
     }

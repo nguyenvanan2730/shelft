@@ -14,9 +14,11 @@ block content
         h3.feature-title Books we think you'll love...
         .carousel-container 
             .carousel-items 
-                //- user genre filter here
-                .book-card
-                    img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+                //- User genre filter here
+                each book in data.filter(book => userGenresBook.includes(book.book_id)).sort(() => 0.5 - Math.random()).slice(0, 18)
+                    .book-card
+                        img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+
             .carousel-nav 
                 btn.prev ←
                 btn.next →
@@ -105,7 +107,6 @@ block content
             .carousel-nav 
                 btn.prev ←
                 btn.next →
-        
 
         //-carousel 3
         h3.feature-title Classics - Always a crowd favorite. 
