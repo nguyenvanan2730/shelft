@@ -8,6 +8,10 @@ closePreferencesAlert.addEventListener('click', () => {
     preferencesAlert.classList.add('hidden-msg');
 });
 
+setTimeout(() => {
+    if (preferencesAlert) preferencesAlert.classList.add('hidden-msg');
+}, 5000);
+
 document.addEventListener('DOMContentLoaded', () => {
 
     const params = new URLSearchParams(window.location.search);
