@@ -12,6 +12,10 @@ closeAlert.addEventListener('click', () => {
   alert.classList.add('hidden-msg');
 });
 
+setTimeout(() => {
+  alert.classList.add('hidden-msg');
+}, 5000);
+
 document.addEventListener('DOMContentLoaded', () => {
     // =======================
     // Genre selection
@@ -19,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedGenres = 0;
     const maxGenres = 4;
     const genreCards = document.querySelectorAll('.genre-card');
+    const saveBtn = document.getElementById('save-preferences');
   
     genreCards.forEach(card => {
       card.addEventListener('click', () => {
@@ -66,6 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMsg.querySelector('span').textContent = "Please select at least one genre.";
 
         errorMsg.classList.remove('hidden-msg');
+        alert.classList.add('hidden-msg');
+        saveBtn.classList.add('shake');
+        setTimeout(() => {
+            saveBtn.classList.remove('shake');
+        }, 500);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
       }
   
@@ -93,6 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
         errorMsg.querySelector('span').textContent = "Something went wrong saving your preferences.";
 
         errorMsg.classList.remove('hidden-msg');
+        alert.classList.add('hidden-msg');
+        saveBtn.classList.add('shake');
+        setTimeout(() => {
+            saveBtn.classList.remove('shake');
+        }, 500);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
   });
