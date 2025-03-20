@@ -1,14 +1,21 @@
+// Select error message and close alert button
 const errorMsg = document.getElementsByClassName('error')[0];
 const closeAlert = document.getElementsByClassName('close-alert')[0];
 
+/**
+ * Closes the error alert when the close button is clicked.
+ * @input - Click event on the close button.
+ * @output - Adds 'hidden-msg' class to hide the alert.
+ */
 closeAlert.addEventListener('click', () => {
     errorMsg.classList.add('hidden-msg');
 });
 
-
-document.getElementById('register-form').addEventListener('submit', async(e)=> {
+// Register form submission
+document.getElementById('register-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
+    // Get form input values
     const first_name = e.target.elements.first_name.value;
     const last_name = e.target.elements.last_name.value;
     const username = e.target.elements.username.value;
@@ -20,117 +27,83 @@ document.getElementById('register-form').addEventListener('submit', async(e)=> {
 
     console.log(password, password_confirm);
 
-    if (first_name ==="" || last_name===""  || username ==="" || email===""  || password ==="" || password_confirm==="" ) {
-        errorMsg.querySelector('span').textContent = "Please, fill in all the fields.";
+    /**
+     * Displays an error message and shakes the button.
+     * @param {string} message - The error message to display.
+     */
+    function showError(message) {
+        errorMsg.querySelector('span').textContent = message;
         errorMsg.classList.remove('hidden-msg');
-
+        
         saveBtn.classList.add('shake');
         setTimeout(() => {
             saveBtn.classList.remove('shake');
         }, 500);
+    }
+
+    // Form validation
+    if (!first_name || !last_name || !username || !email || !password || !password_confirm) {
+        showError("Please, fill in all the fields.");
         return;
     }
 
     if (username.length < 3) {
-        errorMsg.querySelector('span').textContent = "Username must be at least 3 characters long.";
-
-        saveBtn.classList.add('shake');
-        setTimeout(() => {
-            saveBtn.classList.remove('shake');
-        }, 500);
-
-        errorMsg.classList.remove('hidden-msg');
+        showError("Username must be at least 3 characters long.");
         return;
     }
 
     if (first_name.length < 2) {
-        errorMsg.querySelector('span').textContent = "First name must be at least 2 characters long.";
-
-        saveBtn.classList.add('shake');
-        setTimeout(() => {
-            saveBtn.classList.remove('shake');
-        }, 500);
-
-        errorMsg.classList.remove('hidden-msg');
+        showError("First name must be at least 2 characters long.");
         return;
     }
 
     if (last_name.length < 2) {
-        errorMsg.querySelector('span').textContent = "Last name must be at least 2 characters long.";
-
-        saveBtn.classList.add('shake');
-        setTimeout(() => {
-            saveBtn.classList.remove('shake');
-        }, 500);
-
-        errorMsg.classList.remove('hidden-msg');
+        showError("Last name must be at least 2 characters long.");
         return;
     }
 
     if (!email.includes('@')) {
-        errorMsg.querySelector('span').textContent = "Please, enter a valid email address.";
-
-        saveBtn.classList.add('shake');
-        setTimeout(() => {
-            saveBtn.classList.remove('shake');
-        }, 500);
-
-        errorMsg.classList.remove('hidden-msg');
+        showError("Please, enter a valid email address.");
         return;
     }
 
     if (password.length < 8) {
-        errorMsg.querySelector('span').textContent = "Password must be at least 8 characters long.";
-
-        saveBtn.classList.add('shake');
-        setTimeout(() => {
-            saveBtn.classList.remove('shake');
-        }, 500);
-
-        errorMsg.classList.remove('hidden-msg');
+        showError("Password must be at least 8 characters long.");
         return;
     }
 
     if (password !== password_confirm) {
-        errorMsg.querySelector('span').textContent = "Passwords do not match.";
-
-        saveBtn.classList.add('shake');
-        setTimeout(() => {
-            saveBtn.classList.remove('shake');
-        }, 500);
-
-        errorMsg.classList.remove('hidden-msg');
+        showError("Passwords do not match.");
         return;
     }
 
     console.log("Sending data:", JSON.stringify({ first_name, last_name, username, email, password }));
 
+    /**
+     * Sends the registration request to the server.
+     * @input - JSON object containing user registration data.
+     * @output - Server response with status and potential redirect URL.
+     */
     const res = await fetch('http://127.0.0.1:3000/api/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         credentials: 'include',
-        body: JSON.stringify
-        ({ first_name, last_name, username, email, password })
+        body: JSON.stringify({ first_name, last_name, username, email, password })
     });
 
+    // Handle response
     if (!res.ok) {
-        errorMsg.querySelector('span').textContent = "Something went wrong during the registration process. Please check all the details.";
-
-        saveBtn.classList.add('shake');
-        setTimeout(() => {
-            saveBtn.classList.remove('shake');
-        }, 500);
-
-        errorMsg.classList.remove('hidden-msg');
+        showError("Something went wrong during the registration process. Please check all the details.");
         return;
     }
     
     errorMsg.classList.add('hidden-msg');
-    
-   const resJson = await res.json();
-    if(resJson.redirect) {
+
+    // Parse response and redirect if necessary
+    const resJson = await res.json();
+    if (resJson.redirect) {
         window.location.href = resJson.redirect;
     }
 });
