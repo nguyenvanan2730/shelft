@@ -11,6 +11,19 @@ const router = require('./router/router');
 var app = express();
 const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000'];
 
+/**
+ * app.js
+ * 
+ * This file is the entry point of the application.
+ * It initializes the Express server, configures middleware, and sets up routing.
+ * 
+ */
+
+/**
+ * CORS Configuration
+ * - Allows requests only from `localhost` and `127.0.0.1`
+ * - Enables credentials (cookies) for authentication
+ */
 app.use(cors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);

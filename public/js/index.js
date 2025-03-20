@@ -1,17 +1,29 @@
 // test to see if index.js file loads on browser
 console.log("Carousel JavaScript loaded!");
 
+
+/**
+ * Handles the success alert for saving preferences.
+ * - Closes the alert when the close button is clicked.
+ * - Automatically hides the alert after 5 seconds.
+ */
 const preferencesAlert = document.getElementsByClassName('preferences-success-alert')[0];
 const closePreferencesAlert = document.getElementsByClassName('close-preferences-success-alert')[0];
 
+// Close alert when the "×" button is clicked
 closePreferencesAlert.addEventListener('click', () => {
     preferencesAlert.classList.add('hidden-msg');
 });
 
+// Hide alert automatically after 5 seconds
 setTimeout(() => {
     if (preferencesAlert) preferencesAlert.classList.add('hidden-msg');
 }, 5000);
 
+/**
+ * Checks if preferences were saved by reading URL parameters.
+ * If true, it displays a success alert.
+ */
 document.addEventListener('DOMContentLoaded', () => {
 
     const params = new URLSearchParams(window.location.search);
