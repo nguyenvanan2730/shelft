@@ -1,6 +1,36 @@
 extends ../layout/layout
  
 block content
-    .book-detail
-        h1= book.title
-        p= book.summary
+    .book-detail-container 
+        //-book details
+        .book-detail-header 
+            img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+            .book-detail-info 
+                h1 #{book.title}
+                //- formats the published year string
+                - const year = new Date(book.published_year).getFullYear()
+                p Author: #{book.author} | Published: #{year}
+
+        .book-description 
+            p #{book.summary}
+        
+        //-book rating and review functions
+        .book-rating-review
+            h3 Rate
+            h3 Leave a review
+
+        //-reviews section
+        .review-section 
+            h3 Read what others are saying about #{book.title}
+            each review in reviews 
+                .review 
+                    strong #{review.username}
+                    span.rating 
+                        - for (let i = 1; i <= 5; i++)
+                            if i <= review.rating
+                                i.fa.fa-star
+                            else
+                                i.fa.fa-star-o
+
+                    p #{review.review_content}
+                    span.date #{new Date(review.created_at).toLocaleDateString()}
