@@ -4,6 +4,7 @@ const router = require("express").Router();
 const db = require('../services/db');
 const { getDbTestResults } = require('../services/dbTest');
 const { getBooks, getBookGenres } = require('../services/homepage');
+const { getBookById } = require('../services/bookIdPage.js');
 
 /**
  * router.js
@@ -101,6 +102,39 @@ router.get('/db_test', async (req, res, next) => {
     }
     next();
 });
+
+/** Renders the individual book detail page */
+router.get('/book/:id', async (req, res, next) => {
+    //checks if the user has valid session cookie
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    const bookId = parseInt(req.params.id, 10);
+    if (isNaN(bookId)) {
+        console.error('Invalid book ID:', req.params.id);
+        return res.status(400).send('Invalid ID');
+    }
+
+    try {
+        //fetch the book details + reviews 
+        const bookData = await getBookById(bookId);
+
+        //if no book is found return a 404 not found response
+        if (!bookData) {
+            return res.status(404).send('Book not found');
+        }
+
+        //if the book exist render the details data 
+        res.render('page/book-detail', {
+            isLoggedIn,
+            user,
+            book: bookData.book,
+            reviews: bookData.reviews
+        });
+    } catch (err) {
+        // if an error occurs, pass to express error handler
+        next(err);
+    }
+})
 
 /**
  * API Routes
