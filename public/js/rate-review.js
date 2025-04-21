@@ -2,7 +2,7 @@
 
 document.querySelectorAll('.rating-stars').forEach(starContainer => {
     const stars = starContainer.querySelectorAll('.star');
-    const bookId = starContainer.dataset.bookId;
+    const bookId = starContainer.dataset.bookid;
 
     stars.forEach((star, index) => {
         star.addEventListener('mouseover', () => {

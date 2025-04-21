@@ -17,11 +17,11 @@ block content
         //-book rating and review functions
         .book-rating-review
             h3 Rate
-            //- if isLoggedIn 
-            .rating-stars(data-bookid=book.book_id)
-                each star in [1,2,3,4,5]
-                    img.star(data-value=star src="/images/rate-stroke.svg" alt="star")
-            //-else 
+            if isLoggedIn 
+                .rating-stars(data-bookid=book.book_id)
+                    each star in [1,2,3,4,5]
+                        img.star(data-value=star src="/images/rate-stroke.svg" alt="star")
+            else 
                 p Log in to rate this book! 
             
             h3 Leave a review

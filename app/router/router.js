@@ -136,6 +136,51 @@ router.get('/book/:id', async (req, res, next) => {
     }
 })
 
+/** Renders the individual book detail page */
+router.post('/rate-book', async(req, res) => {
+    const user = await authorization.checkCookie(req);
+    if (!user) {
+        return res.status(401).json({message: 'You must be logged in to rate.'});
+    }
+
+    const { bookId, rating } = req.body;
+
+    if (!bookId || !rating || rating < 1 || rating > 5) {
+        return res.status(400).json({message: 'Invalid book ID or rating'});
+    }
+
+    try {
+        const now = new Date();
+
+        //check if the user already rated this book
+        const existing = await db.query(
+            'SELECT * FROM Reviews WHERE user_id = ? AND book_id = ?',
+            [user.user_id, bookId]
+        );
+        if (existing.length > 0) {
+            //update existing rating
+            await db.query(
+                'UPDATE Reviews SET rating = ?, updated_at = ? WHERE user_id = ? AND book_id = ?',
+                [rating, now, user.user_id, bookId]
+            );
+            return res.json({ message: 'Rating updated! '});
+        } else{
+            //insert new rating
+            console.log(`Inserting new rating: user_id=${user.user_id}, book_id=${bookId}, rating=${rating}`);
+
+            await db.query(
+                `INSERT INTO Reviews (user_id, book_id, rating, created_at, updated_at)
+                VALUES (?, ?, ?, NOW(), NOW())`,
+                [user.user_id, bookId, rating]
+            );
+            return res.json({ message: 'Rating submitted!'});
+        }
+    } catch (err) {
+        console.error('Error saving rating:', err);
+        res.status(500).json({ message: 'Error saving rating. '});
+    }
+});
+
 /**
  * API Routes
  */
