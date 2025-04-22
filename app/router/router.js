@@ -61,6 +61,18 @@ router.get('/user', authorization.onlyRegistered, async (req, res, next) => {
     next();
 });
 
+router.get('/privacy', async (req, res, next) => {
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    res.render('page/privacy', { isLoggedIn, user });
+});
+
+router.get('/terms', async (req, res, next) => {
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    res.render('page/terms', { isLoggedIn, user });
+});
+
 router.get('/db_test', async (req, res, next) => {
     try {
         const results = await getDbTestResults();

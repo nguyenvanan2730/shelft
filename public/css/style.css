@@ -915,9 +915,17 @@ header {
     text-decoration: none;
 }
  
-.link-contact:hover{
+.link-contact:hover, .link-footer:hover{
     text-decoration: underline;
 }
+
+.link-footer{
+    align-content: center;
+    text-decoration: none;
+    color: white;
+}
+
+
  
 /* Contact */
 .contact-gray{
