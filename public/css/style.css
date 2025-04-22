@@ -650,6 +650,16 @@ header {
     line-height: 120%;
 }
 
+#resend-link{
+    text-decoration: underline; 
+    color: #007BFF; 
+    cursor: pointer;
+}
+
+#resend-link:hover{
+    color: #26345E;
+}
+
 /* New user form */
 .new-user-form-container{
     display: flex;
