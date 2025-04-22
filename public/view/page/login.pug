@@ -4,6 +4,7 @@ block content
     div(class="error hidden-msg")
         span Error Signing In
         button(type="button" class="close-alert") &times;
+
     main(class="login-page")
         section(class="login-left-section")
             h2 Sign up and enjoy free access to...
@@ -33,7 +34,9 @@ block content
                     input(type="password" id="password" name="password" placeholder="Password" class="form-group-input")
                 button(type="submit" class="login-button-primary text-400") Log In
                 p(class="login-form-p") or
-                button( class="login-button-secondary text-400") Sign In with Google
+
+                a.login-button-secondary.text-400(href="/auth/google") Sign In with Google 
+                    img(src="/images/google.png" alt="Sign in with Google" width="20" class="login-button-google")
 
                 div(class="login-form-other-options")
                     div(class="login-form-div")

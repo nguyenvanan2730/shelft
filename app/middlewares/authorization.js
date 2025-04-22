@@ -46,23 +46,21 @@ async function onlyRegistered(req, res, next) {
  */
 async function checkCookie(req) {
   try {
-    if (!req.headers.cookie) return null; // Return null if there are no cookies
-    const rawCookie = req.headers.cookie.split(';').find(cookie => cookie.trim().startsWith('jwt='));
-    if (!rawCookie) return null; // Return null if the JWT cookie is missing
+    const token = req.cookies?.jwt;
+    if (!token) return null;
 
-    const token = rawCookie.slice(4); // Remove 'jwt=' from the cookie value
-    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET); // Verify and decode the token
+    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
 
-    // Find the user in the database using the email from the decoded token
     const usersFound = await db.query("SELECT * FROM Users WHERE email = ?", [decoded.email]);
-    if (usersFound.length === 0) return null; // Return null if the user does not exist
+    if (usersFound.length === 0) return null;
 
-    return usersFound[0]; // Return the user data
+    return usersFound[0];
   } catch (error) {
     console.error("Error in checkCookie:", error);
-    return null; // Return null if there's an error (e.g., invalid token)
+    return null;
   }
 }
+
 
 export const methods = {
     onlyRegistered,

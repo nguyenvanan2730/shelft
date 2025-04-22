@@ -2,6 +2,9 @@
 const express = require("express");
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const passport = require('passport');
+require('./auth/google.js');
 
 // Import morgan for logging
 const morgan = require('morgan');
@@ -34,8 +37,8 @@ app.use(cors({
       return callback(new Error('Not allowed by CORS'), false);
     },
     credentials: true
-  }));
-  
+}));
+
 // Set static files directory
 const statics = __dirname.replace('app', 'public');
 
@@ -44,6 +47,14 @@ app.set("views", "./public/view");
 app.set("view engine", "pug");
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(session({
+  secret: 'SHELFT_SECRET',
+  resave: false,
+  saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Get the functions in the db.js file to use
 const db = require('./services/db');
