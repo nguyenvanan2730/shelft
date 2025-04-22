@@ -61,9 +61,8 @@ async function checkCookie(req) {
   }
 }
 
-
 export const methods = {
     onlyRegistered,
     onlyPublic,
-    checkCookie
+    checkCookie,
 };

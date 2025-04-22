@@ -6,6 +6,7 @@ const { getDbTestResults } = require('../services/dbTest');
 const { getBooks, getBookGenres } = require('../services/homepage');
 const passport = require('passport');
 const jsonwebtoken = require('jsonwebtoken');
+const { sendVerificationEmail } = require('../services/mail.service');
 
 // ========================
 // PAGE ROUTES
@@ -94,6 +95,51 @@ router.get('/logout', (req, res) => {
     console.log("✅ JWT cookie cleared, user logged out.");
     return res.redirect('/');
 });
+
+// ========================
+// RESEND VERIFICATION EMAIL
+// ========================
+router.post('/api/resend-verification', async (req, res) => {
+    try {
+        const tempEmail = req.cookies.temp_email;
+
+        if (!tempEmail) {
+            return res.status(401).json({ message: 'Unauthorized: No temp email found' });
+        }
+
+        // Buscar el usuario no verificado
+        const users = await db.query(
+            "SELECT * FROM Users WHERE email = ? AND verified = ?",
+            [tempEmail, false]
+        );
+
+        if (users.length === 0) {
+            return res.status(404).json({ message: 'User not found or already verified' });
+        }
+
+        // Generar un nuevo token de verificación
+        const token = jsonwebtoken.sign(
+            { email: tempEmail },
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_EXPIRES_IN }
+        );
+
+        // Reenviar el email
+        const mail = await sendVerificationEmail(tempEmail, token);
+        console.log("📨 Re-sent email to:", tempEmail);
+
+        if (!mail.accepted || mail.accepted.length === 0) {
+            return res.status(500).json({ message: 'Failed to send email' });
+        }
+
+        return res.json({ message: 'Verification email resent successfully' });
+    } catch (error) {
+        console.error("❌ Error resending verification email:", error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
 
 // ========================
 // GOOGLE AUTH
