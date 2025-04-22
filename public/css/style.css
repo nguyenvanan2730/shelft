@@ -509,6 +509,10 @@ header {
     margin-top: 66px;
 }
 
+.login-button-google{
+    margin-left: 5px;
+}
+
 #register-form{
     display: flex;
     flex-direction: column;
