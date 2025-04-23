@@ -1,6 +1,96 @@
 extends ../layout/layout
 
 block content 
-    H1 Welcome to the User Page
-    button#logout-button(href="/logout") Log Out
-    script(defer src="js/user.js")
+    main.profile-page
+        section.profile-header
+            .profile-info
+                .profile-details
+                    h1.profile-name #{user && user.name ? user.name : 'First + Last Name'}
+                    p.profile-username #{user && user.username ? user.username : 'Username'}
+                    
+                    .profile-email
+                        p Email: #{user && user.email ? user.email : 'firstname.lastname@email.com'}
+                    
+                    .profile-preferences
+                        p.preference-label My Genres: 
+                        p.preference-value #{user && user.genres ? user.genres : '////'}
+                    
+                    .profile-preferences
+                        p.preference-label Discover Preference: 
+                        p.preference-value #{user && user.discoverPreference ? user.discoverPreference : 'Occasionally'}
+                
+                .profile-image
+                    // User profile image placeholder
+                
+                .profile-stats
+                    .stats-number #{user && user.bookCount ? user.bookCount : '0'}
+                    p.stats-label Books
+                
+                a.edit-profile-btn(href="#") Edit Profile
+        
+        .profile-sections-container
+            .sections-content
+                section.profile-library
+                    .section-header
+                        h2.section-title #{user && user.firstname ? user.firstname : 'FirstName'}'s Library 
+                        span.section-icon
+                            img(src="/images/feather-pen.svg" alt="Feather Pen" width="24" height="24")
+                    
+                    .library-grid
+                        - for (let i = 0; i < 8; i++)
+                            .book-item
+                                .book-cover
+                                    // Placeholder for book cover
+                                button.remove-btn remove
+                    
+                    .pagination
+                        a.pagination-arrow(href="#") ←
+                        a.pagination-arrow(href="#") →
+                    
+                .section-separator
+                
+                section.profile-reviews
+                    .section-header
+                        h2.section-title #{user && user.firstname ? user.firstname : 'FirstName'}'s Reviews 
+                        span.section-icon
+                            img(src="/images/feather-pen.svg" alt="Feather Pen" width="24" height="24")
+                    
+                    .reviews-container
+                        - for (let i = 0; i < 3; i++)
+                            .review-item
+                                .review-book
+                                    // Placeholder for book cover
+                                .review-content
+                                    p.review-date Date: #{i === 0 ? '19/01/25' : '10/12/24'}
+                                    p.review-text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
+                    
+                    .pagination
+                        a.pagination-arrow(href="#") ←
+                        a.pagination-arrow(href="#") →
+                    
+                .section-separator
+                        
+                section.profile-ratings
+                    .section-header
+                        h2.section-title #{user && user.firstname ? user.firstname : 'FirstName'}'s Ratings 
+                        span.section-icon
+                            img(src="/images/rate-star.svg" alt="Rate Star" width="24" height="24")
+                        
+                    .ratings-container
+                        - for (let i = 0; i < 5; i++)
+                            .rating-item
+                                .rating-book
+                                    // Placeholder for book cover
+                                .rating-stars
+                                    - const rating = i % 3 === 0 ? 3 : (i % 2 === 0 ? 5 : 4)
+                                    - for (let j = 0; j < 5; j++)
+                                        if j < rating
+                                            span.star.filled ★
+                                        else
+                                            span.star ★
+                    
+                    .pagination
+                        a.pagination-arrow(href="#") ←
+                        a.pagination-arrow(href="#") →
+                        
+    script(defer src="/js/user.js")
