@@ -1009,3 +1009,20 @@ header {
 .shake {
     animation: shake 0.5s;
 }
+
+.terms-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 100px 45px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+.Privacy-policy-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 90px 45px
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
