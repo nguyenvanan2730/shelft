@@ -1082,9 +1082,9 @@ header {
     justify-content: center;
     align-items: center;
     min-height: 70vh;
-  }
+}
   
-  .reset-password-container {
+.reset-password-container {
     background: #fff;
     padding: 3rem;
     border-radius: 16px;
@@ -1092,18 +1092,28 @@ header {
     width: 100%;
     max-width: 450px;
     text-align: center;
-  }
+}
   
-  .reset-password-container h2 {
+.reset-password-container h2 {
     font-size: 1.8rem;
     margin-bottom: 1rem;
-  }
+}
   
-  .reset-password-container p {
+.reset-password-container p {
     margin-bottom: 1.5rem;
-  }
+}
   
-  .reset-password-container .form-group {
+.reset-password-container .form-group {
     margin-bottom: 1rem;
-  }
+}
   
+.error-message {
+    color: #c0392b;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+  
+.hidden-msg {
+    display: none;
+}

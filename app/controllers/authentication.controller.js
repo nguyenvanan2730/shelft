@@ -254,23 +254,32 @@ async function requestPasswordReset(req, res) {
 
 async function resetPassword(req, res) {
   try {
-      const { token } = req.params;
-      const { password } = req.body;
+    const { token } = req.params;
+    const { new_password } = req.body;
 
-      const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
-      if (!decoded || !decoded.email) {
-          return res.status(400).json({ message: 'Invalid token' });
-      }
+    if (!new_password) {
+      return res.status(400).json({ message: 'New password is required' });
+    }
 
-      const salt = await bcryptjs.genSalt(10);
-      const hashed = await bcryptjs.hash(password, salt);
+    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+    if (!decoded || !decoded.email) {
+      return res.status(400).json({ message: 'Invalid or expired token' });
+    }
 
-      await db.query("UPDATE Users SET password_hash = ? WHERE email = ?", [hashed, decoded.email]);
+    // Generar nuevo hash
+    const salt = await bcryptjs.genSalt(10);
+    const hash = await bcryptjs.hash(new_password, salt); // Aquí fallaba
 
-      return res.json({ message: 'Password updated successfully' });
-  } catch (err) {
-      console.error("❌ Error in resetPassword:", err);
-      return res.status(500).json({ message: 'Failed to reset password' });
+    // Actualizar en la base de datos
+    await db.query(
+      "UPDATE Users SET password_hash = ? WHERE email = ?",
+      [hash, decoded.email]
+    );
+
+    return res.json({ message: 'Password reset successfully' });
+  } catch (error) {
+    console.error("❌ Error in resetPassword:", error);
+    return res.status(500).json({ message: 'Error resetting password' });
   }
 }
 
