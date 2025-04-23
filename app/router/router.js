@@ -4,6 +4,7 @@ const router = require("express").Router();
 const db = require('../services/db');
 const { getDbTestResults } = require('../services/dbTest');
 const { getBooks, getBookGenres } = require('../services/homepage');
+const { getUserLibraryBooks, getUserReviews, getUserRatings, getUserBookCount } = require('../services/user');
 const passport = require('passport');
 const jsonwebtoken = require('jsonwebtoken');
 const { sendVerificationEmail } = require('../services/mail.service');
@@ -55,10 +56,69 @@ router.get('/register', authorization.onlyPublic, (req, res, next) => {
 });
 
 router.get('/user', authorization.onlyRegistered, async (req, res, next) => {
-    const user = await authorization.checkCookie(req);
-    const isLoggedIn = !!user;
-    res.render('page/user', { isLoggedIn, user });
-    next();
+    try {
+        const user = await authorization.checkCookie(req);
+        const isLoggedIn = !!user;
+        
+        console.log("User logged in:", isLoggedIn);
+        console.log("User info:", user);
+        
+        if (!isLoggedIn) {
+            return res.redirect('/login');
+        }
+        
+        // Fetch user's library books, reviews, ratings, and book count
+        const libraryBooks = await getUserLibraryBooks(user.user_id);
+        const reviews = await getUserReviews(user.user_id);
+        const ratings = await getUserRatings(user.user_id);
+        const bookCount = await getUserBookCount(user.user_id);
+        
+        // Debug: Check image paths
+        console.log("Images directory structure check:");
+        console.log("First book cover path:", libraryBooks.length > 0 ? `/images/${libraryBooks[0].cover_image}` : "No books found");
+        
+        // Update user object with book count
+        user.bookCount = bookCount;
+        
+        // Format dates for display
+        const formatDate = (dateString) => {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-GB'); // Format as DD/MM/YYYY
+        };
+        
+        // Format dates for library books, reviews, and ratings
+        libraryBooks.forEach(book => {
+            book.formattedDate = formatDate(book.added_at);
+        });
+        
+        reviews.forEach(review => {
+            review.formattedDate = formatDate(review.created_at);
+        });
+        
+        ratings.forEach(rating => {
+            rating.formattedDate = formatDate(rating.created_at);
+        });
+        
+        // Debug: Log template variables
+        console.log("Rendering user page with data:");
+        console.log("Number of library books:", libraryBooks.length);
+        console.log("Number of reviews:", reviews.length);
+        console.log("Number of ratings:", ratings.length);
+        
+        res.render('page/user', { 
+            isLoggedIn, 
+            user,
+            libraryBooks,
+            reviews,
+            ratings
+        });
+    } catch (err) {
+        console.error("Error loading user profile:", err);
+        res.status(500).render('page/error', { 
+            message: "An error occurred while loading your profile",
+            error: err
+        });
+    }
 });
 
 router.get('/db_test', async (req, res, next) => {
@@ -80,6 +140,26 @@ router.post('/api/register', authentication.register);
 router.post('/api/login', authentication.login);
 router.get('/verify/:token', authentication.verifyAccount);
 router.post('/api/save-preferences', authorization.onlyRegistered, authentication.savePreferences);
+
+// Remove book from library
+router.delete('/api/library/:bookId', authorization.onlyRegistered, async (req, res) => {
+    try {
+        const user = await authorization.checkCookie(req);
+        const bookId = req.params.bookId;
+        
+        if (!user || !user.user_id) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+        
+        const query = 'DELETE FROM Libraries WHERE user_id = ? AND book_id = ?';
+        await db.query(query, [user.user_id, bookId]);
+        
+        return res.json({ success: true, message: 'Book removed from library' });
+    } catch (err) {
+        console.error('Error removing book from library:', err);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
 
 // ========================
 // LOGOUT
