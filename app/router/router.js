@@ -92,6 +92,8 @@ router.post('/api/register', authentication.register);
 router.post('/api/login', authentication.login);
 router.get('/verify/:token', authentication.verifyAccount);
 router.post('/api/save-preferences', authorization.onlyRegistered, authentication.savePreferences);
+router.post('/api/request-password-reset', authentication.requestPasswordReset);
+router.post('/api/reset-password/:token', authentication.resetPassword);
 
 // ========================
 // LOGOUT
@@ -226,5 +228,21 @@ router.get('/set-session', async (req, res) => {
     }
 });
 
+// ========================
+// RESET PASSWORD
+// ========================
+router.get('/reset-password/:token', async (req, res) => {
+    try {
+        const decoded = jsonwebtoken.verify(req.params.token, process.env.JWT_SECRET);
+        if (!decoded || !decoded.email) {
+            return res.status(400).send('Invalid token');
+        }
+
+        return res.render('page/reset-password', { email: decoded.email });
+    } catch (error) {
+        console.error("Error in GET /reset-password:", error);
+        return res.status(400).send('Invalid or expired token');
+    }
+});
 
 module.exports = router;
