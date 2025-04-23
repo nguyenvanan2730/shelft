@@ -1010,6 +1010,113 @@ header {
     animation: shake 0.5s;
 }
 
+/* MODAL STYLES */
+.hidden-modal {
+    display: none!important;
+}
+  
+#reset-password-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+  
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.modal-box {
+    margin-top: -190px;
+    position: relative;
+    background: #fff;
+    padding: 2rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    z-index: 2010;
+    text-align: center;
+    animation: fadeIn 0.2s ease;
+}
+  
+.modal-box h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+  
+.modal-box input {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    width: 94%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+  
+.modal-box .close-modal {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 1.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+  
+.reset-password-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+  
+.reset-password-container {
+    background: #fff;
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+  
+.reset-password-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+  
+.reset-password-container p {
+    margin-bottom: 1.5rem;
+}
+  
+.reset-password-container .form-group {
+    margin-bottom: 1rem;
+}
+  
+.error-message {
+    color: #c0392b;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+  
+.hidden-msg {
+    display: none;
+}
 .terms-page{
     display: flex;
     flex-direction: column;
