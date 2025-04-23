@@ -1129,7 +1129,38 @@ header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 90px 45px
+    margin: 90px 45px;
     font-size: 1.2rem;
     line-height: 1.6;
 }
+
+.terms-page,
+.privacy-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    line-height: 1.6;
+}
+
+.legal-page .contact-info {
+    background-color: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.legal-page .contact-info ul {
+    list-style-type: none;
+    margin-left: 0;
+}
+
+.legal-page .contact-info li {
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .terms-page,
+    .privacy-page {
+        padding: 1rem;
+    }
+} 
