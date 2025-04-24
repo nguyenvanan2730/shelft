@@ -2,7 +2,8 @@ const db = require('./db');
 const authorization = require('../middlewares/authorization.js');
 
 
-export async function submitReview(req, res) {
+async function submitReview(req, res) {
+    console.log('submitReview route hit!');
     const user = await authorization.checkCookie(req);
     if (!user) {
         return res.status(401).json({ message: 'You must be logged in to leave a review.' });
@@ -51,3 +52,5 @@ export async function submitReview(req, res) {
         res.status(500).json({ message: 'An error occurred. Please try again.' });
     }
 }
+
+module.exports ={ submitReview };

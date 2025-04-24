@@ -5,7 +5,7 @@ const db = require('../services/db');
 const { getDbTestResults } = require('../services/dbTest');
 const { getBooks, getBookGenres } = require('../services/homepage');
 const { getBookById } = require('../services/bookIdPage.js');
-import { submitReview } from '../services/detail.js';
+const { submitReview } = require('../services/detail.js');
 
 /**
  * router.js
