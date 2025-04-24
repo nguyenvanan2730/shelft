@@ -1,21 +1,21 @@
 const db = require('./db');
-const authorization = require('../middlewares/authorization.js');
-
+const authorization = require('../middlewares/authorization.js').methods;
 
 async function submitReview(req, res) {
-    console.log('submitReview route hit!');
-    const user = await authorization.checkCookie(req);
-    if (!user) {
-        return res.status(401).json({ message: 'You must be logged in to leave a review.' });
-    }
-
-    const { book_id, user_read_date, review_content, rating } = req.body;
-
-    if (!book_id || !review_content || !user_read_date || !rating || rating < 1 || rating > 5) {
-        return res.status(400).json({ message: 'Please complete all fields including a star rating.' });
-    }
-
     try {
+        console.log('submitReview route hit!');
+        const user = await authorization.checkCookie(req);
+        
+        if (!user) {
+            return res.status(401).json({ message: 'You must be logged in to leave a review.' });
+        }
+
+        const { book_id, user_read_date, review_content, rating } = req.body;
+        
+        if (!book_id || !review_content || !user_read_date || !rating || rating < 1 || rating > 5) {
+            return res.status(400).json({ message: 'Please complete all fields including a star rating.' });
+        }
+
         const selectedDate = new Date(user_read_date);
         const today = new Date();
         if (selectedDate > today) {
@@ -24,12 +24,14 @@ async function submitReview(req, res) {
 
         const now = new Date();
 
-        const [existing] = await db.query(
+        // Check for existing review
+        const existingReviews = await db.query(
             'SELECT * FROM Reviews WHERE user_id = ? AND book_id = ?',
             [user.user_id, book_id]
         );
 
-        if (existing.length > 0) {
+        if (Array.isArray(existingReviews) && existingReviews.length > 0) {
+            // Update existing review
             await db.query(
                 `UPDATE Reviews
                  SET review_content = ?, user_read_date = ?, rating = ?, updated_at = ?
@@ -39,6 +41,7 @@ async function submitReview(req, res) {
             return res.json({ success: true, message: 'Review updated!' });
         }
 
+        // Insert new review
         await db.query(
             `INSERT INTO Reviews (user_id, book_id, review_content, user_read_date, rating, created_at, updated_at)
              VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -53,4 +56,4 @@ async function submitReview(req, res) {
     }
 }
 
-module.exports ={ submitReview };
+module.exports = { submitReview };
