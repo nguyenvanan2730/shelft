@@ -19,14 +19,16 @@ block content
                         p.preference-label Discover Preference: 
                         p.preference-value #{user && user.discovery_frequency ? (user.discovery_frequency === '1' ? 'Rarely' : (user.discovery_frequency === '2' ? 'Occasionally' : 'Frequently')) : 'Occasionally'}
                 
-                .profile-image
-                    // User profile image placeholder
+                .profile-avatar-container
+                    .profile-image
+                        // User profile image placeholder
+                    
+                    .profile-stats
+                        .stats-number #{user && user.bookCount ? user.bookCount : '0'}
+                        p.stats-label Books
                 
-                .profile-stats
-                    .stats-number #{user && user.bookCount ? user.bookCount : '0'}
-                    p.stats-label Books
-                
-                a.edit-profile-btn(href="#") Edit Profile
+                .edit-profile-container
+                    a.edit-profile-btn(href="#" title="Edit your profile") Edit Profile
         
         .profile-sections-container
             .sections-content
