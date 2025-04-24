@@ -17,14 +17,29 @@ block content
         //-book rating and review functions
         .book-rating-review
             h3 Rate
-            if isLoggedIn 
-                .rating-stars(data-bookid=book.book_id)
-                    each star in [1,2,3,4,5]
-                        img.star(data-value=star src="/images/rate-stroke.svg" alt="star")
-            else 
-                p Log in to rate this book! 
+            .rating-stars(data-bookid=book.book_id)
+                each star in [1,2,3,4,5]
+                    img.star(data-value=star src="/images/rate-stroke.svg" alt="star")
             
             h3 Leave a review
+            form.review-form(method="POST", action="/submit-review")
+                input(type="hidden", name="book_id", value=book.book_id) 
+
+                h4 When did you read this book?
+
+                .read-date-options 
+                    button(type="button", id="read-now") I read it today 
+                    button(type="button", id="read-past") I have read this before 
+                
+                input(type="date", id="read-date", name="user_read_date", max=new Date().toISOString().split('T')[0], hidden)
+
+                h4 Your thoughts 
+                textarea(id="review-text" name="review_content", placeholder="Write your review here...", required)
+
+                button(type="submit", id="submit-review", data-bookid=book.book_id) Submit review
+
+                p#review-msg 
+
 
         //-reviews section
         .review-section 
