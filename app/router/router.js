@@ -7,6 +7,8 @@ const { getBooks, getBookGenres } = require('../services/homepage');
 const passport = require('passport');
 const jsonwebtoken = require('jsonwebtoken');
 const { sendVerificationEmail } = require('../services/mail.service');
+const { getBookById } = require('../services/bookIdPage.js');
+const { submitReview } = require('../services/detail.js');
 
 // ========================
 // PAGE ROUTES
@@ -84,9 +86,47 @@ router.get('/db_test', async (req, res, next) => {
     next();
 });
 
-// ========================
-// API ROUTES
-// ========================
+/** Renders the individual book detail page */
+router.get('/book/:id', async (req, res, next) => {
+    //checks if the user has valid session cookie
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    const bookId = parseInt(req.params.id, 10);
+    if (isNaN(bookId)) {
+        console.error('Invalid book ID:', req.params.id);
+        return res.status(400).send('Invalid ID');
+    }
+
+    try {
+        //fetch the book details + reviews 
+        const bookData = await getBookById(bookId);
+
+        //if no book is found return a 404 not found response
+        if (!bookData) {
+            return res.status(404).send('Book not found');
+        }
+
+        //if the book exist render the details data 
+        res.render('page/book-detail', {
+            isLoggedIn,
+            user,
+            book: bookData.book,
+            reviews: bookData.reviews
+        });
+    } catch (err) {
+        // if an error occurs, pass to express error handler
+        next(err);
+    }
+})
+
+/** Post submit review + rating from book detail page */
+router.post('/submit-review', submitReview);
+
+/**
+ * API Routes
+ */
+
+// Checks if the user is verified
 router.get('/api/check-verification', authentication.checkVerificationStatus);
 router.post('/api/register', authentication.register);
 router.post('/api/login', authentication.login);
@@ -152,8 +192,6 @@ router.post('/api/resend-verification', async (req, res) => {
         return res.status(500).json({ message: 'Internal server error' });
     }
 });
-
-
 
 // ========================
 // GOOGLE AUTH
@@ -227,6 +265,7 @@ router.get('/set-session', async (req, res) => {
         return res.status(500).send("Something went wrong while setting session.");
     }
 });
+
 
 // ========================
 // RESET PASSWORD

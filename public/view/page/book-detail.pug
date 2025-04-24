@@ -1,0 +1,58 @@
+extends ../layout/layout
+ 
+block content
+    .book-detail-container 
+        //-book details
+        .book-detail-header 
+            img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+            .book-detail-info 
+                h1 #{book.title}
+                //- formats the published year string
+                - const year = new Date(book.published_year).getFullYear()
+                p Author: #{book.author} | Published: #{year}
+
+        .book-description 
+            p #{book.summary}
+        
+        //-book rating and review functions
+        .book-rating-review
+            h3 Rate
+            .rating-stars(data-bookid=book.book_id)
+                each star in [1,2,3,4,5]
+                    img.star(data-value=star src="/images/rate-stroke.svg" alt="star")
+            
+            h3 Leave a review
+            form.review-form(method="POST", action="/submit-review" data-loggedin=isLoggedIn)
+                input(type="hidden", name="book_id", value=book.book_id) 
+
+                h4 When did you read this book?
+
+                .read-date-options 
+                    button(type="button", id="read-now") I read it today 
+                    button(type="button", id="read-past") I have read this before 
+                
+                input(type="date", id="read-date", name="user_read_date", max=new Date().toISOString().split('T')[0], style="display:none")
+
+                h4 Your thoughts 
+                textarea(id="review-text" name="review_content", placeholder="Write your review here...", required)
+
+                button(type="submit", id="submit-review", data-bookid=book.book_id) Submit review
+
+                p#review-msg 
+
+
+        //-reviews section
+        .review-section 
+            h3 Read what others are saying about #{book.title}
+            each review in reviews 
+                .review 
+                    strong #{review.username}
+                    .rating-stars-static 
+                        - for (let i = 1; i <= 5; i++)
+                            if i <= review.rating
+                                img.star(src="/images/rate-star.svg" alt="filled star")
+                            else
+                                img.star(src="/images/rate-stroke.svg" alt="filled star")
+
+                    p #{review.review_content}
+                    span.date #{new Date(review.created_at).toLocaleDateString()}
