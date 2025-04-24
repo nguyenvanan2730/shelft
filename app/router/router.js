@@ -170,7 +170,7 @@ router.post('/rate-book', async(req, res) => {
 
             await db.query(
                 `INSERT INTO Reviews (user_id, book_id, rating, created_at, updated_at)
-                VALUES (?, ?, ?, NOW(), NOW())`,
+                 VALUES (?, ?, ?, NOW(), NOW())`,
                 [user.user_id, bookId, rating]
             );
             return res.json({ message: 'Rating submitted!'});
@@ -180,6 +180,60 @@ router.post('/rate-book', async(req, res) => {
         res.status(500).json({ message: 'Error saving rating. '});
     }
 });
+
+//review stored in reviews table 
+router.post('/submit-review', async (req, res) => {
+    const user = await authorization.checkCookie(req);
+    if (!user) {
+        return res.status(401).json({message: 'You must be logged in to leave a review.'});
+    }
+
+    const { book_id, user_read_date, review_content } = req.body;
+
+    if (!book_id || !review_content || !user_read_date) {
+        return res.status(400).json({message: 'Please provide all required fields.'});
+    }
+
+    try {
+        const selectedDate = new Date(user_read_date);
+        const today = new Date();
+        if (selectedDate > today) {
+            return res.status(400).json({message: 'Read date cannot be in the future.'});
+        }
+
+        const now = new Date();
+
+        
+        const [existing] = await db.query(
+            'SELECT * FROM Reviews WHERE user_id = ? AND book_id = ?',
+            [user.user_id, book_id]
+        );
+
+        if (existing.length > 0) {
+            await db.query(
+                `UPDATE Reviews
+                 SET review_content = ?, user_read_date = ?, updated_at = ?
+                 WHERE user_id = ? AND book_id = ?`,
+                [review_content, user_read_date, now, user.user_id, book_id]
+            );
+            return res.json({ message: 'Review updated!' });
+        }
+
+        // Insert new review
+        await db.query(
+            `INSERT INTO Reviews (user_id, book_id, review_content, user_read_date, created_at, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?)`,
+            [user.user_id, book_id, review_content, user_read_date, now, now]
+        );
+
+        res.json({ message: 'Review submitted' });
+
+    } catch (err) {
+        console.error('Error submitting review:', err);
+        res.status(500).json({ message: 'Error submitting review.' });
+    }
+});
+
 
 /**
  * API Routes
