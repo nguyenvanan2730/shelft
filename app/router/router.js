@@ -5,7 +5,7 @@ const db = require('../services/db');
 const { getDbTestResults } = require('../services/dbTest');
 const { getBooks, getBookGenres } = require('../services/homepage');
 const { getBookById } = require('../services/bookIdPage.js');
-const detailController = require('../services/detail.js');
+import { submitReview } from '../services/detail.js';
 
 /**
  * router.js
@@ -138,7 +138,7 @@ router.get('/book/:id', async (req, res, next) => {
 })
 
 /** Post submit review + rating from book detail page */
-router.post('/submit-review', detailController.submitReview);
+router.post('/submit-review', submitReview);
 
 
 /**

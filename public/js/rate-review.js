@@ -1,38 +1,35 @@
 // book detail page rate and review dynamic functionalities 
 
-document.querySelectorAll('.rating-stars').forEach(starContainer => {
-    const stars = starContainer.querySelectorAll('.star');
-    const bookId = starContainer.dataset.bookid;
+document.addEventListener('DOMContentLoaded', () => {
+    let selectedRating = 0;
 
-    stars.forEach((star, index) => {
-        star.addEventListener('mouseover', () => {
-            stars.forEach((s,i) => {
-                s.src = i <= index ? '/images/rate-star.svg' : '/images/rate-stroke.svg';
+    //star rating logic
+    document.querySelectorAll('.rating-stars').forEach(starContainer => {
+        const stars = starContainer.querySelectorAll('.star');
+
+        stars.forEach((star, index) => {
+            star.addEventListener('mouseover', () => {
+                stars.forEach((s, i) => {
+                    s.src = i <= index ? '/images/rate-star.svg' : '/images/rate-stroke.svg';
+                });
+            });
+
+            star.addEventListener('mouseout', () => {
+                stars.forEach((s, i) => {
+                    s.src = i < selectedRating ? '/images/rate-star.svg' : '/images/rate-stroke.svg';
+                });
+            });
+
+            star.addEventListener('click', () => {
+                selectedRating = index + 1;
+                stars.forEach((s, i) => {
+                    s.src = i < selectedRating ? '/images/rate-star.svg' : '/images/rate-stroke.svg';
+                });
             });
         });
-
-        star.addEventListener('mouseout', () => {
-            stars.forEach((s) => s.src ='/images/rate-stroke.svg');
-        });
-
-        star.addEventListener('click', () => {
-            const rating = index + 1;
-            fetch('/rate-book', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ bookId, rating })
-            })
-            .then(res => res.json())
-            .then(data => alert(data.message))
-            .catch(err => console.error('Error:', err));
-        });
     });
-});
 
-// Review form logic
-document.addEventListener('DOMContentLoaded', () => {
+    //review form logic 
     const reviewForm = document.querySelector('.review-form');
     const reviewMsg = document.getElementById('review-msg');
     const readNowBtn = document.getElementById('read-now');
@@ -40,10 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dateInput = document.getElementById('read-date');
     const reviewText = document.getElementById('review-text');
 
-    // Set max date
-    if (dateInput) {
-        dateInput.max = new Date().toISOString().split('T')[0];
-    }
+    if (dateInput) dateInput.max = new Date().toISOString().split('T')[0];
 
     readNowBtn?.addEventListener('click', () => {
         if (dateInput) {
@@ -67,35 +61,40 @@ document.addEventListener('DOMContentLoaded', () => {
         const user_read_date = formData.get('user_read_date');
         const review_content = formData.get('review_content');
 
-        if (!user_read_date || !review_content.trim()) {
-            reviewMsg.textContent = 'Please select a read date and write your review.';
+        if (!user_read_date || !review_content.trim() || selectedRating === 0) {
+            reviewMsg.textContent = 'Please complete all fields including a star rating.';
             return;
         }
 
         fetch('/submit-review', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type' : 'application/json'
             },
             body: JSON.stringify({
                 book_id,
                 user_read_date,
-                review_content: review_content.trim()
+                review_content: review_content.trim(),
+                rating: selectedRating
             })
         })
         .then(res => res.json())
         .then(data => {
             reviewMsg.textContent = data.message;
-            if (data.success || data.message.includes('submitted')) {
+            if (data.success) {
                 reviewForm.reset();
-                if (dateInput) {
-                    dateInput.style.display = 'none';
-                }
+                dateInput.style.display = 'none';
+                selectedRating = 0;
+                document.querySelectorAll('.star').forEach(s => {
+                    s.src = '/images/rate-stroke.svg';
+                });
             }
         })
+
         .catch(err => {
-            console.error('Error submitting review:', err);
-            reviewMsg.textContent = 'Something went wrong. Try again later.';
+            console.error('Error:', err);
+            reviewMsg.textContent = 'An error occurred. Please try again.';
         });
     });
+
 });
