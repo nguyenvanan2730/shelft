@@ -138,14 +138,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Add event listeners for pagination
-    const paginationArrows = document.querySelectorAll('.pagination-arrow');
+    // Add event listeners for pagination (carousel navigation)
+    const prevButtons = document.querySelectorAll('.prev');
+    const nextButtons = document.querySelectorAll('.next');
     
-    paginationArrows.forEach(arrow => {
-        arrow.addEventListener('click', function(e) {
-            e.preventDefault();
+    prevButtons.forEach(button => {
+        button.addEventListener('click', function() {
             // Pagination functionality would be implemented here
-            alert('Pagination is not implemented yet.');
+            alert('Previous page functionality not implemented yet.');
+        });
+    });
+    
+    nextButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Pagination functionality would be implemented here
+            alert('Next page functionality not implemented yet.');
         });
     });
 });
