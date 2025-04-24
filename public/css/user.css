@@ -417,25 +417,8 @@
   color: white;
 }
 
-/* Carousel Navigation */
-.carousel-nav {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-  gap: 20px;
-}
-
-.prev, .next {
-  position: static;
-  font-size: 25px;
-  cursor: pointer;
-  color: #26345E;
-  transition: color 0.3s;
-  padding: 10px 15px;
-}
-
 .prev:hover, .next:hover {
-  color: #AEB8D7;
+  color: #79797a;
 }
 
 /* Footer styling */
