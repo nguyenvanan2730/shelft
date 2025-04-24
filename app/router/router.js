@@ -63,6 +63,18 @@ router.get('/user', authorization.onlyRegistered, async (req, res, next) => {
     next();
 });
 
+router.get('/privacy', async (req, res, next) => {
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    res.render('page/privacy', { isLoggedIn, user });
+});
+
+router.get('/terms', async (req, res, next) => {
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    res.render('page/terms', { isLoggedIn, user });
+});
+
 router.get('/db_test', async (req, res, next) => {
     try {
         const results = await getDbTestResults();
@@ -120,6 +132,8 @@ router.post('/api/register', authentication.register);
 router.post('/api/login', authentication.login);
 router.get('/verify/:token', authentication.verifyAccount);
 router.post('/api/save-preferences', authorization.onlyRegistered, authentication.savePreferences);
+router.post('/api/request-password-reset', authentication.requestPasswordReset);
+router.post('/api/reset-password/:token', authentication.resetPassword);
 
 // ========================
 // LOGOUT
@@ -249,6 +263,24 @@ router.get('/set-session', async (req, res) => {
     } catch (err) {
         console.error("❌ Error setting JWT in /set-session:", err);
         return res.status(500).send("Something went wrong while setting session.");
+    }
+});
+
+
+// ========================
+// RESET PASSWORD
+// ========================
+router.get('/reset-password/:token', async (req, res) => {
+    try {
+        const decoded = jsonwebtoken.verify(req.params.token, process.env.JWT_SECRET);
+        if (!decoded || !decoded.email) {
+            return res.status(400).send('Invalid token');
+        }
+
+        return res.render('page/reset-password', { email: decoded.email });
+    } catch (error) {
+        console.error("Error in GET /reset-password:", error);
+        return res.status(400).send('Invalid or expired token');
     }
 });
 

@@ -81,3 +81,20 @@ function createVerificationEmail(token){
 
     `
 }
+
+export async function sendPasswordResetEmail(user_email, token) {
+    const resetLink = `http://127.0.0.1:3000/reset-password/${token}`;
+  
+    return await transporter.sendMail({
+      from: 'Shelft. <perette93@gmail.com>',
+      to: user_email,
+      subject: 'Reset your password',
+      html: `
+        <h2>Reset your password</h2>
+        <p>We received a request to reset your password. Click the button below to reset it.</p>
+        <a href="${resetLink}" style="background-color: #007BFF; padding: 10px 15px; text-decoration: none; color: white; border-radius: 5px;">Reset Password</a>
+        <p>If you didn’t request this, you can ignore this email.</p>
+      `
+    });
+  }
+  

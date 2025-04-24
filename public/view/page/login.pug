@@ -43,4 +43,16 @@ block content
                         a(href="#" class="text-400 login-forgotten-password") Forgotten your password? ↗
                     a(href="/register" class="login-button-primary text-400") Create a new account
 
+    // Password Reset Modal
+    div#reset-password-modal.hidden-modal
+        div.modal-overlay
+        div.modal-box
+            h2 Reset your password
+            p.text-400(style="margin-top: 1rem") Please enter the email associated with your account.
+            form#reset-password-form
+                input(type="email" name="reset_email" placeholder="Enter your email" required class="form-group-input")
+                button(type="submit" class="login-button-primary text-400") Send Reset Link
+            button(type="button" class="close-modal") &times;          
+        
+
     script(defer src="js/login.js")

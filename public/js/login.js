@@ -2,6 +2,56 @@
 const errorMsg = document.getElementsByClassName('error')[0];
 const closeAlert = document.getElementsByClassName('close-alert')[0];
 
+// Password Reset Modal Logic
+const forgotLink = document.querySelector('.login-forgotten-password');
+const modal = document.getElementById('reset-password-modal');
+const modalOverlay = document.querySelector('.modal-overlay');
+const closeModalBtn = document.querySelector('.close-modal');
+
+// Open modal
+forgotLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    modal.classList.remove('hidden-modal');
+});
+
+// Close modal
+const closeModal = () => {
+    modal.classList.add('hidden-modal');
+};
+
+closeModalBtn?.addEventListener('click', closeModal);
+modalOverlay?.addEventListener('click', closeModal);
+
+// Prevent closing when clicking inside the box
+document.querySelector('.modal-box')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+});
+
+// Handle reset form
+document.getElementById('reset-password-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = e.target.reset_email.value;
+
+    try {
+        const res = await fetch('/api/request-password-reset', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+            alert('✅ Password reset link sent. Check your inbox!');
+            closeModal();
+        } else {
+            alert('❌ ' + data.message);
+        }
+    } catch (err) {
+        console.error(err);
+        alert('❌ Error sending reset link');
+    }
+});
+
 /**
  * Closes the error alert when the close button is clicked.
  * @input - Click event on the close button.
