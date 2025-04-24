@@ -122,9 +122,46 @@ async function getUserBookCount(userId) {
     }
 }
 
+/**
+ * Get user's preferred genres as a comma-separated string
+ * @param {number} userId - The ID of the user
+ * @returns {Promise<string>} - Comma-separated list of genre names
+ */
+async function getUserGenres(userId) {
+    try {
+        console.log(`Fetching genres for user ID: ${userId}`);
+        
+        // SQL query to get genre names for the user
+        const query = `
+            SELECT g.name
+            FROM User_Genres ug
+            JOIN Genres g ON ug.genre_id = g.genre_id
+            WHERE ug.user_id = ?
+            ORDER BY g.name
+        `;
+        
+        // Execute the query
+        const genres = await db.query(query, [userId]);
+        
+        console.log(`Found ${genres.length} genres for user`);
+        
+        // Return comma-separated list of genre names
+        if (genres.length === 0) {
+            return 'No genres selected';
+        }
+        
+        // Extract genre names and join with commas
+        return genres.map(genre => genre.name).join(', ');
+    } catch (err) {
+        console.error('Error fetching user genres:', err);
+        throw new Error('Failed to fetch user genres');
+    }
+}
+
 module.exports = {
     getUserLibraryBooks,
     getUserReviews,
     getUserRatings,
-    getUserBookCount
+    getUserBookCount,
+    getUserGenres
 }; 

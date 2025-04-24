@@ -4,7 +4,7 @@ const router = require("express").Router();
 const db = require('../services/db');
 const { getDbTestResults } = require('../services/dbTest');
 const { getBooks, getBookGenres } = require('../services/homepage');
-const { getUserLibraryBooks, getUserReviews, getUserRatings, getUserBookCount } = require('../services/user');
+const { getUserLibraryBooks, getUserReviews, getUserRatings, getUserBookCount, getUserGenres } = require('../services/user');
 const passport = require('passport');
 const jsonwebtoken = require('jsonwebtoken');
 const { sendVerificationEmail } = require('../services/mail.service');
@@ -72,13 +72,15 @@ router.get('/user', authorization.onlyRegistered, async (req, res, next) => {
         const reviews = await getUserReviews(user.user_id);
         const ratings = await getUserRatings(user.user_id);
         const bookCount = await getUserBookCount(user.user_id);
+        const userGenres = await getUserGenres(user.user_id);
         
         // Debug: Check image paths
         console.log("Images directory structure check:");
         console.log("First book cover path:", libraryBooks.length > 0 ? `/images/${libraryBooks[0].cover_image}` : "No books found");
         
-        // Update user object with book count
+        // Update user object with book count and genres
         user.bookCount = bookCount;
+        user.genres = userGenres;
         
         // Format dates for display
         const formatDate = (dateString) => {
@@ -104,6 +106,7 @@ router.get('/user', authorization.onlyRegistered, async (req, res, next) => {
         console.log("Number of library books:", libraryBooks.length);
         console.log("Number of reviews:", reviews.length);
         console.log("Number of ratings:", ratings.length);
+        console.log("User genres:", userGenres);
         
         res.render('page/user', { 
             isLoggedIn, 

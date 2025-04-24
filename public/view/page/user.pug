@@ -9,7 +9,8 @@ block content
                     p.profile-username #{user && user.username ? user.username : 'Username'}
                     
                     .profile-email
-                        p Email: #{user && user.email ? user.email : 'firstname.lastname@email.com'}
+                        p.preference-label Email:
+                        p.preference-value #{user && user.email ? user.email : '////'}
                     
                     .profile-preferences
                         p.preference-label My Genres: 
@@ -18,7 +19,6 @@ block content
                     .profile-preferences
                         p.preference-label Discover Preference: 
                         p.preference-value #{user && user.discovery_frequency ? (user.discovery_frequency === '1' ? 'Rarely' : (user.discovery_frequency === '2' ? 'Occasionally' : 'Frequently')) : 'Occasionally'}
-                
                 .profile-avatar-container
                     .profile-image
                         // User profile image placeholder
