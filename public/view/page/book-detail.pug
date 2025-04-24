@@ -47,12 +47,12 @@ block content
             each review in reviews 
                 .review 
                     strong #{review.username}
-                    span.rating 
+                    .rating-stars-static 
                         - for (let i = 1; i <= 5; i++)
                             if i <= review.rating
-                                i.fa.fa-star
+                                img.star(src="/images/rate-star.svg" alt="filled star")
                             else
-                                i.fa.fa-star-o
+                                img.star(src="/images/rate-stroke.svg" alt="filled star")
 
                     p #{review.review_content}
                     span.date #{new Date(review.created_at).toLocaleDateString()}
