@@ -70,7 +70,7 @@ block content
                     
                     .reviews-container
                         if reviews && reviews.length > 0
-                            each review in reviews.slice(0, 3)
+                            each review in reviews.slice(0, reviews.length)
                                 .review-item
                                     .review-book
                                         if review.cover_image
@@ -88,8 +88,8 @@ block content
                                         p.review-text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
                     
                     .carousel-nav
-                        btn.prev ←
-                        btn.next →
+                        button.prev ←
+                        button.next →
                     
                 .section-separator
                         
@@ -101,7 +101,7 @@ block content
                         
                     .ratings-container
                         if ratings && ratings.length > 0
-                            each rating in ratings.slice(0, 5)
+                            each rating in ratings.slice(0, ratings.length)
                                 .rating-item
                                     .rating-book
                                         if rating.cover_image
@@ -127,8 +127,8 @@ block content
                                                 span.star ★
                     
                     .carousel-nav
-                        btn.prev ←
-                        btn.next →
+                        button.prev ←
+                        button.next →
         
     script.
         // Debug data for JavaScript

@@ -1,158 +1,197 @@
-// Add an event listener to the logout button
-document.getElementById('logout-button').addEventListener('click', async () => {
-    try {
-        console.log("Logging out...");
-
-        /**
-         * Sends a logout request to the server.
-         * @input - Click event on the logout button.
-         * @output - If successful, user is redirected to the homepage and JWT cookie is cleared.
-         */
-        const res = await fetch('/logout', {
-            method: 'GET', // Uses GET request to trigger logout route
-            credentials: 'include' // Ensures cookies are sent with the request
-        });
-
-        /**
-         * Checks if the response is a redirect.
-         * If so, navigate to the homepage.
-         */
-        if (res.redirected) {
-            console.log("Successfully logged out. Redirecting...");
-            window.location.href = '/'; // Redirect to homepage after logout
-        } else {
-            console.error("Logout failed."); // If not redirected, log an error
-        }
-    } catch (error) {
-        console.error("Error during logout:", error); // Catch and log any errors
-    }
-});
-
 document.addEventListener('DOMContentLoaded', function() {
     console.log("User page JS loaded");
-    
-    // Debug: Check if libraryBooks data exists
-    if (window.libraryBooks) {
-        console.log("Library books data:", window.libraryBooks);
-    } else {
-        console.log("No library books data available in JS");
-    }
-    
-    // Debug: Log all image elements and their sources
-    const bookCovers = document.querySelectorAll('.book-cover img');
-    console.log(`Found ${bookCovers.length} book cover images`);
-    
-    bookCovers.forEach((img, index) => {
-        console.log(`Image ${index + 1} src:`, img.getAttribute('src'));
-        
-        // Add error handler to debug image loading failures
-        img.addEventListener('error', function() {
-            console.error(`Failed to load image: ${this.getAttribute('src')}`);
-            
-            // Show fallback content
-            const fallback = document.createElement('div');
-            fallback.className = 'image-error';
-            fallback.textContent = 'Image not found';
-            fallback.style.width = '100%';
-            fallback.style.height = '100%';
-            fallback.style.display = 'flex';
-            fallback.style.justifyContent = 'center';
-            fallback.style.alignItems = 'center';
-            fallback.style.backgroundColor = '#ffdddd';
-            fallback.style.color = '#ff0000';
-            
-            this.parentNode.replaceChild(fallback, this);
-        });
-    });
-    
-    // Debug: Check the images directory structure
-    console.log("Checking for access to images directory...");
-    fetch('/images/feather-pen.svg')
-        .then(response => {
-            console.log("Images directory access:", response.ok ? "Success" : "Failed");
-            if (!response.ok) {
-                console.error("Images directory might not be accessible");
-            }
-        })
-        .catch(err => {
-            console.error("Error checking images directory:", err);
-        });
-    
-    // Add event listeners to remove buttons
-    const removeButtons = document.querySelectorAll('.remove-btn');
-    
-    removeButtons.forEach(button => {
-        if (button.dataset.bookId) {
-            button.addEventListener('click', function() {
-                const bookId = this.dataset.bookId;
-                removeFromLibrary(bookId);
-            });
-        }
-    });
-    
-    /**
-     * Remove a book from the user's library
-     * @param {string} bookId - The ID of the book to remove
-     */
-    function removeFromLibrary(bookId) {
-        if (!confirm('Are you sure you want to remove this book from your library?')) {
-            return;
-        }
-        
-        fetch(`/api/library/${bookId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to remove book from library');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                // Find the book item in the DOM and remove it
-                const bookItem = document.querySelector(`.remove-btn[data-book-id="${bookId}"]`).parentNode;
-                bookItem.classList.add('fade-out');
-                
-                // Update book count in the stats
-                const statsNumber = document.querySelector('.stats-number');
-                const currentCount = parseInt(statsNumber.textContent);
-                if (!isNaN(currentCount) && currentCount > 0) {
-                    statsNumber.textContent = currentCount - 1;
+
+    // Logout button functionality
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+            try {
+                console.log("Logging out...");
+                const res = await fetch('/logout', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                if (res.redirected) {
+                    console.log("Successfully logged out. Redirecting...");
+                    window.location.href = '/';
+                } else {
+                    console.error("Logout failed.");
                 }
-                
-                // Wait for the animation to finish before removing the element
-                setTimeout(() => {
-                    bookItem.remove();
-                }, 500);
-            } else {
-                alert('Failed to remove book from library: ' + data.message);
+            } catch (error) {
+                console.error("Error during logout:", error);
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while removing the book from your library.');
         });
     }
-    
-    // Add event listeners for pagination (carousel navigation)
+
+    // Carousel functionality
     const prevButtons = document.querySelectorAll('.prev');
     const nextButtons = document.querySelectorAll('.next');
     
-    prevButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Pagination functionality would be implemented here
-            alert('Previous page functionality not implemented yet.');
-        });
-    });
+    // Keep track of current positions for each carousel
+    let reviewsPosition = 0;
+    let ratingsPosition = 0;
+
+    // Get the carousel containers
+    const reviewsContainer = document.querySelector('.reviews-container');
+    const ratingsContainer = document.querySelector('.ratings-container');
+
+    // Initialize containers
+    if (reviewsContainer) {
+        reviewsContainer.style.position = 'relative';
+        reviewsContainer.style.transition = 'transform 0.3s ease-in-out';
+        updateNavigationState(reviewsContainer, reviewsPosition);
+    }
     
-    nextButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Pagination functionality would be implemented here
-            alert('Next page functionality not implemented yet.');
+    if (ratingsContainer) {
+        ratingsContainer.style.position = 'relative';
+        ratingsContainer.style.transition = 'transform 0.3s ease-in-out';
+        updateNavigationState(ratingsContainer, ratingsPosition);
+    }
+
+    if (prevButtons && nextButtons) {
+        prevButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const container = this.closest('section').querySelector('.reviews-container, .ratings-container');
+                if (!container) return;
+                
+                if (container.classList.contains('reviews-container')) {
+                    if (reviewsPosition > 0) {
+                        reviewsPosition--;
+                        slideCarousel(container, reviewsPosition);
+                        updateNavigationState(container, reviewsPosition);
+                    }
+                } else if (container.classList.contains('ratings-container')) {
+                    if (ratingsPosition > 0) {
+                        ratingsPosition--;
+                        slideCarousel(container, ratingsPosition);
+                        updateNavigationState(container, ratingsPosition);
+                    }
+                }
+            });
         });
-    });
+
+        nextButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const container = this.closest('section').querySelector('.reviews-container, .ratings-container');
+                if (!container) return;
+                
+                const items = container.children;
+                const maxPosition = getMaxPosition(container);
+                
+                if (container.classList.contains('reviews-container')) {
+                    if (reviewsPosition < maxPosition) {
+                        reviewsPosition++;
+                        slideCarousel(container, reviewsPosition);
+                        updateNavigationState(container, reviewsPosition);
+                    }
+                } else if (container.classList.contains('ratings-container')) {
+                    if (ratingsPosition < maxPosition) {
+                        ratingsPosition++;
+                        slideCarousel(container, ratingsPosition);
+                        updateNavigationState(container, ratingsPosition);
+                    }
+                }
+            });
+        });
+    }
+
+    function getMaxPosition(container) {
+        const items = container.children;
+        const containerWidth = container.offsetWidth;
+        const itemWidth = container.querySelector('.review-item, .rating-item').offsetWidth;
+        const gap = parseFloat(getComputedStyle(container).gap) || 0;
+        const itemsPerView = Math.floor(containerWidth / (itemWidth + gap));
+        return Math.max(0, items.length - itemsPerView);
+    }
+
+    function updateNavigationState(container, position) {
+        const section = container.closest('section');
+        const prevButton = section.querySelector('.prev');
+        const nextButton = section.querySelector('.next');
+        const maxPosition = getMaxPosition(container);
+
+        // Update button states
+        if (prevButton) {
+            if (position <= 0) {
+                prevButton.classList.add('disabled');
+                prevButton.style.opacity = '0.5';
+            } else {
+                prevButton.classList.remove('disabled');
+                prevButton.style.opacity = '1';
+            }
+        }
+
+        if (nextButton) {
+            if (position >= maxPosition) {
+                nextButton.classList.add('disabled');
+                nextButton.style.opacity = '0.5';
+            } else {
+                nextButton.classList.remove('disabled');
+                nextButton.style.opacity = '1';
+            }
+        }
+    }
+
+    function slideCarousel(container, position) {
+        const itemWidth = container.querySelector('.review-item, .rating-item').offsetWidth;
+        const gap = parseFloat(getComputedStyle(container).gap) || 0;
+        const offset = -(position * (itemWidth + gap));
+        
+        container.style.transform = `translateX(${offset}px)`;
+        console.log(`Sliding to position ${position}, offset: ${offset}px`);
+    }
+
+    // Add necessary CSS styles
+    const style = document.createElement('style');
+    style.textContent = `
+        .reviews-container, .ratings-container {
+            display: flex;
+            position: relative;
+            transition: transform 0.3s ease-in-out;
+            gap: 12rem;
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        .review-item, .rating-item {
+            flex: 0 0 auto;
+            width: 220px;
+        }
+        
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .prev, .next {
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border: none;
+            background: none;
+            font-size: 1.5rem;
+            color: #26345E;
+            transition: all 0.3s ease;
+        }
+        
+        .prev:hover, .next:hover {
+            color: #F58E5F;
+        }
+
+        .prev.disabled, .next.disabled {
+            cursor: not-allowed;
+        }
+
+        .prev.disabled:hover, .next.disabled:hover {
+            color: #26345E;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Debug: Log elements to check if they're found
+    console.log('Prev buttons found:', prevButtons.length);
+    console.log('Next buttons found:', nextButtons.length);
+    console.log('Reviews container found:', reviewsContainer);
+    console.log('Ratings container found:', ratingsContainer);
 });
