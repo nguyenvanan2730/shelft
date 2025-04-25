@@ -1164,3 +1164,32 @@ header {
         padding: 1rem;
     }
 } 
+
+/* BOOK DETAIL PAGE*/
+
+.bookmark-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.bookmark-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 125%; /* position above the icon */
+    left: 50%;
+    background-color: #333;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 10;
+}
+
+.bookmark-wrapper:hover .bookmark-tooltip {
+    visibility: visible;
+    opacity: 1;
+}

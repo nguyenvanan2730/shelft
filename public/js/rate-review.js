@@ -127,12 +127,25 @@ document.addEventListener('DOMContentLoaded', () => {
 //bookmark toggle between add and remove state 
 document.addEventListener('DOMContentLoaded', () => {
     const bookmarkIcon = document.querySelector('.bookmark-icon');
+    const tooltip = document.querySelector('.bookmark-tooltip');
 
-    if (bookmarkIcon) {
-        bookmarkIcon.addEventListener('click', () => {
-            const bookId = bookmarkIcon.getAttribute('data-bookid');
+    if (bookmarkIcon && tooltip) {
+        const bookId = bookmarkIcon.getAttribute('data-bookid');
+        const isLoggedIn = bookmarkIcon.getAttribute('data-loggedin')?.toLowerCase() === 'true';
+
+        const updateTooltip = () => {
             const isFilled = bookmarkIcon.src.includes('bookmark.svg');
+            if (!isLoggedIn) {
+                tooltip.textContent = 'Log in to save';
+            } else {
+                tooltip.textContent = isFilled ? 'Remove from library' : 'Save to library';
+            }
+        };
 
+        updateTooltip(); // initial
+
+        bookmarkIcon.addEventListener('click', () => {
+            const isFilled = bookmarkIcon.src.includes('bookmark.svg');
             const url = isFilled ? '/remove-from-library' : '/add-to-library';
 
             fetch(url, {
@@ -148,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     bookmarkIcon.src = isFilled
                         ? '/images/bookmark-stroke.svg'
                         : '/images/bookmark.svg';
+                    updateTooltip(); // refresh tooltip message
                 } else {
                     alert(data.message || 'Action failed.');
                 }
@@ -157,5 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Something went wrong.');
             });
         });
+
+        bookmarkIcon.addEventListener('mouseenter', updateTooltip);
     }
 });
