@@ -23,139 +23,119 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Carousel functionality
-    const prevButtons = document.querySelectorAll('.prev');
-    const nextButtons = document.querySelectorAll('.next');
-    
-    // Keep track of current positions for each carousel
-    let reviewsPosition = 0;
-    let ratingsPosition = 0;
-
-    // Get the carousel containers
+    // Find all carousels on the page
     const reviewsContainer = document.querySelector('.reviews-container');
     const ratingsContainer = document.querySelector('.ratings-container');
-
-    // Initialize containers
-    if (reviewsContainer) {
-        reviewsContainer.style.position = 'relative';
-        reviewsContainer.style.transition = 'transform 0.3s ease-in-out';
-        updateNavigationState(reviewsContainer, reviewsPosition);
-    }
     
-    if (ratingsContainer) {
-        ratingsContainer.style.position = 'relative';
-        ratingsContainer.style.transition = 'transform 0.3s ease-in-out';
-        updateNavigationState(ratingsContainer, ratingsPosition);
-    }
-
-    if (prevButtons && nextButtons) {
-        prevButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const container = this.closest('section').querySelector('.reviews-container, .ratings-container');
-                if (!container) return;
-                
-                if (container.classList.contains('reviews-container')) {
-                    if (reviewsPosition > 0) {
-                        reviewsPosition--;
-                        slideCarousel(container, reviewsPosition);
-                        updateNavigationState(container, reviewsPosition);
-                    }
-                } else if (container.classList.contains('ratings-container')) {
-                    if (ratingsPosition > 0) {
-                        ratingsPosition--;
-                        slideCarousel(container, ratingsPosition);
-                        updateNavigationState(container, ratingsPosition);
-                    }
-                }
-            });
-        });
-
-        nextButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const container = this.closest('section').querySelector('.reviews-container, .ratings-container');
-                if (!container) return;
-                
-                const items = container.children;
-                const maxPosition = getMaxPosition(container);
-                
-                if (container.classList.contains('reviews-container')) {
-                    if (reviewsPosition < maxPosition) {
-                        reviewsPosition++;
-                        slideCarousel(container, reviewsPosition);
-                        updateNavigationState(container, reviewsPosition);
-                    }
-                } else if (container.classList.contains('ratings-container')) {
-                    if (ratingsPosition < maxPosition) {
-                        ratingsPosition++;
-                        slideCarousel(container, ratingsPosition);
-                        updateNavigationState(container, ratingsPosition);
-                    }
-                }
-            });
-        });
-    }
-
-    function getMaxPosition(container) {
-        const items = container.children;
-        const containerWidth = container.offsetWidth;
-        const itemWidth = container.querySelector('.review-item, .rating-item').offsetWidth;
-        const gap = parseFloat(getComputedStyle(container).gap) || 0;
-        const itemsPerView = Math.floor(containerWidth / (itemWidth + gap));
-        return Math.max(0, items.length - itemsPerView);
-    }
-
-    function updateNavigationState(container, position) {
+    // Initialize each carousel
+    [reviewsContainer, ratingsContainer].forEach(function(container) {
+        if (!container) return;
+        
+        // Get navigation buttons for this carousel
         const section = container.closest('section');
         const prevButton = section.querySelector('.prev');
         const nextButton = section.querySelector('.next');
-        const maxPosition = getMaxPosition(container);
-
-        // Update button states
-        if (prevButton) {
-            if (position <= 0) {
-                prevButton.classList.add('disabled');
-                prevButton.style.opacity = '0.5';
-            } else {
-                prevButton.classList.remove('disabled');
-                prevButton.style.opacity = '1';
-            }
-        }
-
-        if (nextButton) {
-            if (position >= maxPosition) {
-                nextButton.classList.add('disabled');
-                nextButton.style.opacity = '0.5';
-            } else {
-                nextButton.classList.remove('disabled');
-                nextButton.style.opacity = '1';
-            }
-        }
-    }
-
-    function slideCarousel(container, position) {
-        const itemWidth = container.querySelector('.review-item, .rating-item').offsetWidth;
-        const gap = parseFloat(getComputedStyle(container).gap) || 0;
-        const offset = -(position * (itemWidth + gap));
         
-        container.style.transform = `translateX(${offset}px)`;
-        console.log(`Sliding to position ${position}, offset: ${offset}px`);
-    }
+        // Skip if required elements aren't found
+        if (!prevButton || !nextButton) {
+            console.error("Missing navigation buttons for carousel");
+            return;
+        }
+        
+        // Set a fixed scroll amount (card width + gap)
+        const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        const gapInRem = 12;
+        const gapInPixels = gapInRem * rootFontSize;
+        const cardWidth = 220; // Width of review/rating card
+        const scrollAmount = cardWidth + gapInPixels;
+        
+        // Function to scroll left
+        function scrollLeft() {
+            container.scrollBy({
+                left: -scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Function to scroll right
+        function scrollRight() {
+            container.scrollBy({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+        
+        // Add event listeners to buttons
+        prevButton.addEventListener('click', scrollLeft);
+        nextButton.addEventListener('click', scrollRight);
+        
+        // Update button visibility based on scroll position
+        function updateButtonVisibility() {
+            // Check if at the beginning
+            if (container.scrollLeft <= 0) {
+                prevButton.style.opacity = '0.5';
+                prevButton.classList.add('disabled');
+            } else {
+                prevButton.style.opacity = '1';
+                prevButton.classList.remove('disabled');
+            }
+            
+            // Check if at the end
+            const maxScrollLeft = container.scrollWidth - container.clientWidth;
+            if (container.scrollLeft >= maxScrollLeft - 5) {
+                nextButton.style.opacity = '0.5';
+                nextButton.classList.add('disabled');
+            } else {
+                nextButton.style.opacity = '1';
+                nextButton.classList.remove('disabled');
+            }
+        }
+        
+        // Initialize button visibility
+        updateButtonVisibility();
+        
+        // Update button visibility when scrolling
+        container.addEventListener('scroll', updateButtonVisibility);
+    });
 
     // Add necessary CSS styles
     const style = document.createElement('style');
     style.textContent = `
         .reviews-container, .ratings-container {
             display: flex;
-            position: relative;
-            transition: transform 0.3s ease-in-out;
             gap: 12rem;
-            overflow: hidden;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 1rem 0;
+        }
+        
+        .reviews-container::-webkit-scrollbar, 
+        .ratings-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        section.profile-reviews, 
+        section.profile-ratings {
+            position: relative;
+            margin: 0 auto;
             width: 100%;
         }
         
         .review-item, .rating-item {
             flex: 0 0 auto;
             width: 220px;
+        }
+        
+        .review-book, .rating-book {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 1rem;
+        }
+        
+        .review-content {
+            width: 100%;
         }
         
         .carousel-nav {
@@ -181,6 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         .prev.disabled, .next.disabled {
             cursor: not-allowed;
+            opacity: 0.5;
         }
 
         .prev.disabled:hover, .next.disabled:hover {
@@ -190,8 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(style);
 
     // Debug: Log elements to check if they're found
-    console.log('Prev buttons found:', prevButtons.length);
-    console.log('Next buttons found:', nextButtons.length);
     console.log('Reviews container found:', reviewsContainer);
     console.log('Ratings container found:', ratingsContainer);
 });
