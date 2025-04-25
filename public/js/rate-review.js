@@ -88,6 +88,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('.star').forEach(s => {
                     s.src = '/images/rate-stroke.svg';
                 });
+
+                //load reviews
+                const reviewSection = document.querySelector('.review-section');
+
+                const stars = Array.from({ length: 5 }, (_, i) => {
+                  return i < data.review.rating
+                    ? `<img class="star" src="/images/rate-star.svg" alt="filled star" />`
+                    : `<img class="star" src="/images/rate-stroke.svg" alt="filled star" />`;
+                }).join('');
+            
+                const reviewHtml = `
+                  <div class="review">
+                    <strong>${data.review.username}</strong>
+                    <div class="rating-stars-static">${stars}</div>
+                    <p>${data.review.review_content}</p>
+                    <span class="date">${new Date(data.review.created_at).toLocaleDateString()}</span>
+                  </div>
+                `;
+            
+                // Add new review to top of section
+                reviewSection.insertAdjacentHTML('beforeend', reviewHtml);
             }
         })
 
@@ -97,4 +118,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+});
+
+//bookmark toggle between add and remove state 
+document.addEventListener('DOMContentLoaded', () => {
+    const bookmarkIcon = document.querySelector('.bookmark-icon');
+
+    if (bookmarkIcon) {
+        bookmarkIcon.addEventListener('click', () => {
+            const bookId = bookmarkIcon.getAttribute('data-bookid');
+            const isFilled = bookmarkIcon.src.includes('bookmark.svg');
+
+            const url = isFilled ? '/remove-from-library' : '/add-to-library';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ book_id: bookId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    bookmarkIcon.src = isFilled
+                        ? '/images/bookmark-stroke.svg'
+                        : '/images/bookmark.svg';
+                } else {
+                    alert(data.message || 'Action failed.');
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Something went wrong.');
+            });
+        });
+    }
 });

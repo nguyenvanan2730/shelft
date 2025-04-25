@@ -7,6 +7,7 @@ block content
             img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
             .book-detail-info 
                 h1 #{book.title}
+                img.bookmark-icon( src="/images/bookmark-stroke.svg", alt="bookmark", data-bookid=book.book_id, class="bookmark-icon")
                 //- formats the published year string
                 - const year = new Date(book.published_year).getFullYear()
                 p Author: #{book.author} | Published: #{year}
