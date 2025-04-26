@@ -14,10 +14,10 @@ block content
                         src=isBookmarked ? "/images/bookmark.svg" : "/images/bookmark-stroke.svg", 
                         alt="bookmark",  
                         data-bookid=book.book_id, 
-                        data-loggedin=isLoggedIn, 
+                        data-loggedin=isLoggedIn ? "true" : "false",
                         class="bookmark-icon"
                     )
-                    span.bookmark-tooltip Save to library 
+                    span.bookmark-tooltip 
 
                 //- formats the published year string
                 - const year = new Date(book.published_year).getFullYear()

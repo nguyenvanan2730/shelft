@@ -131,22 +131,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (bookmarkIcon && tooltip) {
         const bookId = bookmarkIcon.getAttribute('data-bookid');
-        const isLoggedIn = bookmarkIcon.getAttribute('data-loggedin')?.toLowerCase() === 'true';
+        const dataLoggedIn = bookmarkIcon.getAttribute('data-loggedin');
+        const isLoggedIn = dataLoggedIn === 'true';
+        const isFilled = bookmarkIcon.src.includes('bookmark.svg');
 
-        const updateTooltip = () => {
-            const isFilled = bookmarkIcon.src.includes('bookmark.svg');
-            if (!isLoggedIn) {
-                tooltip.textContent = 'Log in to save';
-            } else {
-                tooltip.textContent = isFilled ? 'Remove from library' : 'Save to library';
-            }
-        };
+        console.log('Login status:', isLoggedIn);
+        console.log('Bookmark filled:', isFilled);
 
-        updateTooltip(); // initial
+        // Set initial tooltip text based on login status and bookmark state
+        if (!isLoggedIn) {
+            tooltip.textContent = 'Log in to save';
+        } else {
+            tooltip.textContent = isFilled ? 'Remove from library' : 'Save to library';
+        }
 
         bookmarkIcon.addEventListener('click', () => {
-            const isFilled = bookmarkIcon.src.includes('bookmark.svg');
-            const url = isFilled ? '/remove-from-library' : '/add-to-library';
+            // Only proceed if user is logged in
+            if (!isLoggedIn) {
+                // You might want to redirect to login page or show a login modal
+                alert('Please log in to save books to your library.');
+                return;
+            }
+            
+            const currentIsFilled = bookmarkIcon.src.includes('bookmark.svg');
+            const url = currentIsFilled ? '/remove-from-library' : '/add-to-library';
 
             fetch(url, {
                 method: 'POST',
@@ -158,10 +166,13 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    bookmarkIcon.src = isFilled
-                        ? '/images/bookmark-stroke.svg'
-                        : '/images/bookmark.svg';
-                    updateTooltip(); // refresh tooltip message
+                    const newIsFilled = !currentIsFilled;
+                    bookmarkIcon.src = newIsFilled
+                        ? '/images/bookmark.svg'
+                        : '/images/bookmark-stroke.svg';
+                    
+                    // Update tooltip text after state change
+                    tooltip.textContent = newIsFilled ? 'Remove from library' : 'Save to library';
                 } else {
                     alert(data.message || 'Action failed.');
                 }
@@ -171,7 +182,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Something went wrong.');
             });
         });
-
-        bookmarkIcon.addEventListener('mouseenter', updateTooltip);
     }
 });
