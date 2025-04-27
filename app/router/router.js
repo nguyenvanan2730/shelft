@@ -222,7 +222,41 @@ router.post('/api/resend-verification', async (req, res) => {
     }
 });
 
+router.post('/api/update-profile', authorization.onlyRegistered, async (req, res) => {
+    try {
+        const user = res.locals.user;
+        if (!user) {
+            return res.status(401).json({ status: 'error', message: 'Not authorized' });
+        }
 
+        const { first_name, last_name, genres, discovery_frequency } = req.body;
+
+        // Update user's name
+        await db.query(
+            "UPDATE Users SET first_name = ?, last_name = ?, discovery_frequency = ? WHERE user_id = ?",
+            [first_name, last_name, discovery_frequency, user.user_id]
+        );
+
+        // Update user's genres
+        await db.query(
+            "DELETE FROM User_Genres WHERE user_id = ?",
+            [user.user_id]
+        );
+
+        for (const genreId of genres) {
+            await db.query(
+                "INSERT INTO User_Genres (user_id, genre_id) VALUES (?, ?)",
+                [user.user_id, genreId]
+            );
+        }
+
+        return res.json({ status: 'ok', message: 'Profile updated successfully' });
+
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        return res.status(500).json({ status: 'error', message: 'Internal server error' });
+    }
+});
 
 // ========================
 // GOOGLE AUTH
@@ -296,6 +330,5 @@ router.get('/set-session', async (req, res) => {
         return res.status(500).send("Something went wrong while setting session.");
     }
 });
-
 
 module.exports = router;

@@ -5,7 +5,7 @@ block content
         section.profile-header
             .profile-info
                 .profile-details
-                    h1.profile-name #{user && user.first_name ? user.first_name + ' ' + user.last_name : 'First + Last Name'}
+                    h1.profile-name(data-first-name=user.first_name data-last-name=user.last_name) #{user && user.first_name ? user.first_name + ' ' + user.last_name : 'First + Last Name'}
                     p.profile-username #{user && user.username ? user.username : 'Username'}
                     
                     .profile-email
@@ -62,7 +62,7 @@ block content
                     
                 .section-separator
                 
-                section.profile-reviews
+                section.profile-reviews-user 
                     .section-header
                         h2.section-title #{user && user.first_name ? user.first_name : 'FirstName'}'s Reviews 
                         span.section-icon
@@ -129,6 +129,59 @@ block content
                     .carousel-nav
                         button.prev ←
                         button.next →
+        
+        // Edit Profile Popup
+        .edit-profile-popup.hidden
+            .popup-content
+                .popup-header
+                    h2.popup-title Edit Profile
+                    button.close-popup ×
+                
+                form#edit-profile-form
+                    .form-group-name
+                        .form-group
+                            label(for="edit-first-name") First Name
+                            input(type="text" id="edit-first-name" name="first_name" placeholder="First Name" class="form-group-input input-name")
+                        .form-group
+                            label(for="edit-last-name") Last Name
+                            input(type="text" id="edit-last-name" name="last_name" placeholder="Last Name" class="form-group-input input-name")
+                    
+                    .form-group-genres
+                        h3 Tell us what genres you enjoy:
+                        p.text-400 [ Pick Up to 4 ]
+                        .genres-container
+                            .genre-card.card(data-genre="1")
+                                p.text-400 Anime
+                            .genre-card.card(data-genre="2")
+                                p.text-400 Biography
+                            .genre-card.card(data-genre="3")
+                                p.text-400 Comedy
+                            .genre-card.card(data-genre="4")
+                                p.text-400 Fantasy
+                            .genre-card.card(data-genre="5")
+                                p.text-400 Horror
+                            .genre-card.card(data-genre="6")
+                                p.text-400 Mystery
+                            .genre-card.card(data-genre="7")
+                                p.text-400 Romance
+                            .genre-card.card(data-genre="8")
+                                p.text-400 Sci-Fi
+                            .genre-card.card(data-genre="9")
+                                p.text-400 Health/Wellness
+                    
+                    .form-group-frequency
+                        h3 Tell us how frequently you would like to discover new reads:
+                        .frequency-container
+                            .frequency-card.card(data-freq="1")
+                                p.text-400 Rarely
+                            .frequency-card.card(data-freq="2")
+                                p.text-400 Occasionally
+                            .frequency-card.card(data-freq="3")
+                                p.text-400 Frequently
+                    
+                    .popup-buttons
+                        button.button-secondary(type="button") Cancel
+                        button.button-primary(type="submit") Save Changes
         
     script.
         // Debug data for JavaScript
