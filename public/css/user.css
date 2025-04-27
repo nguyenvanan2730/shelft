@@ -207,6 +207,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 1.5rem;
+  margin-top: 3rem;
 }
 
 .section-title {
@@ -273,7 +274,7 @@
 }
 
 /* Reviews section */
-.reviews-container {
+.reviews-container-user {
   display: flex;
   justify-content: flex-start;
   margin-bottom: 1.5rem;
@@ -284,10 +285,10 @@
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 1rem 0;
+  padding: 0rem 0 !important;
 }
 
-.reviews-container::-webkit-scrollbar {
+.reviews-container-user::-webkit-scrollbar {
   display: none;
 }
 
@@ -413,27 +414,47 @@ section.profile-reviews-user {
 .pagination {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
+  margin: 2rem auto;
+  width: 100%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .pagination-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  background-color: white;
+  width: 3rem;
+  height: 3rem;
+  background-color: #F58E5F;
   border-radius: 50%;
-  color: #26345E;
+  color: white;
   text-decoration: none;
   font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.2s ease;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
 }
 
 .pagination-arrow:hover {
-  background-color: #F58E5F;
-  color: white;
+  background-color: #e47e4f;
+  transform: scale(1.1);
+}
+
+.pagination-arrow.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.pagination-arrow.disabled:hover {
+  background-color: #ccc;
 }
 
 .prev:hover, .next:hover {
@@ -507,7 +528,7 @@ footer {
     width: 620px;
   }
   
-  .reviews-container {
+  .reviews-container-user {
     gap: 18rem;
   }
   
@@ -524,7 +545,7 @@ footer {
     width: 470px;
   }
 
-  .reviews-container {
+  .reviews-container-user {
     gap: 14rem;
   }
   
@@ -546,7 +567,7 @@ footer {
     width: 300px;
   }
   
-  .reviews-container {
+  .reviews-container-user {
     flex-direction: column;
     gap: 3.5rem;
   }
@@ -606,7 +627,7 @@ footer {
     width: 290px;
   }
   
-  .reviews-container {
+  .reviews-container-user {
     gap: 2rem;
   }
   
@@ -640,16 +661,9 @@ footer {
     width: 140px;
   }
   
-  .reviews-container {
+  .reviews-container-user {
     gap: 1.5rem;
   }
-}
-
-.section-separator {
-  height: 1px;
-  /* background-color: rgba(255, 255, 255, 0.3); */
-  width: 80%;
-  margin: 3rem auto;
 }
 
 /* Animations for removing items */
