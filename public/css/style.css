@@ -1306,6 +1306,13 @@ header {
     font-family: "Outfit", sans-serif;
     font-size: 1.4rem;
 }
+.write-icon{
+    position: absolute;
+    top: 40rem;
+    right: 45rem;
+    width: 36px;
+    height: 36px;
+}
 
 .review-block h4{
     color: black;
