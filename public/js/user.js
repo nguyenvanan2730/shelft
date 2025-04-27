@@ -42,12 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Set a fixed scroll amount (card width + gap)
-        const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-        const gapInRem = 12;
-        const gapInPixels = gapInRem * rootFontSize;
-        const cardWidth = 220; // Width of review/rating card
-        const scrollAmount = cardWidth + gapInPixels;
+        // Set scroll amount to match homepage (140px card + 30px gap)
+        const scrollAmount = 170; // 140px card width + 30px gap
         
         // Function to scroll left
         function scrollLeft() {
@@ -103,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
     style.textContent = `
         .reviews-container, .ratings-container {
             display: flex;
-            gap: 12rem;
+            gap: 30px;
             overflow-x: auto;
             scroll-behavior: smooth;
             scrollbar-width: none;
@@ -116,26 +112,44 @@ document.addEventListener('DOMContentLoaded', function() {
             display: none;
         }
         
-        section.profile-reviews, 
+        section.profile-reviews {
+            position: relative;
+            margin: 0 auto;
+            width: 480px; /* Exactly fits 3 cards (140px * 3) + 2 gaps (30px * 2) */
+            overflow: hidden;
+        }
+
         section.profile-ratings {
             position: relative;
             margin: 0 auto;
             width: 100%;
+            overflow: hidden;
         }
         
         .review-item, .rating-item {
             flex: 0 0 auto;
-            width: 220px;
+            width: 140px;
         }
         
         .review-book, .rating-book {
-            width: 100%;
+            width: 140px;
             height: 200px;
             margin-bottom: 1rem;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+
+        .review-book img, .rating-book img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
         }
         
         .review-content {
-            width: 100%;
+            width: 140px;
+            font-size: 0.9rem;
         }
         
         .carousel-nav {
@@ -166,6 +180,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
         .prev.disabled:hover, .next.disabled:hover {
             color: #26345E;
+        }
+
+        /* Center the reviews section */
+        section.profile-reviews {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Rating stars styling */
+        .rating-stars {
+            display: flex;
+            gap: 2px;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        .star {
+            color: #ccc;
+            font-size: 1rem;
+        }
+
+        .star.filled {
+            color: #F58E5F;
         }
     `;
     document.head.appendChild(style);
