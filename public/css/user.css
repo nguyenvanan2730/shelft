@@ -43,7 +43,7 @@
 }
 
 .profile-details {
-  flex: 0 0 30%;
+  flex: 0 0 40%;
   margin-right: 0;
   order: 1;
   background: transparent;
@@ -52,7 +52,7 @@
 }
 
 .profile-avatar-container {
-  flex: 0 0 40%;
+  flex: 0 0 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -72,7 +72,7 @@
 
 .profile-username {
   font-size: 1.2rem;
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 3rem 0;
   color: #555;
 }
 
@@ -146,13 +146,13 @@
   border: none;
 }
 .edit-profile-container{
-  flex: 0 0 30%;
+  flex: 0 0 40%;
   position: relative;
   display: flex;
   order: 3;
   justify-content: flex-end;
   align-items: flex-end;
-  min-height: 178px;
+  min-height: 200px;
   height: 100%;
 }
 
