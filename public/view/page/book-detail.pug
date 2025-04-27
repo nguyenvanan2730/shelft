@@ -28,34 +28,34 @@ block content
         
         //-book rating and review functions
         .book-rating-review
-            h3 Rate
-            .rating-stars(data-bookid=book.book_id)
-                each star in [1,2,3,4,5]
-                    img.star(data-value=star src="/images/rate-stroke.svg" alt="star")
-            
-            h3 Leave a review
-            form.review-form(method="POST", action="/submit-review" data-loggedin=isLoggedIn)
-                input(type="hidden", name="book_id", value=book.book_id) 
+            .rating-block 
+                h3 Rate
+                .rating-stars(data-bookid=book.book_id)
+                    each star in [1,2,3,4,5]
+                        img.star(data-value=star src="/images/rate-stroke.svg" alt="star")
+            .review-block 
+                h3 Leave a review
+                form.review-form(method="POST", action="/submit-review" data-loggedin=isLoggedIn)
+                    input(type="hidden", name="book_id", value=book.book_id) 
 
-                h4 When did you read this book?
+                    h4 When did you read this book?
 
-                .read-date-options 
-                    button(type="button", id="read-now") I read it today 
-                    button(type="button", id="read-past") I have read this before 
+                    .read-date-options 
+                        button(type="button", id="read-now") I read it today 
+                        button(type="button", id="read-past") I have read this before 
                 
-                input(type="date", id="read-date", name="user_read_date", max=new Date().toISOString().split('T')[0], style="display:none")
+                    input(type="date", id="read-date", name="user_read_date", max=new Date().toISOString().split('T')[0], style="display:none")
 
-                h4 Your thoughts 
-                textarea(id="review-text" name="review_content", placeholder="Write your review here...", required)
+                    textarea(id="review-text" name="review_content", placeholder="Add a review, no spoilers please...", required)
 
-                button(type="submit", id="submit-review", data-bookid=book.book_id) Submit review
+                    button(type="submit", id="submit-review", data-bookid=book.book_id) Submit
 
-                p#review-msg 
+                    p#review-msg 
 
 
         //-reviews section
         .review-section 
-            h3 Read what others are saying about #{book.title}
+            h3 Read what others are saying about:  #{book.title}
             each review in reviews 
                 .review 
                     strong #{review.username}
@@ -66,5 +66,5 @@ block content
                             else
                                 img.star(src="/images/rate-stroke.svg" alt="filled star")
 
+                    span.date Read on: #{new Date(review.created_at).toLocaleDateString()}
                     p #{review.review_content}
-                    span.date #{new Date(review.created_at).toLocaleDateString()}

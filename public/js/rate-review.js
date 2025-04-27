@@ -184,3 +184,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+//toggle selected hover state for read date buttons 
+const readNowButton = document.getElementById('read-now');
+const readPastButton = document.getElementById('read-past');
+
+readNowButton.addEventListener('click', () => {
+    readNowButton.classList.add('selected');
+    readPastButton.classList.remove('selected');
+});
+
+readPastButton.addEventListener('click', () => {
+    readPastButton.classList.add('selected');
+    readNowButton.classList.remove('selected');
+});
