@@ -82,37 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             reviewMsg.textContent = data.message;
             if (data.success) {
-                console.log('Review data:', data.review);
-                reviewForm.reset();
-                dateInput.style.display = 'none';
-                selectedRating = 0;
-                document.querySelectorAll('.star').forEach(s => {
-                    s.src = '/images/rate-stroke.svg';
-                });
-
-                //load reviews
-                if (data.success && data.review && typeof data.review.rating !== 'undefined') {
-                    const reviewSection = document.querySelector('.review-section');
-                  
-                    const stars = Array.from({ length: 5 }, (_, i) => {
-                      return i < data.review.rating
-                        ? `<img class="star" src="/images/rate-star.svg" alt="filled star" />`
-                        : `<img class="star" src="/images/rate-stroke.svg" alt="filled star" />`;
-                    }).join('');
-                  
-                    const reviewHtml = `
-                      <div class="review">
-                        <strong>${data.review.username}</strong>
-                        <div class="rating-stars-static">${stars}</div>
-                        <p>${data.review.review_content}</p>
-                        <span class="date">${new Date(data.review.created_at).toLocaleDateString()}</span>
-                      </div>
-                    `;
-                  
-                    reviewSection.insertAdjacentHTML('afterbegin', reviewHtml);
-                  } else {
-                    console.warn('Unexpected response structure:', data);
-                  }
+                // Instead of manually updating the DOM, refresh the page
+                window.location.reload();
             }
         })
 
