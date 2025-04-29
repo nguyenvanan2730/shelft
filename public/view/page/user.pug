@@ -1,6 +1,188 @@
 extends ../layout/layout
 
 block content 
-    H1 Welcome to the User Page
-    button#logout-button(href="/logout") Log Out
-    script(defer src="js/user.js")
+    main.profile-page
+        section.profile-header
+            .profile-info
+                .profile-details
+                    h1.profile-name(data-first-name=user.first_name data-last-name=user.last_name) #{user && user.first_name ? user.first_name + ' ' + user.last_name : 'First + Last Name'}
+                    p.profile-username #{user && user.username ? user.username : 'Username'}
+                    
+                    .profile-email
+                        p.preference-label Email:
+                        p.preference-value #{user && user.email ? user.email : '////'}
+                    
+                    .profile-preferences
+                        p.preference-label My Genres: 
+                        p.preference-value #{user && user.genres ? user.genres : '////'}
+                    
+                    .profile-preferences
+                        p.preference-label Discover Preference: 
+                        p.preference-value #{user && user.discovery_frequency ? (user.discovery_frequency === '1' ? 'Rarely' : (user.discovery_frequency === '2' ? 'Occasionally' : 'Frequently')) : 'Occasionally'}
+                .profile-avatar-container
+                    .profile-image
+                        // User profile image placeholder
+                    
+                    .profile-stats
+                        .stats-number #{user && user.bookCount ? user.bookCount : '0'}
+                        p.stats-label Books
+                
+                .edit-profile-container
+                    a.edit-profile-btn(href="#" title="Edit your profile") Edit Profile
+                    button.logout-btn(title="Logout") Logout
+        
+        .profile-sections-container
+            .sections-content
+                section.profile-library
+                    .section-header
+                        h2.section-title #{user && user.first_name ? user.first_name : 'FirstName'}'s Library 
+                        span.section-icon
+                            img(src="/images/bookmark.svg" alt="Feather Pen" width="24" height="24")
+                    
+                    .library-grid
+                        if libraryBooks && libraryBooks.length > 0
+                            each book in libraryBooks.slice(0, 8)
+                                .book-item
+                                    .book-cover
+                                        //- Debug info for image path
+                                        span.debug-image-path(style="display:none;") Image path: #{book.cover_image ? `/images/${book.cover_image}` : 'No image'}
+                                        if book.cover_image
+                                            img(src=`/images/${book.cover_image}` alt=book.title style="width:100%; height:100%; object-fit:cover;")
+                                            //- Add fallback text if image fails to load
+                                            noscript Image failed to load: #{book.title}
+                                        else
+                                            .no-image(style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; background-color:#f0f0f0;") No Cover
+                                    button.remove-btn(data-book-id=book.book_id) remove
+                        else
+                            - for (let i = 0; i < 8; i++)
+                                .book-item
+                                    .book-cover
+                                        // Placeholder for book cover
+                                    button.remove-btn remove
+                    
+
+                section.profile-reviews-user 
+                    .section-header
+                        h2.section-title #{user && user.first_name ? user.first_name : 'FirstName'}'s Reviews 
+                        span.section-icon
+                            img(src="/images/feather-pen.svg" alt="Feather Pen" width="24" height="24")
+
+                    .reviews-container-user
+                        if reviews && reviews.length > 0
+                            each review in reviews.slice(0, reviews.length)
+                                .review-item(data-book-id=review.book_id)
+                                    .review-book
+                                        if review.cover_image
+                                            img(src=`/images/${review.cover_image}` alt=review.title style="width:100%; height:100%; object-fit:cover;")
+                                    .review-content
+                                        p.review-date Date: #{review.formattedDate}
+                                        p.review-text #{review.review_content}
+                        else
+                            - for (let i = 0; i < 3; i++)
+                                .review-item
+                                    .review-book
+                                        // Placeholder for book cover
+                                    .review-content
+                                        p.review-date Date: #{i === 0 ? '19/01/25' : '10/12/24'}
+                                        p.review-text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
+                    
+                    .carousel-nav-user
+                        button.prev ←
+                        button.next →
+                    
+                        
+                section.profile-ratings
+                    .section-header
+                        h2.section-title #{user && user.first_name ? user.first_name : 'FirstName'}'s Ratings 
+                        span.section-icon
+                            img(src="/images/rate-star.svg" alt="Rate Star" width="24" height="24")
+                        
+                    .ratings-container
+                        if ratings && ratings.length > 0
+                            each rating in ratings.slice(0, ratings.length)
+                                .rating-item(data-book-id=rating.book_id)
+                                    .rating-book
+                                        if rating.cover_image
+                                            img(src=`/images/${rating.cover_image}` alt=rating.title style="width:100%; height:100%; object-fit:cover;")
+                                    .rating-stars
+                                        - const ratingValue = Math.round(rating.rating)
+                                        - for (let j = 0; j < 5; j++)
+                                            if j < ratingValue
+                                                span.star.filled ★
+                                            else
+                                                span.star ★
+                        else
+                            - for (let i = 0; i < 5; i++)
+                                .rating-item
+                                    .rating-book
+                                        // Placeholder for book cover
+                                    .rating-stars
+                                        - const rating = i % 3 === 0 ? 3 : (i % 2 === 0 ? 5 : 4)
+                                        - for (let j = 0; j < 5; j++)
+                                            if j < rating
+                                                span.star.filled ★
+                                            else
+                                                span.star ★
+                    
+                    .carousel-nav-user
+                        button.prev ←
+                        button.next →
+        
+        // Edit Profile Popup
+        .edit-profile-popup.hidden
+            .popup-content
+                .popup-header
+                    h2.popup-title Edit Profile
+                    button.close-popup ×
+                
+                form#edit-profile-form
+                    .form-group-name
+                        .form-group
+                            label(for="edit-first-name") First Name
+                            input(type="text" id="edit-first-name" name="first_name" placeholder="First Name" class="form-group-input input-name")
+                        .form-group
+                            label(for="edit-last-name") Last Name
+                            input(type="text" id="edit-last-name" name="last_name" placeholder="Last Name" class="form-group-input input-name")
+                    
+                    .form-group-genres
+                        h3 Tell us what genres you enjoy:
+                        p.text-400 [ Pick Up to 4 ]
+                        .genres-container
+                            .genre-card.card(data-genre="1")
+                                p.text-400 Anime
+                            .genre-card.card(data-genre="2")
+                                p.text-400 Biography
+                            .genre-card.card(data-genre="3")
+                                p.text-400 Comedy
+                            .genre-card.card(data-genre="4")
+                                p.text-400 Fantasy
+                            .genre-card.card(data-genre="5")
+                                p.text-400 Horror
+                            .genre-card.card(data-genre="6")
+                                p.text-400 Mystery
+                            .genre-card.card(data-genre="7")
+                                p.text-400 Romance
+                            .genre-card.card(data-genre="8")
+                                p.text-400 Sci-Fi
+                            .genre-card.card(data-genre="9")
+                                p.text-400 Health/Wellness
+                    
+                    .form-group-frequency
+                        h3 Tell us how frequently you would like to discover new reads:
+                        .frequency-container
+                            .frequency-card.card(data-freq="1")
+                                p.text-400 Rarely
+                            .frequency-card.card(data-freq="2")
+                                p.text-400 Occasionally
+                            .frequency-card.card(data-freq="3")
+                                p.text-400 Frequently
+                    
+                    .popup-buttons
+                        button.button-secondary(type="button") Cancel
+                        button.button-primary(type="submit") Save Changes
+        
+    script.
+        // Debug data for JavaScript
+        window.libraryBooks = !{JSON.stringify(libraryBooks || [])};
+    
+    script(defer src="/js/user.js")
