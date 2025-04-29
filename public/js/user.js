@@ -547,4 +547,43 @@ document.addEventListener('DOMContentLoaded', function() {
         
         return bookItem;
     }
+
+    // Change Avatar Functionality
+    const profileImage = document.querySelector('.profile-image img');
+
+    profileImage.addEventListener('click', async () => {
+        try {
+            // Show loading state
+            profileImage.style.opacity = '0.7';
+            profileImage.style.cursor = 'wait';
+
+            // Call the API to get a new avatar
+            const response = await fetch('/change-avatar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    // Update the profile image
+                    profileImage.src = `/${data.avatarPath}`;
+                    showMessage('Avatar updated successfully', 'success');
+                } else {
+                    showMessage(data.message || 'Error updating avatar', 'error');
+                }
+            } else {
+                showMessage('Error updating avatar', 'error');
+            }
+        } catch (error) {
+            console.error('Error changing avatar:', error);
+            showMessage('Error updating avatar', 'error');
+        } finally {
+            // Remove loading state
+            profileImage.style.opacity = '1';
+            profileImage.style.cursor = 'pointer';
+        }
+    });
 });
