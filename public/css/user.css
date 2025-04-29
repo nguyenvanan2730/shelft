@@ -255,6 +255,7 @@
   border-radius: 4px;
   width: 140px;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .remove-btn {
@@ -321,6 +322,7 @@ section.profile-reviews-user {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .review-content {
@@ -383,6 +385,7 @@ section.profile-reviews-user {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .rating-stars {
