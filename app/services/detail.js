@@ -38,7 +38,21 @@ async function submitReview(req, res) {
                  WHERE user_id = ? AND book_id = ?`,
                 [review_content, user_read_date, rating, now, user.user_id, book_id]
             );
-            return res.json({ success: true, message: 'Review updated!' });
+            // Get updated review with username
+            const [updatedReview] = await db.query(
+                `SELECT Users.username, Reviews.rating, Reviews.review_content, Reviews.created_at 
+                 FROM Reviews 
+                 INNER JOIN Users ON Reviews.user_id = Users.user_id
+                 WHERE Reviews.book_id = ? AND Reviews.user_id = ?
+                 ORDER BY Reviews.updated_at DESC
+                 LIMIT 1`,
+                [book_id, user.user_id]);
+
+            return res.json({
+                success: true,
+                message: 'Review updated!',
+                review: updatedReview
+            });
         }
 
         // Insert new review
@@ -48,7 +62,17 @@ async function submitReview(req, res) {
             [user.user_id, book_id, review_content, user_read_date, rating, now, now]
         );
 
-        return res.json({ success: true, message: 'Review submitted!' });
+        // Get the full review with username
+        const [newReview] = await db.query(`
+            SELECT Users.username, Reviews.rating, Reviews.review_content, Reviews.created_at 
+             FROM Reviews 
+             INNER JOIN Users ON Reviews.user_id = Users.user_id
+             WHERE Reviews.book_id = ? AND Reviews.user_id = ?
+             ORDER BY Reviews.created_at DESC
+             LIMIT 1`,          
+            [book_id, user.user_id]);
+
+        return res.json({ success: true, message: 'Review submitted!',  review: newReview });
 
     } catch (err) {
         console.error('Error in submitReview:', err);

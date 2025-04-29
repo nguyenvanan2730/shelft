@@ -9,6 +9,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const { sendVerificationEmail } = require('../services/mail.service');
 const { getBookById } = require('../services/bookIdPage.js');
 const { submitReview } = require('../services/detail.js');
+const { addToLibrary, removeFromLibrary } = require('../services/bookmark.js');
 
 // ========================
 // PAGE ROUTES
@@ -118,6 +119,12 @@ router.get('/book/:id', async (req, res, next) => {
         next(err);
     }
 })
+
+/** Post submit save book to libraries table */
+router.post('/add-to-library', addToLibrary);
+
+/** Post remove the book from user library */
+router.post('/remove-from-library', removeFromLibrary);
 
 /** Post submit review + rating from book detail page */
 router.post('/submit-review', submitReview);

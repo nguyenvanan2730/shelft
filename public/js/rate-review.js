@@ -82,12 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             reviewMsg.textContent = data.message;
             if (data.success) {
-                reviewForm.reset();
-                dateInput.style.display = 'none';
-                selectedRating = 0;
-                document.querySelectorAll('.star').forEach(s => {
-                    s.src = '/images/rate-stroke.svg';
-                });
+                // Instead of manually updating the DOM, refresh the page
+                window.location.reload();
             }
         })
 
@@ -97,4 +93,80 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+});
+
+//bookmark toggle between add and remove state 
+document.addEventListener('DOMContentLoaded', () => {
+    const bookmarkIcon = document.querySelector('.bookmark-icon');
+    const tooltip = document.querySelector('.bookmark-tooltip');
+
+    if (bookmarkIcon && tooltip) {
+        const bookId = bookmarkIcon.getAttribute('data-bookid');
+        const dataLoggedIn = bookmarkIcon.getAttribute('data-loggedin');
+        const isLoggedIn = dataLoggedIn === 'true';
+        const isFilled = bookmarkIcon.src.includes('bookmark.svg');
+
+        console.log('Login status:', isLoggedIn);
+        console.log('Bookmark filled:', isFilled);
+
+        // Set initial tooltip text based on login status and bookmark state
+        if (!isLoggedIn) {
+            tooltip.textContent = 'Log in to save';
+        } else {
+            tooltip.textContent = isFilled ? 'Remove from library' : 'Save to library';
+        }
+
+        bookmarkIcon.addEventListener('click', () => {
+            // Only proceed if user is logged in
+            if (!isLoggedIn) {
+                // You might want to redirect to login page or show a login modal
+                alert('Please log in to save books to your library.');
+                return;
+            }
+            
+            const currentIsFilled = bookmarkIcon.src.includes('bookmark.svg');
+            const url = currentIsFilled ? '/remove-from-library' : '/add-to-library';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ book_id: bookId })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const newIsFilled = !currentIsFilled;
+                    bookmarkIcon.src = newIsFilled
+                        ? '/images/bookmark.svg'
+                        : '/images/bookmark-stroke.svg';
+                    
+                    // Update tooltip text after state change
+                    tooltip.textContent = newIsFilled ? 'Remove from library' : 'Save to library';
+                } else {
+                    alert(data.message || 'Action failed.');
+                }
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                alert('Something went wrong.');
+            });
+        });
+    }
+});
+
+
+//toggle selected hover state for read date buttons 
+const readNowButton = document.getElementById('read-now');
+const readPastButton = document.getElementById('read-past');
+
+readNowButton.addEventListener('click', () => {
+    readNowButton.classList.add('selected');
+    readPastButton.classList.remove('selected');
+});
+
+readPastButton.addEventListener('click', () => {
+    readPastButton.classList.add('selected');
+    readNowButton.classList.remove('selected');
 });

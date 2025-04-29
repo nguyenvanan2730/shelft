@@ -1164,3 +1164,260 @@ header {
         padding: 1rem;
     }
 } 
+
+/* BOOK DETAIL PAGE*/
+.book-detail-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: auto;
+}
+
+.book-detail-header{
+    width: 100%;
+    background-color: #C0BDBD;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.book-cover{
+    width: 220px;
+    height: 300px;
+    object-fit: cover;
+    padding-left: 12rem;
+    padding-top: 12rem;
+    padding-bottom: 2rem;
+}
+
+.book-detail-info {
+    position: relative;
+}
+
+.book-detail-info h1 {
+    font-family: "Outfit", sans-serif;
+    color: black;
+    font-size: 2rem;
+    padding-top: 10rem;
+    padding-left: 6rem;
+    width: 70%;
+    flex-grow: 1;
+    flex-basis: 0;
+    min-width: 0;
+}
+
+.book-detail-info p {
+    font-family: "Outfit", sans-serif;
+    font-size: 1.2rem;
+    color: black;
+    position: absolute;
+    top: 16rem;
+    padding-left: 6rem;
+    width: 100%;
+}
+
+.bookmark-wrapper {
+    position: absolute;
+    position:relative;
+    display: inline-block;
+    top: -6rem;
+    right: -44rem;
+}
+
+.bookmark-icon {
+    width: 46px;
+    height: 46px;
+    cursor: pointer;
+}
+
+.bookmark-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 125%; /* position above the icon */
+    left: 50%;
+    background-color:#AEB8D7;
+    color: black;
+    padding: 6px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-family: "Outfit", sans-serif;
+    font-size: 1rem;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 10;
+}
+
+.bookmark-wrapper:hover .bookmark-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.book-description{
+    width: 100%;
+    display: flex;
+}
+.book-description p{
+    margin-top: 4rem;
+    padding-left: 6rem;
+    width: 90%;
+    max-width: 600px;
+    flex-grow: 1;
+    flex-basis: 0;
+    min-width: 0;
+    text-align: left;
+    font-size: 1.2rem;
+    color: black;
+}
+
+.book-rating-review {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 2rem;
+    gap: 6rem;
+    justify-content: flex-start;
+    align-self: flex-start;
+    padding-left: 11rem;
+
+}
+
+.rating-block{
+    align-items: flex-start;
+    text-align: center;
+}
+.rating-block h3{
+    color: black;
+    font-family: "Outfit", sans-serif;
+    font-size: 1.4rem;
+
+}
+
+.rating-stars img{
+    width: 46px;
+    height: 46px;
+    cursor: pointer;
+}
+
+.review-block h3{
+    color: black;
+    font-family: "Outfit", sans-serif;
+    font-size: 1.4rem;
+}
+.write-icon{
+    position: absolute;
+    top: 40rem;
+    right: 45rem;
+    width: 36px;
+    height: 36px;
+}
+
+.review-block h4{
+    color: black;
+    font-family: "Outfit", sans-serif;
+    font-weight: 500;
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+
+.read-date-options{
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.read-date-options button{
+    background-color: #AEB8D7;
+    border-radius: 25px;
+    color:black;
+    font-family: "Outfit", sans-serif;
+    font-weight: 300;
+    font-size: 1.2rem;
+    padding: 0.7rem 1.4rem;
+    cursor: pointer;
+}
+.read-date-options button.selected {
+    background-color: #F58E5F; 
+    color: white;
+}
+
+#read-date {
+    padding: 0.5rem;
+    font-family: "Outfit", sans-serif;
+    font-weight: 300;
+    font-size: 1.2rem;
+}
+
+textarea#review-text {
+    min-height: 120px;
+    padding: 1rem;
+    border: 1.5px solid black;
+    border-radius: 15px;
+    resize: vertical;
+    font-family: "Outfit", sans-serif;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+button#submit-review{
+    background-color: #F58E5F;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 25px;
+    font-family: "Outfit", sans-serif;
+    font-weight: 300;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: fit-content;
+    align-self: flex-start;
+
+}
+
+.review-section{
+    background-color:#AEB8D7; 
+    padding: 4rem;
+    width: 100%;
+    text-align: left;
+}
+
+.review-section h3{
+    font-family: "Outfit", sans-serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: black;
+    text-align: center;
+}
+.review {
+    padding-left: 21rem;
+    padding-top: 2rem;
+    width: 90%;
+    max-width: 600px;
+    text-align: left;
+}
+.review strong{
+    font-size: 1.2rem;
+    color: black;
+    font-weight: 600;
+}
+.rating-stars-static{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+}
+
+.rating-stars-static img {
+    width: 46px;
+    height: 46px;
+}
+
+.review p, .date{
+    font-family: "Outfit", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: black;
+    margin:0;
+    padding-top: 0.8rem;
+}
