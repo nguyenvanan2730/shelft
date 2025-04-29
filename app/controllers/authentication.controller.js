@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import e from "express";
 import db from "../services/db.js";
 import { sendVerificationEmail } from "../services/mail.service.js";
+import { sendPasswordResetEmail } from "../services/mail.service.js";
 
 dotenv.config();
 
@@ -214,10 +215,80 @@ async function savePreferences(req, res) {
   }
 }
 
+/**
+ * Sends a password reset email with a secure token link.
+ */
+async function requestPasswordReset(req, res) {
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required' });
+  }
+
+  try {
+    // Check if the user exists
+    const users = await db.query("SELECT * FROM Users WHERE email = ?", [email]);
+    if (users.length === 0) {
+      return res.status(404).json({ message: 'No account with this email' });
+    }
+
+    const user = users[0];
+
+    // Create a token with short expiry (e.g., 15 min)
+    const token = jsonwebtoken.sign(
+      { email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '15m' }
+    );
+
+    // Send password reset email
+    await sendPasswordResetEmail(user.email, token);
+
+    return res.json({ message: 'Password reset email sent' });
+
+  } catch (err) {
+    console.error('❌ Error in requestPasswordReset:', err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+}
+
+async function resetPassword(req, res) {
+  try {
+    const { token } = req.params;
+    const { new_password } = req.body;
+
+    if (!new_password) {
+      return res.status(400).json({ message: 'New password is required' });
+    }
+
+    const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
+    if (!decoded || !decoded.email) {
+      return res.status(400).json({ message: 'Invalid or expired token' });
+    }
+
+    // Generar nuevo hash
+    const salt = await bcryptjs.genSalt(10);
+    const hash = await bcryptjs.hash(new_password, salt); // Aquí fallaba
+
+    // Actualizar en la base de datos
+    await db.query(
+      "UPDATE Users SET password_hash = ? WHERE email = ?",
+      [hash, decoded.email]
+    );
+
+    return res.json({ message: 'Password reset successfully' });
+  } catch (error) {
+    console.error("❌ Error in resetPassword:", error);
+    return res.status(500).json({ message: 'Error resetting password' });
+  }
+}
+
 export const methods = {
     login,
     register,
     verifyAccount,
     checkVerificationStatus,
-    savePreferences
+    savePreferences,
+    requestPasswordReset,
+    resetPassword,
 };

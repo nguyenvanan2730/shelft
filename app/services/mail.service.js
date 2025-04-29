@@ -22,62 +22,118 @@ export async function sendVerificationEmail(user_email, token){
     });
 }
 
-function createVerificationEmail(token){
+function createVerificationEmail(token) {
     return `
     <!DOCTYPE html>
     <html lang="en">
-    <body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: Arial, sans-serif;">
-    
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background-color: #f4f4f4; padding: 20px;">
+    <body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: 'Outfit', sans-serif;">
+  
+      <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4; padding: 40px 0;">
         <tr>
-            <td align="center">
-            
-            <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); text-align: center;">
-          
-                <tr>
+          <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center;">
+              
+              <tr>
                 <td style="padding-bottom: 20px;">
-                    <h1 style="color: #333333; font-size: 24px; margin: 0;">Verify Your Email Address</h1>
+                  <img src="../../public/images/logo.svg" alt="Shelft Logo" width="50" />
                 </td>
-                </tr>
-
-                <tr>
-                <td style="padding: 10px 20px;">
-                    <p style="color: #555555; font-size: 16px; line-height: 1.5;">
-                    Thank you for signing up in Shelft! To complete your registration, please verify your email address by clicking the button below.
-                    </p>
+              </tr>
+              <tr>
+                <td style="color: #1a1a1a; font-size: 22px; font-weight: bold;">
+                  Welcome to <span style="color: #D97852;">Shelft</span>, reader!
                 </td>
-                </tr>
-
-                <tr>
+              </tr>
+              <tr>
+                <td style="padding: 20px 0; color: #444; font-size: 16px;">
+                  We're excited to have you on board. To get started, please confirm your email by clicking the button below.
+                </td>
+              </tr>
+              <tr>
                 <td style="padding: 20px;">
-                    <a href="http://127.0.0.1:3000/verify/${token}"
-                    style="display: inline-block; padding: 12px 20px; text-decoration: none; background-color: #007BFF; color: #ffffff; font-size: 16px; border-radius: 5px; font-weight: bold;">
-                    Verify Email
-                    </a>
+                  <a href="http://127.0.0.1:3000/verify/${token}" style="background-color: #D97852; padding: 14px 28px; border-radius: 6px; color: #fff; text-decoration: none; font-size: 16px; font-weight: bold;">
+                    Verify My Email
+                  </a>
                 </td>
-                </tr>
-
-                <tr>
-                <td style="padding: 10px 20px;">
-                    <p style="color: #555555; font-size: 14px; line-height: 1.5;">
-                    If you did not sign up for this account, please ignore this email.
-                    </p>
+              </tr>
+              <tr>
+                <td style="padding-top: 30px; color: #999; font-size: 13px;">
+                  If you didn’t sign up, you can safely ignore this email.
                 </td>
-                </tr>
-
-                <tr>
-                <td style="padding-top: 20px;">
-                    <p style="font-size: 12px; color: #777777;">
-                    This is an automated email, please do not reply.
-                    </p>
+              </tr>
+              <tr>
+                <td style="padding-top: 10px; color: #ccc; font-size: 12px;">
+                  Shelft © 2025 · Read beautifully 📚
                 </td>
-                </tr>
+              </tr>
+  
             </table>
-            </td>
+          </td>
         </tr>
-        </table>
+      </table>
+  
     </body>
-    </html>
+    </html>`;
+  }
+  
 
-    `
-}
+  export async function sendPasswordResetEmail(user_email, token) {
+    const resetLink = `http://127.0.0.1:3000/reset-password/${token}`;
+  
+    return await transporter.sendMail({
+      from: 'Shelft. <perette93@gmail.com>',
+      to: user_email,
+      subject: 'Reset your password',
+      html: `
+      <!DOCTYPE html>
+      <html lang="en">
+      <body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: 'Outfit', sans-serif;">
+  
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4; padding: 40px 0;">
+          <tr>
+            <td align="center">
+              <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center;">
+                
+                <tr>
+                  <td style="padding-bottom: 20px;">
+                    <img src="../../public/images/logo.svg" alt="Shelft Logo" width="50" />
+                  </td>
+                </tr>
+                <tr>
+                  <td style="color: #1a1a1a; font-size: 22px; font-weight: bold;">
+                    Reset your password 🔐
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 20px 0; color: #444; font-size: 16px;">
+                    Forgot your password? Don’t worry — just click the button below to set a new one.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 20px;">
+                    <a href="${resetLink}" style="background-color: #D97852; padding: 14px 28px; border-radius: 6px; color: #fff; text-decoration: none; font-size: 16px; font-weight: bold;">
+                      Reset Password
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-top: 30px; color: #999; font-size: 13px;">
+                    Didn’t request a password change? Just ignore this email.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-top: 10px; color: #ccc; font-size: 12px;">
+                    Shelft © 2025 · We care about your privacy 🌐
+                  </td>
+                </tr>
+  
+              </table>
+            </td>
+          </tr>
+        </table>
+  
+      </body>
+      </html>
+      `
+    });
+  }
+  

@@ -8,6 +8,9 @@ const { getUserLibraryBooks, getUserReviews, getUserRatings, getUserBookCount, g
 const passport = require('passport');
 const jsonwebtoken = require('jsonwebtoken');
 const { sendVerificationEmail } = require('../services/mail.service');
+const { getBookById } = require('../services/bookIdPage.js');
+const { submitReview } = require('../services/detail.js');
+const { addToLibrary, removeFromLibrary } = require('../services/bookmark.js');
 
 // ========================
 // PAGE ROUTES
@@ -124,6 +127,18 @@ router.get('/user', authorization.onlyRegistered, async (req, res, next) => {
     }
 });
 
+router.get('/privacy', async (req, res, next) => {
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    res.render('page/privacy', { isLoggedIn, user });
+});
+
+router.get('/terms', async (req, res, next) => {
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    res.render('page/terms', { isLoggedIn, user });
+});
+
 router.get('/db_test', async (req, res, next) => {
     try {
         const results = await getDbTestResults();
@@ -135,14 +150,60 @@ router.get('/db_test', async (req, res, next) => {
     next();
 });
 
-// ========================
-// API ROUTES
-// ========================
+/** Renders the individual book detail page */
+router.get('/book/:id', async (req, res, next) => {
+    //checks if the user has valid session cookie
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    const bookId = parseInt(req.params.id, 10);
+    if (isNaN(bookId)) {
+        console.error('Invalid book ID:', req.params.id);
+        return res.status(400).send('Invalid ID');
+    }
+
+    try {
+        //fetch the book details + reviews 
+        const bookData = await getBookById(bookId);
+
+        //if no book is found return a 404 not found response
+        if (!bookData) {
+            return res.status(404).send('Book not found');
+        }
+
+        //if the book exist render the details data 
+        res.render('page/book-detail', {
+            isLoggedIn,
+            user,
+            book: bookData.book,
+            reviews: bookData.reviews
+        });
+    } catch (err) {
+        // if an error occurs, pass to express error handler
+        next(err);
+    }
+})
+
+/** Post submit save book to libraries table */
+router.post('/add-to-library', addToLibrary);
+
+/** Post remove the book from user library */
+router.post('/remove-from-library', removeFromLibrary);
+
+/** Post submit review + rating from book detail page */
+router.post('/submit-review', submitReview);
+
+/**
+ * API Routes
+ */
+
+// Checks if the user is verified
 router.get('/api/check-verification', authentication.checkVerificationStatus);
 router.post('/api/register', authentication.register);
 router.post('/api/login', authentication.login);
 router.get('/verify/:token', authentication.verifyAccount);
 router.post('/api/save-preferences', authorization.onlyRegistered, authentication.savePreferences);
+router.post('/api/request-password-reset', authentication.requestPasswordReset);
+router.post('/api/reset-password/:token', authentication.resetPassword);
 
 // Remove book from library
 router.delete('/api/library/:bookId', authorization.onlyRegistered, async (req, res) => {
@@ -328,6 +389,24 @@ router.get('/set-session', async (req, res) => {
     } catch (err) {
         console.error("❌ Error setting JWT in /set-session:", err);
         return res.status(500).send("Something went wrong while setting session.");
+    }
+});
+
+
+// ========================
+// RESET PASSWORD
+// ========================
+router.get('/reset-password/:token', async (req, res) => {
+    try {
+        const decoded = jsonwebtoken.verify(req.params.token, process.env.JWT_SECRET);
+        if (!decoded || !decoded.email) {
+            return res.status(400).send('Invalid token');
+        }
+
+        return res.render('page/reset-password', { email: decoded.email });
+    } catch (error) {
+        console.error("Error in GET /reset-password:", error);
+        return res.status(400).send('Invalid or expired token');
     }
 });
 

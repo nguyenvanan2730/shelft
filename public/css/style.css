@@ -942,9 +942,17 @@ header {
     text-decoration: none;
 }
  
-.link-contact:hover{
+.link-contact:hover, .link-footer:hover{
     text-decoration: underline;
 }
+
+.link-footer{
+    align-content: center;
+    text-decoration: none;
+    color: white;
+}
+
+
  
 /* Contact */
 .contact-gray{
@@ -1027,4 +1035,416 @@ header {
   
 .shake {
     animation: shake 0.5s;
+}
+
+/* MODAL STYLES */
+.hidden-modal {
+    display: none!important;
+}
+  
+#reset-password-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+  
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.modal-box {
+    margin-top: -190px;
+    position: relative;
+    background: #fff;
+    padding: 2rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    z-index: 2010;
+    text-align: center;
+    animation: fadeIn 0.2s ease;
+}
+  
+.modal-box h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+  
+.modal-box input {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    width: 94%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+  
+.modal-box .close-modal {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 1.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+  
+.reset-password-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+  
+.reset-password-container {
+    background: #fff;
+    padding: 3rem;
+    border-radius: 16px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+  
+.reset-password-container h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+  
+.reset-password-container p {
+    margin-bottom: 1.5rem;
+}
+  
+.reset-password-container .form-group {
+    margin-bottom: 1rem;
+}
+  
+.error-message {
+    color: #c0392b;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+  
+.hidden-msg {
+    display: none;
+}
+.terms-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 100px 45px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+.Privacy-policy-page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 90px 45px;
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+
+.terms-page,
+.privacy-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    line-height: 1.6;
+}
+
+.legal-page .contact-info {
+    background-color: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.legal-page .contact-info ul {
+    list-style-type: none;
+    margin-left: 0;
+}
+
+.legal-page .contact-info li {
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .terms-page,
+    .privacy-page {
+        padding: 1rem;
+    }
+} 
+
+/* BOOK DETAIL PAGE*/
+.book-detail-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: auto;
+}
+
+.book-detail-header{
+    width: 100%;
+    background-color: #C0BDBD;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.book-detail-cover{
+    width: 220px;
+    height: 300px;
+    object-fit: cover;
+    padding-left: 12rem;
+    padding-top: 12rem;
+    padding-bottom: 2rem;
+}
+
+.book-detail-info {
+    position: relative;
+}
+
+.book-detail-info h1 {
+    font-family: "Outfit", sans-serif;
+    color: black;
+    font-size: 2rem;
+    padding-top: 10rem;
+    padding-left: 6rem;
+    width: 70%;
+    flex-grow: 1;
+    flex-basis: 0;
+    min-width: 0;
+}
+
+.book-detail-info p {
+    font-family: "Outfit", sans-serif;
+    font-size: 1.2rem;
+    color: black;
+    position: absolute;
+    top: 16rem;
+    padding-left: 6rem;
+    width: 100%;
+}
+
+.bookmark-wrapper {
+    position: absolute;
+    position:relative;
+    display: inline-block;
+    top: -6rem;
+    right: -44rem;
+}
+
+.bookmark-icon {
+    width: 46px;
+    height: 46px;
+    cursor: pointer;
+}
+
+.bookmark-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 125%; /* position above the icon */
+    left: 50%;
+    background-color:#AEB8D7;
+    color: black;
+    padding: 6px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-family: "Outfit", sans-serif;
+    font-size: 1rem;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 10;
+}
+
+.bookmark-wrapper:hover .bookmark-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.book-description{
+    width: 100%;
+    display: flex;
+}
+.book-description p{
+    margin-top: 4rem;
+    padding-left: 6rem;
+    width: 90%;
+    max-width: 600px;
+    flex-grow: 1;
+    flex-basis: 0;
+    min-width: 0;
+    text-align: left;
+    font-size: 1.2rem;
+    color: black;
+}
+
+.book-rating-review {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 2rem;
+    gap: 6rem;
+    justify-content: flex-start;
+    align-self: flex-start;
+    padding-left: 11rem;
+
+}
+
+.rating-block{
+    align-items: flex-start;
+    text-align: center;
+}
+.rating-block h3{
+    color: black;
+    font-family: "Outfit", sans-serif;
+    font-size: 1.4rem;
+
+}
+
+.rating-stars img{
+    width: 46px;
+    height: 46px;
+    cursor: pointer;
+}
+
+.review-block h3{
+    color: black;
+    font-family: "Outfit", sans-serif;
+    font-size: 1.4rem;
+}
+.write-icon{
+    position: absolute;
+    top: 40rem;
+    right: 45rem;
+    width: 36px;
+    height: 36px;
+}
+
+.review-block h4{
+    color: black;
+    font-family: "Outfit", sans-serif;
+    font-weight: 500;
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+
+.read-date-options{
+    display: flex;
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.read-date-options button{
+    background-color: #AEB8D7;
+    border-radius: 25px;
+    color:black;
+    font-family: "Outfit", sans-serif;
+    font-weight: 300;
+    font-size: 1.2rem;
+    padding: 0.7rem 1.4rem;
+    cursor: pointer;
+}
+.read-date-options button.selected {
+    background-color: #F58E5F; 
+    color: white;
+}
+
+#read-date {
+    padding: 0.5rem;
+    font-family: "Outfit", sans-serif;
+    font-weight: 300;
+    font-size: 1.2rem;
+}
+
+textarea#review-text {
+    min-height: 120px;
+    padding: 1rem;
+    border: 1.5px solid black;
+    border-radius: 15px;
+    resize: vertical;
+    font-family: "Outfit", sans-serif;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+button#submit-review{
+    background-color: #F58E5F;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: 25px;
+    font-family: "Outfit", sans-serif;
+    font-weight: 300;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: fit-content;
+    align-self: flex-start;
+
+}
+
+.review-section{
+    background-color:#AEB8D7; 
+    padding: 4rem;
+    width: 100%;
+    text-align: left;
+}
+
+.review-section h3{
+    font-family: "Outfit", sans-serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: black;
+    text-align: center;
+}
+.review {
+    padding-left: 21rem;
+    padding-top: 2rem;
+    width: 90%;
+    max-width: 600px;
+    text-align: left;
+}
+.review strong{
+    font-size: 1.2rem;
+    color: black;
+    font-weight: 600;
+}
+.rating-stars-static{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1rem 0;
+}
+
+.rating-stars-static img {
+    width: 46px;
+    height: 46px;
+}
+
+.review p, .date{
+    font-family: "Outfit", sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: black;
+    margin:0;
+    padding-top: 0.8rem;
 }

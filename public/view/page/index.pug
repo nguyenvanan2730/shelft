@@ -17,7 +17,8 @@ block content
                 //- User genre filter here
                 each book in data.filter(book => userGenresBook.includes(book.book_id)).sort(() => 0.5 - Math.random()).slice(0, 18)
                     .book-card
-                        img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
 
             .carousel-nav 
                 btn.prev ←
@@ -29,7 +30,8 @@ block content
             .carousel-items 
                 each book in data.sort((a, b) => b.rating - a.rating).slice(0, 18)
                     .book-card
-                        img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
                         .book-info
                             span.rating 
                                 img(src="/images/rate-star.svg", alt="Rating", width="18", height="auto")
@@ -47,7 +49,8 @@ block content
             .carousel-items 
                 each book in data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0,18)
                     .book-card 
-                        img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
             .carousel-nav 
                 btn.prev ←
                 btn.next →
@@ -85,7 +88,8 @@ block content
             .carousel-items 
                 each book in data.sort((a, b) => b.rating - a.rating).slice(0, 18)
                     .book-card
-                        img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
                         .book-info
                             span.rating 
                                 img(src="/images/rate-star.svg", alt="Rating", width="18", height="auto")
@@ -103,7 +107,8 @@ block content
             .carousel-items 
                 each book in data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0,18)
                     .book-card 
-                        img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
             .carousel-nav 
                 btn.prev ←
                 btn.next →
@@ -114,7 +119,8 @@ block content
             .carousel-items 
                 each book in data.sort((a, b) => b.review_num - a.review_num).slice(0,18)
                     .book-card 
-                        img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
             .carousel-nav 
                 btn.prev ←
                 btn.next →
