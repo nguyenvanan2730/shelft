@@ -1423,3 +1423,7 @@ button#submit-review{
     margin:0;
     padding-top: 0.8rem;
 }
+
+#review-msg {
+    font-weight:600;
+}
