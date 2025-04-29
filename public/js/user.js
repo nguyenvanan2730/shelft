@@ -1,6 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log("User page JS loaded");
 
+    // Logout button functionality
+    const logoutButton = document.querySelector('.logout-btn');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+            try {
+                console.log("Logging out...");
+                const res = await fetch('/logout', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                if (res.redirected) {
+                    console.log("Successfully logged out. Redirecting...");
+                    window.location.href = '/';
+                } else {
+                    console.error("Logout failed.");
+                }
+            } catch (error) {
+                console.error("Error during logout:", error);
+            }
+        });
+    }
+
     // Track removed books
     const removedBookIds = new Set();
 
@@ -47,28 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Call the function to add click listeners
     addBookClickListeners();
-
-    // Logout button functionality
-    const logoutButton = document.getElementById('logout-button');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', async () => {
-            try {
-                console.log("Logging out...");
-                const res = await fetch('/logout', {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                if (res.redirected) {
-                    console.log("Successfully logged out. Redirecting...");
-                    window.location.href = '/';
-                } else {
-                    console.error("Logout failed.");
-                }
-            } catch (error) {
-                console.error("Error during logout:", error);
-            }
-        });
-    }
 
     // Find all carousels on the page
     const reviewsContainer = document.querySelector('.reviews-container-user');

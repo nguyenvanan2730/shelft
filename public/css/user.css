@@ -176,6 +176,28 @@
   background-color: #e47e4f;
 }
 
+.logout-btn {
+  position: absolute;
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  background-color: transparent;
+  color: #26345E;
+  border: 1px solid #26345E;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  top: 5px;
+  right: 20px;
+  z-index: 5;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #26345E;
+  color: white;
+}
+
 /* Section styles */
 .profile-sections-container {
   background-color: #aeb8d7;
