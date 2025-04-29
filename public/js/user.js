@@ -404,68 +404,64 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Remove book from library functionality
-    const removeButtons = document.querySelectorAll('.remove-btn');
-    removeButtons.forEach(button => {
-        button.addEventListener('click', async function() {
-            const bookId = this.getAttribute('data-book-id');
-            if (!bookId) return;
+    document.querySelector('.library-grid').addEventListener('click', async function(e) {
+        const removeBtn = e.target.closest('.remove-btn');
+        if (!removeBtn) return;
 
-            try {
-                const response = await fetch(`/api/library/${bookId}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
+        const bookId = removeBtn.getAttribute('data-book-id');
+        if (!bookId) return;
 
-                const data = await response.json();
+        try {
+            const response = await fetch(`/api/library/${bookId}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                // Add the book ID to the removed set
+                removedBookIds.add(bookId);
                 
-                if (data.success) {
-                    // Add the book ID to the removed set
-                    removedBookIds.add(bookId);
+                // Remove the book item from the DOM with animation
+                const bookItem = removeBtn.closest('.book-item');
+                bookItem.classList.add('fade-out');
+                
+                // Wait for animation to complete before removing
+                setTimeout(() => {
+                    bookItem.remove();
                     
-                    // Remove the book item from the DOM with animation
-                    const bookItem = this.closest('.book-item');
-                    bookItem.classList.add('fade-out');
+                    // Update book count
+                    const statsNumber = document.querySelector('.stats-number');
+                    if (statsNumber) {
+                        const currentCount = parseInt(statsNumber.textContent);
+                        statsNumber.textContent = currentCount - 1;
+                    }
+
+                    // Get the next book from the remaining list, excluding removed books
+                    const libraryGrid = document.querySelector('.library-grid');
+                    const currentBooks = Array.from(libraryGrid.querySelectorAll('.book-item'));
+                    const remainingBooks = window.libraryBooks.filter(book => 
+                        !removedBookIds.has(book.book_id.toString()) && 
+                        !currentBooks.some(item => item.querySelector('.remove-btn').getAttribute('data-book-id') === book.book_id.toString())
+                    );
+
+                    if (remainingBooks.length > 0) {
+                        const nextBook = remainingBooks[0];
+                        const newBookItem = createBookItem(nextBook);
+                        libraryGrid.appendChild(newBookItem);
+                    }
                     
-                    // Wait for animation to complete before removing
-                    setTimeout(() => {
-                        bookItem.remove();
-                        
-                        // Update book count
-                        const statsNumber = document.querySelector('.stats-number');
-                        if (statsNumber) {
-                            const currentCount = parseInt(statsNumber.textContent);
-                            statsNumber.textContent = currentCount - 1;
-                        }
-
-                        // Get the next book from the remaining list, excluding removed books
-                        const libraryGrid = document.querySelector('.library-grid');
-                        const currentBooks = Array.from(libraryGrid.querySelectorAll('.book-item'));
-                        const remainingBooks = window.libraryBooks.filter(book => 
-                            !removedBookIds.has(book.book_id.toString()) && 
-                            !currentBooks.some(item => item.querySelector('.remove-btn').getAttribute('data-book-id') === book.book_id.toString())
-                        );
-
-                        if (remainingBooks.length > 0) {
-                            const nextBook = remainingBooks[0];
-                            const newBookItem = createBookItem(nextBook);
-                            libraryGrid.appendChild(newBookItem);
-                            
-                            // Add event listener to the new remove button
-                            const newRemoveBtn = newBookItem.querySelector('.remove-btn');
-                            newRemoveBtn.addEventListener('click', removeButtons[0].onclick);
-                        }
-                        
-                        // Show success message
-                        showMessage('Book removed from library', 'success');
-                    }, 500);
-                } else {
-                    showMessage('Failed to remove book', 'error');
-                }
-            } catch (error) {
-                console.error('Error removing book:', error);
-                showMessage('Error removing book', 'error');
+                    // Show success message
+                    showMessage('Book removed from library', 'success');
+                }, 500);
+            } else {
+                showMessage('Failed to remove book', 'error');
             }
-        });
+        } catch (error) {
+            console.error('Error removing book:', error);
+            showMessage('Error removing book', 'error');
+        }
     });
 
     // Function to create a new book item
