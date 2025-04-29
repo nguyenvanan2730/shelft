@@ -231,8 +231,8 @@
 
 /* Library grid */
 .library-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 1.5rem;
   margin-bottom: 1.5rem;
   width: 640px;
@@ -246,7 +246,7 @@
   flex-direction: column;
   width: 140px;
   box-sizing: border-box;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .book-cover {
@@ -457,8 +457,29 @@ section.profile-reviews-user {
   background-color: #ccc;
 }
 
+.prev, .next {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  color: #26345E;
+  transition: all 0.3s ease;
+}
+
 .prev:hover, .next:hover {
-  color: #79797a;
+  color: #F58E5F;
+}
+
+.prev.disabled, .next.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.prev.disabled:hover, .next.disabled:hover {
+  color: #26345E;
+  cursor: not-allowed;
 }
 
 /* Footer styling */
@@ -540,8 +561,6 @@ footer {
 
 @media (max-width: 992px) {
   .library-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
     width: 470px;
   }
 
@@ -562,8 +581,6 @@ footer {
   }
   
   .library-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
     width: 300px;
   }
   
@@ -623,7 +640,6 @@ footer {
   }
   
   .library-grid {
-    gap: 0.75rem;
     width: 290px;
   }
   
@@ -656,8 +672,6 @@ footer {
 
 @media (max-width: 480px) {
   .library-grid {
-    grid-template-columns: repeat(1, 1fr);
-    gap: 0.5rem;
     width: 140px;
   }
   

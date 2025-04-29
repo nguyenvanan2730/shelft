@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Find all carousels on the page
-    const reviewsContainer = document.querySelector('.reviews-container');
+    const reviewsContainer = document.querySelector('.reviews-container-user');
     const ratingsContainer = document.querySelector('.ratings-container');
     
     // Initialize each carousel
@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Function to scroll left
         function scrollLeft() {
+            if (prevButton.classList.contains('disabled')) return;
             container.scrollBy({
                 left: -scrollAmount,
                 behavior: 'smooth'
@@ -58,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Function to scroll right
         function scrollRight() {
+            if (nextButton.classList.contains('disabled')) return;
             container.scrollBy({
                 left: scrollAmount,
                 behavior: 'smooth'
@@ -74,9 +76,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (container.scrollLeft <= 0) {
                 prevButton.style.opacity = '0.5';
                 prevButton.classList.add('disabled');
+                prevButton.style.cursor = 'not-allowed';
             } else {
                 prevButton.style.opacity = '1';
                 prevButton.classList.remove('disabled');
+                prevButton.style.cursor = 'pointer';
             }
             
             // Check if at the end
@@ -84,14 +88,18 @@ document.addEventListener('DOMContentLoaded', function() {
             if (container.scrollLeft >= maxScrollLeft - 5) {
                 nextButton.style.opacity = '0.5';
                 nextButton.classList.add('disabled');
+                nextButton.style.cursor = 'not-allowed';
             } else {
                 nextButton.style.opacity = '1';
                 nextButton.classList.remove('disabled');
+                nextButton.style.cursor = 'pointer';
             }
         }
         
-        // Initialize button visibility
-        updateButtonVisibility();
+        // Initialize button visibility - disable left arrow by default
+        prevButton.style.opacity = '0.5';
+        prevButton.classList.add('disabled');
+        prevButton.style.cursor = 'not-allowed';
         
         // Update button visibility when scrolling
         container.addEventListener('scroll', updateButtonVisibility);
