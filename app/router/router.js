@@ -11,7 +11,7 @@ const { sendVerificationEmail } = require('../services/mail.service');
 const { getBookById } = require('../services/bookIdPage.js');
 const { submitReview } = require('../services/detail.js');
 const { addToLibrary, removeFromLibrary } = require('../services/bookmark.js');
-const avatar = require('../controllers/avatar.controller.js').methods;
+const { handleChangeAvatar } = require('../services/avatar.service');
 
 // ========================
 // PAGE ROUTES
@@ -320,7 +320,7 @@ router.post('/api/update-profile', authorization.onlyRegistered, async (req, res
     }
 });
 
-router.post('/change-avatar', authorization.onlyRegistered, avatar.changeAvatar);
+router.post('/change-avatar', authorization.onlyRegistered, handleChangeAvatar);
 
 // ========================
 // GOOGLE AUTH
