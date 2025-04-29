@@ -1213,10 +1213,10 @@ header {
     font-family: "Outfit", sans-serif;
     font-size: 1.2rem;
     color: black;
-    position: absolute;
-    top: 16rem;
     padding-left: 6rem;
     width: 100%;
+    max-width: 600px;
+    padding-top: 0;
 }
 
 .bookmark-wrapper {
@@ -1261,9 +1261,9 @@ header {
     display: flex;
 }
 .book-description p{
-    margin-top: 4rem;
     padding-left: 6rem;
-    width: 90%;
+    padding-bottom: 1rem;
+    width: 600px;
     max-width: 600px;
     flex-grow: 1;
     flex-basis: 0;
@@ -1301,15 +1301,17 @@ header {
     cursor: pointer;
 }
 
-.review-block h3{
+.review-title{
+    display: flex;
+    gap: 0.5rem;
+}
+.review-title h3{
     color: black;
     font-family: "Outfit", sans-serif;
     font-size: 1.4rem;
+    margin: 0;
 }
 .write-icon{
-    position: absolute;
-    top: 40rem;
-    right: 45rem;
     width: 36px;
     height: 36px;
 }
@@ -1318,7 +1320,7 @@ header {
     color: black;
     font-family: "Outfit", sans-serif;
     font-weight: 500;
-    margin-top: 0;
+    margin-top: 1rem;
     font-size: 1.2rem;
 }
 

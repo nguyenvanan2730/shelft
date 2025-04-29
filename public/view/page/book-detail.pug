@@ -34,8 +34,9 @@ block content
                     each star in [1,2,3,4,5]
                         img.star(data-value=star src="/images/rate-stroke.svg" alt="star")
             .review-block 
-                h3 Leave a review 
-                img.write-icon( src="/images/feather-pen.svg" alt= "feather pen")
+                .review-title 
+                    h3 Leave a review 
+                    img.write-icon( src="/images/feather-pen.svg" alt= "feather pen")
                 
                 form.review-form(method="POST", action="/submit-review" data-loggedin=isLoggedIn)
                     input(type="hidden", name="book_id", value=book.book_id) 
