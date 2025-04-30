@@ -5,6 +5,7 @@ import e from "express";
 import db from "../services/db.js";
 import { sendVerificationEmail } from "../services/mail.service.js";
 import { sendPasswordResetEmail } from "../services/mail.service.js";
+import { downloadRandomBookCover } from "../services/avatar.service.js";
 
 dotenv.config();
 
@@ -47,11 +48,12 @@ async function register(req, res) {
       if (!mail.accepted || mail.accepted.length === 0) {
         return res.status(500).send({ status: 'error', message: 'Error sending email' });
       }
-
+      const profileImage = await downloadRandomBookCover();
+      
       await db.query(
-        `INSERT INTO Users (username, email, password_hash, first_name, last_name, verified)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [username, email, hash, first_name, last_name, false]
+        `INSERT INTO Users (username, email, password_hash, first_name, last_name, verified, profile_img  )
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [username, email, hash, first_name, last_name, false, profileImage]
       );
 
       // ✅ Guardar email en una cookie temporal (10 min)

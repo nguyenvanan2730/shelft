@@ -20,9 +20,13 @@ block content
                         p.preference-label Discover Preference: 
                         p.preference-value #{user && user.discovery_frequency ? (user.discovery_frequency === '1' ? 'Rarely' : (user.discovery_frequency === '2' ? 'Occasionally' : 'Frequently')) : 'Occasionally'}
                 .profile-avatar-container
-                    .profile-image
-                        // User profile image placeholder
-                    
+                    .avatar-wrapper
+                        .profile-image
+                            if user && user.profile_img
+                                img(src=`/${user.profile_img}` alt="Profile Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; cursor:pointer;")
+                            else
+                                // Default avatar placeholder
+                                img(src="/avatar/default.svg" alt="Default Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:50%; cursor:pointer;")  
                     .profile-stats
                         .stats-number #{user && user.bookCount ? user.bookCount : '0'}
                         p.stats-label Books
