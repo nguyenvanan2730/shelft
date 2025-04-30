@@ -161,12 +161,16 @@ document.addEventListener('DOMContentLoaded', () => {
 const readNowButton = document.getElementById('read-now');
 const readPastButton = document.getElementById('read-past');
 
-readNowButton.addEventListener('click', () => {
-    readNowButton.classList.add('selected');
-    readPastButton.classList.remove('selected');
-});
+if (readNowButton) {
+    readNowButton.addEventListener('click', () => {
+        readNowButton.classList.add('selected');
+        if (readPastButton) readPastButton.classList.remove('selected');
+    });
+}
 
-readPastButton.addEventListener('click', () => {
-    readPastButton.classList.add('selected');
-    readNowButton.classList.remove('selected');
-});
+if (readPastButton) {
+    readPastButton.addEventListener('click', () => {
+        readPastButton.classList.add('selected');
+        if (readNowButton) readNowButton.classList.remove('selected');
+    });
+}

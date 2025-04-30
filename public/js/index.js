@@ -7,25 +7,28 @@ console.log("Carousel JavaScript loaded!");
  * - Closes the alert when the close button is clicked.
  * - Automatically hides the alert after 5 seconds.
  */
-const preferencesAlert = document.getElementsByClassName('preferences-success-alert')[0];
-const closePreferencesAlert = document.getElementsByClassName('close-preferences-success-alert')[0];
+document.addEventListener('DOMContentLoaded', function() {
+    const preferencesAlert = document.getElementsByClassName('preferences-success-alert')[0];
+    const closePreferencesAlert = document.getElementsByClassName('close-preferences-success-alert')[0];
 
-// Close alert when the "×" button is clicked
-closePreferencesAlert.addEventListener('click', () => {
-    preferencesAlert.classList.add('hidden-msg');
-});
+    // Close alert when the "×" button is clicked
+    if (closePreferencesAlert) {
+        closePreferencesAlert.addEventListener('click', () => {
+            preferencesAlert.classList.add('hidden-msg');
+        });
+    }
 
-// Hide alert automatically after 5 seconds
-setTimeout(() => {
-    if (preferencesAlert) preferencesAlert.classList.add('hidden-msg');
-}, 5000);
+    // Hide alert automatically after 5 seconds
+    if (preferencesAlert) {
+        setTimeout(() => {
+            preferencesAlert.classList.add('hidden-msg');
+        }, 5000);
+    }
 
-/**
- * Checks if preferences were saved by reading URL parameters.
- * If true, it displays a success alert.
- */
-document.addEventListener('DOMContentLoaded', () => {
-
+    /**
+     * Checks if preferences were saved by reading URL parameters.
+     * If true, it displays a success alert.
+     */
     const params = new URLSearchParams(window.location.search);
 
     if (params.get("preferencesSaved") === "true") {
@@ -42,16 +45,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Find all carousels on the page
     const carousels = document.querySelectorAll('.carousel-container');
     
+    if (!carousels.length) {
+        console.log('No carousels found on the page');
+        return;
+    }
+    
     // Initialize each carousel
     carousels.forEach(function(carousel) {
         // Get elements for this specific carousel
         const itemsContainer = carousel.querySelector('.carousel-items');
-        const prevButton = carousel.querySelector('.prev') || carousel.nextElementSibling.querySelector('.prev');
-        const nextButton = carousel.querySelector('.next') || carousel.nextElementSibling.querySelector('.next');
+        const prevButton = carousel.querySelector('.prev') || carousel.nextElementSibling?.querySelector('.prev');
+        const nextButton = carousel.querySelector('.next') || carousel.nextElementSibling?.querySelector('.next');
         
         // Skip if required elements aren't found
         if (!itemsContainer || !prevButton || !nextButton) {
-            console.error("Missing required elements for a carousel");
+            console.log("Missing required elements for a carousel");
             return;
         }
         

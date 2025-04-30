@@ -80,8 +80,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Get navigation buttons for this carousel
         const section = container.closest('section');
-        const prevButton = section.querySelector('.prev');
-        const nextButton = section.querySelector('.next');
+        const navContainer = section.querySelector('.carousel-nav-user');
+        const prevButton = navContainer?.querySelector('.prev');
+        const nextButton = navContainer?.querySelector('.next');
         
         // Skip if required elements aren't found
         if (!prevButton || !nextButton) {
@@ -448,65 +449,67 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Remove book from library functionality
-    document.querySelector('.library-grid').addEventListener('click', async function(e) {
-        const removeBtn = e.target.closest('.remove-btn');
-        if (!removeBtn) return;
+    const libraryGrid = document.querySelector('.library-grid');
+    if (libraryGrid) {
+        libraryGrid.addEventListener('click', async function(e) {
+            const removeBtn = e.target.closest('.remove-btn');
+            if (!removeBtn) return;
 
-        const bookId = removeBtn.getAttribute('data-book-id');
-        if (!bookId) return;
+            const bookId = removeBtn.getAttribute('data-book-id');
+            if (!bookId) return;
 
-        try {
-            const response = await fetch(`/api/library/${bookId}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            });
+            try {
+                const response = await fetch(`/api/library/${bookId}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
 
-            const data = await response.json();
-            
-            if (data.success) {
-                // Add the book ID to the removed set
-                removedBookIds.add(bookId);
+                const data = await response.json();
                 
-                // Remove the book item from the DOM with animation
-                const bookItem = removeBtn.closest('.book-item');
-                bookItem.classList.add('fade-out');
-                
-                // Wait for animation to complete before removing
-                setTimeout(() => {
-                    bookItem.remove();
+                if (data.success) {
+                    // Add the book ID to the removed set
+                    removedBookIds.add(bookId);
                     
-                    // Update book count
-                    const statsNumber = document.querySelector('.stats-number');
-                    if (statsNumber) {
-                        const currentCount = parseInt(statsNumber.textContent);
-                        statsNumber.textContent = currentCount - 1;
-                    }
-
-                    // Get the next book from the remaining list, excluding removed books
-                    const libraryGrid = document.querySelector('.library-grid');
-                    const currentBooks = Array.from(libraryGrid.querySelectorAll('.book-item'));
-                    const remainingBooks = window.libraryBooks.filter(book => 
-                        !removedBookIds.has(book.book_id.toString()) && 
-                        !currentBooks.some(item => item.querySelector('.remove-btn').getAttribute('data-book-id') === book.book_id.toString())
-                    );
-
-                    if (remainingBooks.length > 0) {
-                        const nextBook = remainingBooks[0];
-                        const newBookItem = createBookItem(nextBook);
-                        libraryGrid.appendChild(newBookItem);
-                    }
+                    // Remove the book item from the DOM with animation
+                    const bookItem = removeBtn.closest('.book-item');
+                    bookItem.classList.add('fade-out');
                     
-                    // Show success message
-                    showMessage('Book removed from library', 'success');
-                }, 500);
-            } else {
-                showMessage('Failed to remove book', 'error');
+                    // Wait for animation to complete before removing
+                    setTimeout(() => {
+                        bookItem.remove();
+                        
+                        // Update book count
+                        const statsNumber = document.querySelector('.stats-number');
+                        if (statsNumber) {
+                            const currentCount = parseInt(statsNumber.textContent);
+                            statsNumber.textContent = currentCount - 1;
+                        }
+
+                        // Get the next book from the remaining list, excluding removed books
+                        const currentBooks = Array.from(libraryGrid.querySelectorAll('.book-item'));
+                        const remainingBooks = window.libraryBooks.filter(book => 
+                            !removedBookIds.has(book.book_id.toString()) && 
+                            !currentBooks.some(item => item.querySelector('.remove-btn').getAttribute('data-book-id') === book.book_id.toString())
+                        );
+
+                        if (remainingBooks.length > 0) {
+                            const nextBook = remainingBooks[0];
+                            const newBookItem = createBookItem(nextBook);
+                            libraryGrid.appendChild(newBookItem);
+                        }
+                        
+                        // Show success message
+                        showMessage('Book removed from library', 'success');
+                    }, 500);
+                } else {
+                    showMessage('Failed to remove book', 'error');
+                }
+            } catch (error) {
+                console.error('Error removing book:', error);
+                showMessage('Error removing book', 'error');
             }
-        } catch (error) {
-            console.error('Error removing book:', error);
-            showMessage('Error removing book', 'error');
-        }
-    });
+        });
+    }
 
     // Function to create a new book item
     function createBookItem(book) {
