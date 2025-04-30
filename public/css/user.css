@@ -722,6 +722,13 @@ footer {
   }
 }
 
+.empty-state {
+  text-align: left;
+  padding: 2rem;
+  color: #666;
+}
+
+
 @media (max-width: 576px) {
   .profile-page {
     padding-top: 1rem;
