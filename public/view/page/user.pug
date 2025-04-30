@@ -43,8 +43,9 @@ block content
                         span.section-icon
                             img(src="/images/bookmark.svg" alt="Feather Pen" width="24" height="24")
                     
-                    .library-grid
-                        if libraryBooks && libraryBooks.length > 0
+                    
+                    if libraryBooks && libraryBooks.length > 0
+                        .library-grid
                             each book in libraryBooks.slice(0, 8)
                                 .book-item
                                     .book-cover
@@ -57,12 +58,9 @@ block content
                                         else
                                             .no-image(style="width:100%; height:100%; display:flex; justify-content:center; align-items:center; background-color:#f0f0f0;") No Cover
                                     button.remove-btn(data-book-id=book.book_id) remove
-                        else
-                            - for (let i = 0; i < 8; i++)
-                                .book-item
-                                    .book-cover
-                                        // Placeholder for book cover
-                                    button.remove-btn remove
+                    else
+                        .empty-state
+                            p Your library is empty. Start adding books to see them here!
                     
 
                 section.profile-reviews-user 
@@ -82,19 +80,14 @@ block content
                                         p.review-date Date: #{review.formattedDate}
                                         p.review-text #{review.review_content}
                         else
-                            - for (let i = 0; i < 3; i++)
-                                .review-item
-                                    .review-book
-                                        // Placeholder for book cover
-                                    .review-content
-                                        p.review-date Date: #{i === 0 ? '19/01/25' : '10/12/24'}
-                                        p.review-text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.
+                            .empty-state
+                                p You haven't written any reviews yet. Share your thoughts on books you've read!
                     
-                    .carousel-nav-user
-                        button.prev ←
-                        button.next →
-                    
-                        
+                    if ratings && ratings.length > 0
+                        .carousel-nav-user
+                            button.prev ←
+                            button.next →
+
                 section.profile-ratings
                     .section-header
                         h2.section-title #{user && user.first_name ? user.first_name : 'FirstName'}'s Ratings 
@@ -116,21 +109,13 @@ block content
                                             else
                                                 span.star ★
                         else
-                            - for (let i = 0; i < 5; i++)
-                                .rating-item
-                                    .rating-book
-                                        // Placeholder for book cover
-                                    .rating-stars
-                                        - const rating = i % 3 === 0 ? 3 : (i % 2 === 0 ? 5 : 4)
-                                        - for (let j = 0; j < 5; j++)
-                                            if j < rating
-                                                span.star.filled ★
-                                            else
-                                                span.star ★
+                            .empty-state
+                                p You haven't rated any books yet. Rate books you've read to help others discover great reads!
                     
-                    .carousel-nav-user
-                        button.prev ←
-                        button.next →
+                    if ratings && ratings.length > 0
+                        .carousel-nav-user
+                            button.prev ←
+                            button.next →
         
         // Edit Profile Popup
         .edit-profile-popup.hidden
