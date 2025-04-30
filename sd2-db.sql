@@ -128,16 +128,16 @@ CREATE TABLE Book_Genres (
 -- Default password: shelf_2025
 INSERT INTO Users (first_name, last_name, email, password_hash, username, profile_img, discovery_frequency, verified)
 VALUES
-    ('An', 'Nguyen', 'nguyenvanan2730@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'nguyenvanan', 'profile1.jpg', '1', TRUE),
-    ('Bob', 'Smith', 'perette93@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'bobsmith', 'profile2.jpg', '2', TRUE),
-    ('Charlie', 'Brown', 'shelf1@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'charlieb', 'profile3.jpg', '3', TRUE),
-    ('David', 'Miller', 'shelf2@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'davidm', 'profile4.jpg', '1', TRUE),
-    ('Emma', 'Davis', 'shelf3@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'emmad', 'profile5.jpg', '2', TRUE),
-    ('Frank', 'Wilson', 'shelf4@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'frankw', 'profile6.jpg', '3', TRUE),
-    ('Grace', 'Moore', 'shelf5@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'gracem', 'profile7.jpg', '1', TRUE),
-    ('Henry', 'Taylor', 'shelf6@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'henryt', 'profile8.jpg', '2', TRUE),
-    ('Ivy', 'Anderson', 'shelf7@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'ivya', 'profile9.jpg', '3', TRUE),
-    ('Jack', 'Thomas', 'shelf8@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'jackt', 'profile10.jpg', '1', TRUE);
+    ('An', 'Nguyen', 'nguyenvanan2730@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'nguyenvanan', '', '1', TRUE),
+    ('Bob', 'Smith', 'perette93@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'bobsmith', '', '2', TRUE),
+    ('Charlie', 'Brown', 'shelf1@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'charlieb', '', '3', TRUE),
+    ('David', 'Miller', 'shelf2@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'davidm', '', '1', TRUE),
+    ('Emma', 'Davis', 'shelf3@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'emmad', '', '2', TRUE),
+    ('Frank', 'Wilson', 'shelf4@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'frankw', '', '3', TRUE),
+    ('Grace', 'Moore', 'shelf5@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'gracem', '', '1', TRUE),
+    ('Henry', 'Taylor', 'shelf6@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'henryt', '', '2', TRUE),
+    ('Ivy', 'Anderson', 'shelf7@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'ivya', '', '3', TRUE),
+    ('Jack', 'Thomas', 'shelf8@gmail.com', '$2b$10$dhgGvvAYwC8c68ll39BTG.37krbktYmgXmMsdXb53.5fphj3tSUJy', 'jackt', '', '1', TRUE);
 
 -- Insert into Books table
 -- ANIME
