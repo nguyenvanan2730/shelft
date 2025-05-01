@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedRating = 0;
 
     //star rating logic
-    document.querySelectorAll('.rating-stars').forEach(starContainer => {
+    document.querySelectorAll('.rating-detail-stars').forEach(starContainer => {
         const stars = starContainer.querySelectorAll('.star');
 
         stars.forEach((star, index) => {

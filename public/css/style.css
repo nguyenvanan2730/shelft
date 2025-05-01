@@ -1322,7 +1322,7 @@ header {
 
 }
 
-.rating-stars img{
+.rating-detail-stars img{
     width: 46px;
     height: 46px;
     cursor: pointer;
@@ -1431,13 +1431,13 @@ button#submit-review{
     color: black;
     font-weight: 600;
 }
-.rating-stars-static{
+.rating-detail-stars-static{
     display: flex;
     flex-wrap: wrap;
     margin: 1rem 0;
 }
 
-.rating-stars-static img {
+.rating-detail-stars-static img {
     width: 46px;
     height: 46px;
 }
