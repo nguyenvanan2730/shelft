@@ -119,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
         bookmarkIcon.addEventListener('click', () => {
             // Only proceed if user is logged in
             if (!isLoggedIn) {
-                // You might want to redirect to login page or show a login modal
-                alert('Please log in to save books to your library.');
+                // redirect to log in page
+                window.location.href = '/login';
                 return;
             }
             
