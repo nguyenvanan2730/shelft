@@ -5,19 +5,20 @@ block content
         //-book details
         .book-detail-header 
             img.book-detail-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
-            .book-detail-info 
-                h1 #{book.title}
+            .book-detail-info
+                .title-bookmark-container  
+                    h1 #{book.title}
                 
-                //-bookmark tooltip 
-                .bookmark-wrapper 
-                    img.bookmark-icon( 
-                        src=isBookmarked ? "/images/bookmark.svg" : "/images/bookmark-stroke.svg", 
-                        alt="bookmark",  
-                        data-bookid=book.book_id, 
-                        data-loggedin=isLoggedIn ? "true" : "false",
-                        class="bookmark-icon"
-                    )
-                    span.bookmark-tooltip 
+                    //-bookmark tooltip 
+                    .bookmark-wrapper 
+                        img.bookmark-icon( 
+                            src=isBookmarked ? "/images/bookmark.svg" : "/images/bookmark-stroke.svg", 
+                            alt="bookmark",  
+                            data-bookid=book.book_id, 
+                            data-loggedin=isLoggedIn ? "true" : "false",
+                            class="bookmark-icon"
+                        )
+                        span.bookmark-tooltip 
 
                 //- formats the published year string
                 - const year = new Date(book.published_year).getFullYear()
@@ -30,7 +31,7 @@ block content
         .book-rating-review
             .rating-block 
                 h3 Rate
-                .rating-stars(data-bookid=book.book_id)
+                .rating-detail-stars(data-bookid=book.book_id)
                     each star in [1,2,3,4,5]
                         img.star(data-value=star src="/images/rate-stroke.svg" alt="star")
             .review-block 
@@ -62,7 +63,7 @@ block content
             each review in reviews 
                 .review 
                     strong #{review.username}
-                    .rating-stars-static 
+                    .rating-detail-stars-static 
                         - for (let i = 1; i <= 5; i++)
                             if i <= review.rating
                                 img.star(src="/images/rate-star.svg" alt="filled star")

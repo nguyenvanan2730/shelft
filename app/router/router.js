@@ -163,6 +163,8 @@ router.get('/book/:id', async (req, res, next) => {
     }
 
     try {
+        const { isBookInLibrary } = require('../services/bookmark.js')
+
         //fetch the book details + reviews 
         const bookData = await getBookById(bookId);
 
@@ -171,12 +173,20 @@ router.get('/book/:id', async (req, res, next) => {
             return res.status(404).send('Book not found');
         }
 
+        //check if the book is in the user's library
+        let isBookmarked = false;
+        if(isLoggedIn) {
+            isBookmarked = await isBookInLibrary(user.user_id, bookId);
+            console.log(`Book ${bookId} is ${isBookmarked ? 'in' : 'not in'} user ${user.user_id}'s library`);
+        }
+
         //if the book exist render the details data 
         res.render('page/book-detail', {
             isLoggedIn,
             user,
             book: bookData.book,
-            reviews: bookData.reviews
+            reviews: bookData.reviews,
+            isBookmarked
         });
     } catch (err) {
         // if an error occurs, pass to express error handler
