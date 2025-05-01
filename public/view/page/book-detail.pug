@@ -5,19 +5,20 @@ block content
         //-book details
         .book-detail-header 
             img.book-detail-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
-            .book-detail-info 
-                h1 #{book.title}
+            .book-detail-info
+                .title-bookmark-container  
+                    h1 #{book.title}
                 
-                //-bookmark tooltip 
-                .bookmark-wrapper 
-                    img.bookmark-icon( 
-                        src=isBookmarked ? "/images/bookmark.svg" : "/images/bookmark-stroke.svg", 
-                        alt="bookmark",  
-                        data-bookid=book.book_id, 
-                        data-loggedin=isLoggedIn ? "true" : "false",
-                        class="bookmark-icon"
-                    )
-                    span.bookmark-tooltip 
+                    //-bookmark tooltip 
+                    .bookmark-wrapper 
+                        img.bookmark-icon( 
+                            src=isBookmarked ? "/images/bookmark.svg" : "/images/bookmark-stroke.svg", 
+                            alt="bookmark",  
+                            data-bookid=book.book_id, 
+                            data-loggedin=isLoggedIn ? "true" : "false",
+                            class="bookmark-icon"
+                        )
+                        span.bookmark-tooltip 
 
                 //- formats the published year string
                 - const year = new Date(book.published_year).getFullYear()
