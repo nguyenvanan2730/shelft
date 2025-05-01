@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const bookId = bookmarkIcon.getAttribute('data-bookid');
         const dataLoggedIn = bookmarkIcon.getAttribute('data-loggedin');
         const isLoggedIn = dataLoggedIn === 'true';
-        const isFilled = bookmarkIcon.src.includes('bookmark.svg');
+        const isFilled = bookmarkIcon.src.includes('bookmark.svg') && !bookmarkIcon.src.includes('stroke');
 
         console.log('Login status:', isLoggedIn);
         console.log('Bookmark filled:', isFilled);
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            const currentIsFilled = bookmarkIcon.src.includes('bookmark.svg');
+            const currentIsFilled = bookmarkIcon.src.includes('bookmark.svg') && !bookmarkIcon.src.includes('stroke');
             const url = currentIsFilled ? '/remove-from-library' : '/add-to-library';
 
             fetch(url, {

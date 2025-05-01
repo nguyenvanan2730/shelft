@@ -53,4 +53,23 @@ async function removeFromLibrary(req, res) {
     }
 }
 
-module.exports = { addToLibrary, removeFromLibrary };
+// Check if a book is in the user's library
+async function isBookInLibrary(userId, bookId) {
+    try {
+        if (!userId || !bookId) {
+            return false;
+        }
+        
+        const result = await db.query(
+            `SELECT * FROM Libraries WHERE user_id = ? AND book_id = ?`,
+            [userId, bookId]
+        );
+        
+        return result.length > 0;
+    } catch (err) {
+        console.error('Error checking if book is in library:', err);
+        return false;
+    }
+}
+
+module.exports = { addToLibrary, removeFromLibrary, isBookInLibrary };
