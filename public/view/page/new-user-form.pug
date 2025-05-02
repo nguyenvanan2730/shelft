@@ -1,0 +1,73 @@
+extends ../layout/layout
+
+block content 
+    div(class="success-alert")
+        span You have registered successfully. Welcome to the Shelft family!
+        button(type="button" class="close-success-alert") &times;
+    div(class="error-alert hidden-msg")
+        span Error Saving Preferences
+        button(type="button" class="close-error-alert") &times;
+    .breadcrumb-2
+        .step-line-3
+        .step-circle-3 3
+    main.user-form-main
+        section.new-user-form-container
+            h2 Congratulations! You've just opened the first chapter of your reading journey...
+            p.text-500 Shelft is a space where book lovers like you can track, discover and save what you <br> read. To provide you that personalized experience, we first need to know a bit more <br> about your interests.
+
+            div.new-user-form-div-genres
+                h3 Tell us what genres you enjoy:
+                p.text-400 [ Pick Up to 4 ]
+                .genres-container
+                    .genre-card.card(data-genre="1")
+                        p.text-400 Anime
+                    .genre-card.card(data-genre="2")
+                        p.text-400 Biography
+                    .genre-card.card(data-genre="3")
+                        p.text-400 Comedy
+                    .genre-card.card(data-genre="4")
+                        p.text-400 Fantasy
+                    .genre-card.card(data-genre="5")
+                        p.text-400 Horror
+                    .genre-card.card(data-genre="6")
+                        p.text-400 Mystery
+                    .genre-card.card(data-genre="7")
+                        p.text-400 Romance
+                    .genre-card.card(data-genre="8")
+                        p.text-400 Sci-Fi
+                    .genre-card.card(data-genre="9")
+                        p.text-400 Health/Wellness
+            
+            div.new-user-form-div-frequency
+                h3 Tell us how frequently you would like to discover new reads:
+                .frequency-container
+                    .frequency-card.card(data-freq="1")
+                        p.text-400 Regularly
+                    .frequency-card.card(data-freq="2")
+                        p.text-400 Occasionally
+                    .frequency-card.card(data-freq="3")
+                        p.text-400 Rarely
+            
+            div.new-user-form-div-save
+                .text-400 You can always update your answers later in on your profile page.
+                button.button-primary.text-400#save-preferences Save and head to your homepage
+
+        section.quick-guide-section
+            h2 Here's a quick guide before you head to your homepage...
+            p.text-500 Find this section any time via the Contact link in the navbar and footer of each page.
+
+            .guide-cards-container
+                .guide-card
+                    h3 Save to your library
+                    p Click on this [] next to any book to save it in your library. 
+                    p Find your collection via My Library link on navbar.
+
+                .guide-card
+                    h3 Write a review
+                    p You'll find space to leave your review and see what others are saying on each book's individual page. No matter how tempting, please be kind.
+
+                .guide-card
+                    h3 Your profile and settings
+                    p Click your name (at the top of each page) for your profile page, where you can view and edit your details and preferences.
+
+    script(defer src="js/new-user-form.js")

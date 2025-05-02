@@ -1,4 +1,58 @@
 extends ../layout/layout
 
 block content 
-    H1 Login
+    div(class="error hidden-msg")
+        span Error Signing In
+        button(type="button" class="close-alert") &times;
+
+    main(class="login-page")
+        section(class="login-left-section")
+            h2 Sign up and enjoy free access to...
+
+            div
+                p(class="text-500") Your Library 
+                p(class="text-400") Save and track every book you review, rate or want to read.
+
+            div
+                p(class="text-500") Personalized Recommendations
+                p(class="text-400") Find books you'll love.
+
+            div
+                p(class="text-500") Your Reviews
+                p(class="text-400") Share your thoughts and see what others are saying. 
+
+        section(class="divisor-line")
+
+        section(class="login-right-section")
+            h2 Sign In
+            form(id="login-form")
+                div(class="form-group")
+                    label(class="sr-only" for="email") Email
+                    input(id="identifier" name="identifier" placeholder="Email / Username" class="form-group-input")
+                div(class="form-group")
+                    label(class="sr-only" for="password") Password
+                    input(type="password" id="password" name="password" placeholder="Password" class="form-group-input")
+                button(type="submit" class="login-button-primary text-400") Log In
+                p(class="login-form-p") or
+
+                a.login-button-secondary.text-400(href="/auth/google") Sign In with Google 
+                    img(src="/images/google.png" alt="Sign in with Google" width="20" class="login-button-google")
+
+                div(class="login-form-other-options")
+                    div(class="login-form-div")
+                        a(href="#" class="text-400 login-forgotten-password") Forgotten your password? ↗
+                    a(href="/register" class="login-button-primary text-400") Create a new account
+
+    // Password Reset Modal
+    div#reset-password-modal.hidden-modal
+        div.modal-overlay
+        div.modal-box
+            h2 Reset your password
+            p.text-400(style="margin-top: 1rem") Please enter the email associated with your account.
+            form#reset-password-form
+                input(type="email" name="reset_email" placeholder="Enter your email" required class="form-group-input")
+                button(type="submit" class="login-button-primary text-400") Send Reset Link
+            button(type="button" class="close-modal") &times;          
+        
+
+    script(defer src="js/login.js")

@@ -1,4 +1,136 @@
 extends ../layout/layout
 
 block content 
-    H1 INDEX
+    div(class="preferences-success-alert hidden-msg")
+                span Preferences saved!
+                button(type="button" class="close-preferences-success-alert") &times;
+    if isLoggedIn
+        .intro-container 
+            .intro-content 
+                h1 Welcome, #{user.username}! 
+                h2 Pick up where you left off...
+                a.btn(href="/user") My Library 
+        //- carousel 1
+        h3.feature-title Books we think you'll love...
+        .carousel-container 
+            .carousel-items 
+                //- User genre filter here
+                each book in data.filter(book => userGenresBook.includes(book.book_id)).sort(() => 0.5 - Math.random()).slice(0, 18)
+                    .book-card
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+                
+        //-carousel 2
+        h3.feature-title Discover What's Trending Today
+        .carousel-container
+            .carousel-items 
+                each book in data.sort((a, b) => b.rating - a.rating).slice(0, 18)
+                    .book-card
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+                        .book-info
+                            span.rating 
+                                img(src="/images/rate-star.svg", alt="Rating", width="18", height="auto")
+                                span #{book.rating}
+                            span.reviews 
+                                img(src="/images/feather-pen.svg", alt="Reviews", width="18", height="auto")
+                                span #{book.review_num}
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+        
+        //-carousel 3
+        h3.feature-title New Releases - Be the first to rate and review them! 
+         .carousel-container
+            .carousel-items 
+                each book in data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0,18)
+                    .book-card 
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+        //- bottom of the page search bar
+        .intro-container 
+            .intro-content 
+                 h3 Looking for a particular book?
+                 .search-bar 
+                    input(type="text" placeholder="Search")
+
+    else
+        .intro-container 
+            .intro-content 
+                 h1 Discover, Track and Shelft what you read.
+                 h2 A space for book lovers just like you! 
+                 a.btn(href="/register") Create your free Shelft today! 
+
+        h3.feature-title Shelft Lets You
+        .features-container
+            .feature-box 
+                img(src="/images/bookmark.svg", alt="Feature 1" width="35", height="auto")
+                h3 Save to your library
+                p Build your own collection of favorite books and future reads.
+            .feature-box-blue
+                img(src="/images/feather-pen.svg", alt="Feature 2" width="45", height="auto")
+                h3 Write a review 
+                p Share your thoughts and read what others are saying.
+            .feature-box 
+                img(src="/images/rate-star.svg", alt="Feature 3" width="45", height="auto")
+                h3 Rate your reads 
+                p Rate each book out of five-stars to record your interest.
+        //-carousel 1 
+        h3.feature-title Discover What's Trending Today
+        .carousel-container
+            .carousel-items 
+                each book in data.sort((a, b) => b.rating - a.rating).slice(0, 18)
+                    .book-card
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}`, alt=`${book.title}`)
+                        .book-info
+                            span.rating 
+                                img(src="/images/rate-star.svg", alt="Rating", width="18", height="auto")
+                                span #{book.rating}
+                            span.reviews 
+                                img(src="/images/feather-pen.svg", alt="Reviews", width="18", height="auto")
+                                span #{book.review_num}
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+
+        //-carousel 2
+        h3.feature-title New Releases - Be the first to rate and review them! 
+         .carousel-container
+            .carousel-items 
+                each book in data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0,18)
+                    .book-card 
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+
+        //-carousel 3
+        h3.feature-title Classics - Always a crowd favorite. 
+         .carousel-container
+            .carousel-items 
+                each book in data.sort((a, b) => b.review_num - a.review_num).slice(0,18)
+                    .book-card 
+                        a(href=`/book/${book.book_id}`)
+                            img.book-cover(src=`/images/${book.cover_image}` width=140, height="auto", alt=`${book.title}`)
+            .carousel-nav 
+                btn.prev ←
+                btn.next →
+        
+        //- bottom of the page 
+        .intro-container 
+            .intro-content 
+                 h3 Interested to start your own Library and track your reads?
+                 .buttons-container 
+                    a.btn(href="/register") Sign Up - It's Free!
+                    .account-prompt 
+                        p Already have a Shelft account?
+                        a.signup(href="/login") Sign In
