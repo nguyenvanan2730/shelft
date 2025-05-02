@@ -338,10 +338,15 @@ header {
     transition: border 0.3s;
 }
 
+.book-card:hover {
+    transform: scale(1.04);
+}
+
 .book-cover{
     width: 140px;
     height: 220px;
     object-fit: cover;
+    
 }
 
 .book-info {
@@ -1467,4 +1472,18 @@ button#submit-review{
 
 #review-msg {
     font-weight:600;
+}
+
+/* Book searcher */
+.book-section {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.book-carousel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: flex-start;
 }

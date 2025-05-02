@@ -23,6 +23,10 @@ header
     //- search dropdown (initially hidden)
     #search-dropdown.hidden 
         .search-container 
-            input(type="text" placeholder="I'm searching for...")
+            form(action="/search" method="GET")
+            input(type="text" name="q" placeholder="I'm searching for..." required)
+
+    script(defer src="/js/header.js")
+
              
             
