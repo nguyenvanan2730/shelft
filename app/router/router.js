@@ -167,7 +167,7 @@ router.get('/book/:id', async (req, res, next) => {
         const { isBookInLibrary } = require('../services/bookmark.js')
 
         //fetch the book details + reviews 
-        const bookData = await getBookById(bookId);
+        const bookData = await getBookById(req, bookId);
 
         //if no book is found return a 404 not found response
         if (!bookData) {
@@ -187,7 +187,8 @@ router.get('/book/:id', async (req, res, next) => {
             user,
             book: bookData.book,
             reviews: bookData.reviews,
-            isBookmarked
+            isBookmarked,
+            userRating: bookData.userRating || 0
         });
     } catch (err) {
         // if an error occurs, pass to express error handler

@@ -6,6 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     //star rating logic
     document.querySelectorAll('.rating-detail-stars').forEach(starContainer => {
         const stars = starContainer.querySelectorAll('.star');
+        const userRating = parseInt(starContainer.dataset.userrating || '0', 10);
+        selectedRating = userRating;
+
+         // Initial rendering
+         stars.forEach((star, i) => {
+            star.src = i < userRating ? '/images/rate-star.svg' : '/images/rate-stroke.svg';
+        });
 
         stars.forEach((star, index) => {
             star.addEventListener('mouseover', () => {

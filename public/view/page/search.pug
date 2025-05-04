@@ -3,17 +3,17 @@ extends ../layout/layout
 block content 
   main(class="home-page")
     section(class="book-section")
-      h2 Search Results for "#{query}"
+      h2 Search Results for "#{query}":
 
       if books.length === 0
-        p(class="text-400") No books found matching your search.
+        p(class="text-400") Oops! We couldn't find the book you're looking for.
       else
         .book-carousel
           each book in books
-            .book-card
+            .book-search-card
               a(href=`/book/${book.book_id}`)
                 img.book-cover(src=`/images/${book.cover_image}` alt=book.title)
                 //More book info
-                //.book-info
-                //  h3= book.title
-                //  p.text-400 Author: #{book.author}
+                .search-info
+                  h3= book.title
+                  p.search-text Author: #{book.author}

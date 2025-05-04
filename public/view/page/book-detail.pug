@@ -31,9 +31,10 @@ block content
         .book-rating-review
             .rating-block 
                 h3 Rate
-                .rating-detail-stars(data-bookid=book.book_id)
+                .rating-detail-stars(data-bookid=book.book_id, data-userrating=userRating)
                     each star in [1,2,3,4,5]
-                        img.star(data-value=star src="/images/rate-stroke.svg" alt="star")
+                        - const starSrc = star <= userRating ? "/images/rate-star.svg" : "/images/rate-stroke.svg"
+                        img.star(data-value=star src=starSrc  alt="star")
             .review-block 
                 .review-title 
                     h3 Leave a review 
