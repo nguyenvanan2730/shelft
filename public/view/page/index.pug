@@ -59,7 +59,8 @@ block content
             .intro-content 
                  h3 Looking for a particular book?
                  .search-bar 
-                    input(type="text" placeholder="Search")
+                    form#intro-search-form(action="/search" method="GET")
+                    input#intro-search-input(type="text" name="query" placeholder="Search" required)
 
     else
         .intro-container 
@@ -134,3 +135,5 @@ block content
                     .account-prompt 
                         p Already have a Shelft account?
                         a.signup(href="/login") Sign In
+
+    script(defer src="/js/index.js")

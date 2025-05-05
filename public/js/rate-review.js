@@ -4,8 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedRating = 0;
 
     //star rating logic
-    document.querySelectorAll('.rating-stars').forEach(starContainer => {
+    document.querySelectorAll('.rating-detail-stars').forEach(starContainer => {
         const stars = starContainer.querySelectorAll('.star');
+        const userRating = parseInt(starContainer.dataset.userrating || '0', 10);
+        selectedRating = userRating;
+
+         // Initial rendering
+         stars.forEach((star, i) => {
+            star.src = i < userRating ? '/images/rate-star.svg' : '/images/rate-stroke.svg';
+        });
 
         stars.forEach((star, index) => {
             star.addEventListener('mouseover', () => {
@@ -104,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const bookId = bookmarkIcon.getAttribute('data-bookid');
         const dataLoggedIn = bookmarkIcon.getAttribute('data-loggedin');
         const isLoggedIn = dataLoggedIn === 'true';
-        const isFilled = bookmarkIcon.src.includes('bookmark.svg');
+        const isFilled = bookmarkIcon.src.includes('bookmark.svg') && !bookmarkIcon.src.includes('stroke');
 
         console.log('Login status:', isLoggedIn);
         console.log('Bookmark filled:', isFilled);
@@ -124,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            const currentIsFilled = bookmarkIcon.src.includes('bookmark.svg');
+            const currentIsFilled = bookmarkIcon.src.includes('bookmark.svg') && !bookmarkIcon.src.includes('stroke');
             const url = currentIsFilled ? '/remove-from-library' : '/add-to-library';
 
             fetch(url, {
