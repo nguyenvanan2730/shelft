@@ -1487,7 +1487,7 @@ button#submit-review{
 .book-section p{
     color: #666;
     justify-self: center;
-    padding-bottom: 25rem;
+    padding-bottom: 1rem;
     font-size: 1rem;
 }
 
@@ -1495,7 +1495,7 @@ button#submit-review{
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
-    justify-content: flex-start;
+    justify-content: center;
     padding-top: 4rem;
     padding-bottom: 4rem;
 }
@@ -1530,6 +1530,5 @@ button#submit-review{
     font-size: 1.1rem;
 }
 .book-cover:hover{
-   
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
 }
