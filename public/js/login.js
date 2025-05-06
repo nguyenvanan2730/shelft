@@ -2,6 +2,9 @@
 const errorMsg = document.getElementsByClassName('error')[0];
 const closeAlert = document.getElementsByClassName('close-alert')[0];
 
+// Get the base URL from the environment
+const BASE_URL = window.location.origin;
+
 // Password Reset Modal Logic
 const forgotLink = document.querySelector('.login-forgotten-password');
 const modal = document.getElementById('reset-password-modal');
@@ -75,7 +78,7 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     e.preventDefault(); // Prevent default form submission
 
     // Send login request
-    const res = await fetch('http://127.0.0.1:3000/api/login', {
+    const res = await fetch(`${BASE_URL}/api/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

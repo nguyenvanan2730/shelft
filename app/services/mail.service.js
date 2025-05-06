@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const BASE_URL = process.env.BASE_URL;
+
 const transporter = nodemailer.createTransport({
     host:process.env.EMAIL_HOST,
     port:465,
@@ -50,14 +52,14 @@ function createVerificationEmail(token) {
               </tr>
               <tr>
                 <td style="padding: 20px;">
-                  <a href="http://127.0.0.1:3000/verify/${token}" style="background-color: #D97852; padding: 14px 28px; border-radius: 6px; color: #fff; text-decoration: none; font-size: 16px; font-weight: bold;">
+                  <a href="${BASE_URL}/verify/${token}" style="background-color: #D97852; padding: 14px 28px; border-radius: 6px; color: #fff; text-decoration: none; font-size: 16px; font-weight: bold;">
                     Verify My Email
                   </a>
                 </td>
               </tr>
               <tr>
                 <td style="padding-top: 30px; color: #999; font-size: 13px;">
-                  If you didn’t sign up, you can safely ignore this email.
+                  If you didn't sign up, you can safely ignore this email.
                 </td>
               </tr>
               <tr>
@@ -77,7 +79,7 @@ function createVerificationEmail(token) {
   
 
   export async function sendPasswordResetEmail(user_email, token) {
-    const resetLink = `http://127.0.0.1:3000/reset-password/${token}`;
+    const resetLink = `${BASE_URL}/reset-password/${token}`;
   
     return await transporter.sendMail({
       from: 'Shelft. <perette93@gmail.com>',
@@ -105,7 +107,7 @@ function createVerificationEmail(token) {
                 </tr>
                 <tr>
                   <td style="padding: 20px 0; color: #444; font-size: 16px;">
-                    Forgot your password? Don’t worry — just click the button below to set a new one.
+                    Forgot your password? Don't worry — just click the button below to set a new one.
                   </td>
                 </tr>
                 <tr>
@@ -117,7 +119,7 @@ function createVerificationEmail(token) {
                 </tr>
                 <tr>
                   <td style="padding-top: 30px; color: #999; font-size: 13px;">
-                    Didn’t request a password change? Just ignore this email.
+                    Didn't request a password change? Just ignore this email.
                   </td>
                 </tr>
                 <tr>

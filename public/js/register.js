@@ -2,6 +2,9 @@
 const errorMsg = document.getElementsByClassName('error')[0];
 const closeAlert = document.getElementsByClassName('close-alert')[0];
 
+// Get the base URL from the environment
+const BASE_URL = window.location.origin;
+
 /**
  * Closes the error alert when the close button is clicked.
  * @input - Click event on the close button.
@@ -84,7 +87,7 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
      * @input - JSON object containing user registration data.
      * @output - Server response with status and potential redirect URL.
      */
-    const res = await fetch('http://127.0.0.1:3000/api/register', {
+    const res = await fetch(`${BASE_URL}/api/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

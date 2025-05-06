@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 require('./auth/google.js');
+require('dotenv').config();
 
 // Import morgan for logging
 const morgan = require('morgan');
@@ -12,7 +13,8 @@ const router = require('./router/router');
 
 // Create express app
 var app = express();
-const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000'];
+const BASE_URL = process.env.BASE_URL;
+const allowedOrigins = [BASE_URL, 'http://localhost:3000'];
 
 /**
  * app.js
@@ -24,13 +26,13 @@ const allowedOrigins = ['http://localhost:3000', 'http://127.0.0.1:3000'];
 
 /**
  * CORS Configuration
- * - Allows requests only from `localhost` and `127.0.0.1`
+ * - Allows requests from configured BASE_URL and localhost
  * - Enables credentials (cookies) for authentication
  */
 app.use(cors({
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
-      if (origin.indexOf('localhost') !== -1 || origin.indexOf('127.0.0.1') !== -1) {
+      if (allowedOrigins.some(allowedOrigin => origin.includes(allowedOrigin))) {
         console.log('Allowed origin:', origin);
         return callback(null, true);
       }
@@ -70,7 +72,7 @@ app.use(router);
 
 // Start server on the specified port
 app.listen(app.get("port"), function(){
-    console.log(`Server running at http://127.0.0.1:${app.get("port")}/`);
+    console.log(`Server running at ${BASE_URL}/`);
 });
 
 module.exports = app;
