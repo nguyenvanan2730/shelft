@@ -16,6 +16,7 @@ services:
     restart: always
     env_file:
       - ./.env
+    restart: unless-stopped
     ports:
       - "3308:3306"
     volumes:
