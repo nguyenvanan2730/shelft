@@ -63,6 +63,11 @@ mysql -uroot -p<password>
    ```sh
    npm install
    ```
+   or run to clean and start
+   
+  ```sh
+   rm -rf node_modules package-lock.json && npm install
+  ```
 ### 2. Start Docker on local computer:
 ### 3. Start the project using the following command:
     ```sh
