@@ -13,17 +13,16 @@ services:
       - db
   db:
     image: mysql
-    restart: always
+    restart: unless-stopped
     env_file:
       - ./.env
-    restart: unless-stopped
     ports:
       - "3308:3306"
     volumes:
       - ./db:/var/lib/mysql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
-    restart: always
+    restart: unless-stopped
     env_file:
       - ./.env
     ports:
