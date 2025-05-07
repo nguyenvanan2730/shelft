@@ -338,10 +338,15 @@ header {
     transition: border 0.3s;
 }
 
+.book-card:hover {
+    transform: scale(1.04);
+}
+
 .book-cover{
     width: 140px;
     height: 220px;
     object-fit: cover;
+    
 }
 
 .book-info {
@@ -1467,4 +1472,63 @@ button#submit-review{
 
 #review-msg {
     font-weight:600;
+}
+
+/* Book searcher */
+
+.book-section {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.book-section h2{
+    padding-top: 2rem;
+}
+.book-section p{
+    color: #666;
+    justify-self: center;
+    padding-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.book-carousel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+
+.book-search-card {
+    justify-content:space-between;
+    align-items: center;
+    text-align: center;
+    justify-items: center;
+    display: inline-block;
+    position: relative;
+}
+
+.book-search-card a{
+    text-decoration: none;
+    color: inherit; 
+}
+
+.search-info h3{
+    font-size: 1.2rem;
+    width: 20ch;
+    justify-self: center;
+    font-weight: 500;
+    color: black;
+}
+.search-info h3:hover{
+    color:#F58E5F;
+}
+
+.search-info p{
+    font-size: 1.1rem;
+}
+.book-cover:hover{
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
 }

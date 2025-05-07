@@ -12,6 +12,7 @@ const { getBookById } = require('../services/bookIdPage.js');
 const { submitReview } = require('../services/detail.js');
 const { addToLibrary, removeFromLibrary } = require('../services/bookmark.js');
 const { handleChangeAvatar } = require('../services/avatar.service');
+const { searchBooksByTitle } = require('../services/search.js');
 
 // ========================
 // PAGE ROUTES
@@ -166,7 +167,7 @@ router.get('/book/:id', async (req, res, next) => {
         const { isBookInLibrary } = require('../services/bookmark.js')
 
         //fetch the book details + reviews 
-        const bookData = await getBookById(bookId);
+        const bookData = await getBookById(req, bookId);
 
         //if no book is found return a 404 not found response
         if (!bookData) {
@@ -186,13 +187,46 @@ router.get('/book/:id', async (req, res, next) => {
             user,
             book: bookData.book,
             reviews: bookData.reviews,
-            isBookmarked
+            isBookmarked,
+            userRating: bookData.userRating || 0
         });
     } catch (err) {
         // if an error occurs, pass to express error handler
         next(err);
     }
 })
+
+//Search book by name
+router.get('/search', async (req, res) => {
+    const query = req.query.q;
+    const user = await authorization.checkCookie(req);
+    const isLoggedIn = !!user;
+    if (!query) return res.redirect('/');
+
+    try {
+        const results = await db.query("SELECT * FROM Books WHERE title LIKE ?", [`%${query}%`]);
+
+        if (results.length === 0) {
+            return res.render('page/search', {
+                isLoggedIn,
+                user,
+                books: [],
+                query, 
+                isLoggedIn: false 
+            });
+        } else if (results.length === 1) {
+            return res.redirect(`/book/${results[0].book_id}`);
+        } else {
+            const user = await authorization.checkCookie(req);
+            const isLoggedIn = !!user;
+            return res.render('page/search', { books: results, query, isLoggedIn, user });
+        }
+    } catch (err) {
+        console.error("Search error:", err);
+        return res.status(500).send("Search failed");
+    }
+});
+
 
 /** Post submit save book to libraries table */
 router.post('/add-to-library', addToLibrary);
@@ -385,7 +419,6 @@ router.get('/set-session', async (req, res) => {
                 <meta http-equiv="refresh" content="1;url=/user" />
                 <title>Redirecting...</title>
                 <script>
-                    // Refuerzo en caso de que el meta-refresh no funcione
                     setTimeout(() => {
                         window.location.href = '/user';
                     }, 1000);

@@ -1,9 +1,22 @@
 .terms-page,
-.privacy-page {
+.privacy-page,
+.Privacy-policy-page {
+    text-align: center;
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
     line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.legal-page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 h1 {
@@ -11,18 +24,26 @@ h1 {
     margin-bottom: 2rem;
     color: #333;
     font-size: 2.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 h2 {
     color: #444;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    font-size: 1.3rem;
+    text-align: center;
+    width: 100%;
 }
 
 p {
     margin-bottom: 1.5rem;
     text-align: justify;
+    margin-top: 1.5rem;
+    width: 100%;
 }
 
 ul {
@@ -49,6 +70,11 @@ li {
 
 .legal-page .contact-info li {
     margin-bottom: 0.5rem;
+}
+
+.legal-page p {
+    text-align: justify;
+    width: 100%;
 }
 
 @media (max-width: 768px) {

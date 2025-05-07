@@ -161,3 +161,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const input = document.querySelector(".intro-container .search-bar input");
+  
+    if (!input) return;
+  
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        const query = input.value.trim();
+        console.log("🔍 Searching:", query); // DEBUG
+  
+        if (query) {
+          window.location.href = `/search?q=${encodeURIComponent(query)}`;
+        }
+      }
+    });
+  });
