@@ -15,11 +15,9 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
 }
 
-h1 {
+.legal-page h1 {
     text-align: center;
     margin-bottom: 2rem;
     color: #333;
@@ -30,37 +28,39 @@ h1 {
     align-items: center;
 }
 
-h2 {
+.terms-page .legal-page h2,
+.privacy-page .legal-page h2 {
     color: #444;
-    margin-top: 3rem;
-    margin-bottom: 2rem;
-    font-size: 1.3rem;
-    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    text-align: left;
     width: 100%;
 }
 
-p {
+.legal-page p {
     margin-bottom: 1.5rem;
     text-align: justify;
-    margin-top: 1.5rem;
+    margin-top: 0.5rem;
     width: 100%;
 }
 
-ul {
+.legal-page ul {
     list-style-type: disc;
     margin-left: 2rem;
     margin-bottom: 1.5rem;
+    text-align: left;
+    width: 100%;
 }
 
-li {
+.legal-page li {
     margin-bottom: 0.5rem;
+    text-align: left;
 }
 
 .legal-page .contact-info {
     background-color: #f5f5f5;
-    padding: 1.5rem;
     border-radius: 8px;
-    margin-top: 2rem;
+    text-align: left;
 }
 
 .legal-page .contact-info ul {
@@ -76,18 +76,3 @@ li {
     text-align: justify;
     width: 100%;
 }
-
-@media (max-width: 768px) {
-    .terms-page,
-    .privacy-page {
-        padding: 1rem;
-    }
-    
-    h1 {
-        font-size: 2rem;
-    }
-    
-    h2 {
-        font-size: 1.5rem;
-    }
-} 
